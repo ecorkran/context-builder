@@ -42,7 +42,7 @@ src/services/storage/
 ## Technical Decisions
 
 ### Layout Implementation
-- **Split-pane:** Custom CSS Grid implementation with draggable splitter (no external resize library)
+- **Split-pane:** Custom CSS Grid implementation with draggable splitter (use radix primitive if available)
 - **Responsive:** Default 40/60 split, user-adjustable via drag handle, stack on narrow windows
 - **Window:** Minimum 1024x768, default 1440x900
 
