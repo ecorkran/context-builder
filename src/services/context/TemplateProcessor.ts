@@ -17,7 +17,10 @@ export class TemplateProcessor {
       // Start with the template
       let processed = template;
 
-      // Replace simple variables: {{variableName}}
+      // First handle boolean conditionals: {{#if isMonorepo}}Yes{{else}}No{{/if}}
+      processed = this.processBooleanConditionals(processed, data);
+
+      // Then replace simple variables: {{variableName}}
       processed = processed.replace(/\{\{(\w+)\}\}/g, (match, variableName) => {
         const value = (data as any)[variableName];
         if (value !== undefined && value !== null) {
@@ -28,9 +31,6 @@ export class TemplateProcessor {
         console.warn(`Template variable '${variableName}' not found in data, replacing with empty string`);
         return '';
       });
-
-      // Handle boolean conditionals: {{#if isMonorepo}}Yes{{else}}No{{/if}}
-      processed = this.processBooleanConditionals(processed, data);
 
       return processed;
     } catch (error) {
@@ -58,11 +58,11 @@ export class TemplateProcessor {
         // Evaluate as boolean
         const isTrue = Boolean(value);
         
-        return isTrue ? trueContent.trim() : falseContent.trim();
+        return isTrue ? trueContent : falseContent;
       } catch (error) {
         console.warn(`Error evaluating conditional for '${variableName}':`, error);
         // Default to false content on error
-        return falseContent.trim();
+        return falseContent;
       }
     });
   }
