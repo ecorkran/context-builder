@@ -181,14 +181,14 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
 ### Task 3: Section Building System
 **Effort: 3/5**
 
-- [ ] **Task 3.1: Create Section Data Types**
+- [x] **Task 3.1: Create Section Data Types**
   - Create `src/services/context/types/ContextSection.ts`
   - Define ContextSection interface with key, title, content, conditional, order
   - Define ContextTemplate interface for complete template structure
   - Include conditional function types for dynamic sections
   - **Success:** Section types support all required section configurations
 
-- [ ] **Task 3.2: Create SectionBuilder Service**
+- [x] **Task 3.2: Create SectionBuilder Service**
   - Create `src/services/context/SectionBuilder.ts`
   - Implement buildToolsSection() for tools and MCP content
   - Implement buildMonorepoSection() for monorepo-specific information
@@ -196,14 +196,14 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
   - Add conditional logic helpers for section inclusion
   - **Success:** SectionBuilder creates all required section types
 
-- [ ] **Task 3.3: Implement MCP and Tools Detection**
+- [x] **Task 3.3: Implement MCP and Tools Detection**
   - Add detectMCPAvailability() method to SectionBuilder
   - Add detectAvailableTools() method for tool detection
   - Create placeholder implementations that return sensible defaults
   - Document interfaces for future integration with actual detection
   - **Success:** Detection methods return appropriate placeholder content
 
-- [ ] **Task 3.4: Create SectionBuilder Unit Tests**
+- [x] **Task 3.4: Create SectionBuilder Unit Tests**
   - Create `src/services/context/SectionBuilder.test.ts`
   - Test each section building method with various inputs
   - Test conditional section logic
