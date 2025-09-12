@@ -145,6 +145,9 @@
   --color-neutral-track: oklch(53.5% 0.0829 53.84);
 }
 
+/* Responsive layout styles for SplitPaneLayout */
+/* On mobile, the component renders a scrollable container instead of panels */
+
 /* Sunset Theme - Orange to pink gradient with warm neutrals */
 [data-palette="sunset"] {
   /* Orange-pink accent colors for vibrant, sunset feel */

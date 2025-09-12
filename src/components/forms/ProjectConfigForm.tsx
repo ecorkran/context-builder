@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { cn } from '../../lib/ui-core/utils/cn';
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue 
+} from '../../lib/ui-core/components/form/select';
 import { CreateProjectData } from '../../services/storage/types/ProjectData';
 
 interface ProjectConfigFormProps {
@@ -63,20 +70,22 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
           <label htmlFor="template" className="block text-sm font-medium text-neutral-11 mb-2">
             Template
           </label>
-          <select
-            id="template"
-            value={formData.template}
-            onChange={(e) => handleInputChange('template', e.target.value)}
-            className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
+          <Select 
+            value={formData.template} 
+            onValueChange={(value) => handleInputChange('template', value)}
           >
-            <option value="">Select template...</option>
-            <option value="react-nextjs">React + Next.js</option>
-            <option value="react-vite">React + Vite</option>
-            <option value="electron-react">Electron + React</option>
-            <option value="node-express">Node.js + Express</option>
-            <option value="python-django">Python + Django</option>
-            <option value="custom">Custom</option>
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select template..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="react-nextjs">React + Next.js</SelectItem>
+              <SelectItem value="react-vite">React + Vite</SelectItem>
+              <SelectItem value="electron-react">Electron + React</SelectItem>
+              <SelectItem value="node-express">Node.js + Express</SelectItem>
+              <SelectItem value="python-django">Python + Django</SelectItem>
+              <SelectItem value="custom">Custom</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         <div>
