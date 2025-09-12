@@ -96,22 +96,22 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
 ### Task 2: System Prompt Integration
 **Effort: 3/5**
 
-- [ ] **Task 2.1: Create System Prompt Data Types**
+- [x] **Task 2.1: Create System Prompt Data Types**
   - Create `src/services/context/types/SystemPrompt.ts`
   - Define SystemPrompt interface with name, key, content, parameters
   - Define instruction mapping types
   - Export types for parser service
   - **Success:** SystemPrompt types defined and compilable
 
-- [ ] **Task 2.2: Create SystemPromptParser Service**
-  - [ ] **2.2.1: Create SystemPromptParser class structure**
+- [x] **Task 2.2: Create SystemPromptParser Service**
+  - [x] **2.2.1: Create SystemPromptParser class structure**
     - Create `src/services/context/SystemPromptParser.ts`
     - Create class with private prompts cache and filePath properties
     - Import SystemPrompt types and add constructor
     - Set up basic error handling and logging infrastructure
     - **Success:** Basic class structure exists and compiles
     
-  - [ ] **2.2.2: Implement markdown section parsing**
+  - [x] **2.2.2: Implement markdown section parsing**
     - Add parsePromptFile() method to read and process markdown file
     - Use regex to extract sections by ##### headers:
       ```typescript
@@ -122,7 +122,7 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
     - Store prompts with keys derived from section titles
     - **Success:** Parser extracts all sections from system prompt file
     
-  - [ ] **2.2.3: Implement specific prompt extraction methods**
+  - [x] **2.2.3: Implement specific prompt extraction methods**
     - Add getContextInitializationPrompt() method
       - Look for "Model Change or Context Refresh" section
       - Extract markdown code block content
@@ -133,7 +133,7 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
     - Handle missing sections with meaningful error messages
     - **Success:** Specific prompt extraction methods work reliably
     
-  - [ ] **2.2.4: Add instruction mapping logic**
+  - [x] **2.2.4: Add instruction mapping logic**
     - Create INSTRUCTION_MAPPING constant with known mappings:
       ```typescript
       {
@@ -147,14 +147,14 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
     - Return null for unknown instructions to allow custom handling
     - **Success:** All instruction types map correctly to system prompts
     
-  - [ ] **2.2.5: Add caching and file monitoring**
+  - [x] **2.2.5: Add caching and file monitoring**
     - Implement prompt caching to avoid repeated file parsing
     - Add cache invalidation when file modification time changes
     - Include memory management to prevent cache bloat
     - Add optional file watching for development environments
     - **Success:** Parser performs efficiently with proper caching
 
-- [ ] **Task 2.3: Implement Instruction Type Mapping**
+- [x] **Task 2.3: Implement Instruction Type Mapping**
   - Add instruction mapping logic in SystemPromptParser
   - Map 'planning' to "Slice Planning (Phase 3)" prompt
   - Map 'implementation' to "Slice | Feature Implementation (Phase 7)" prompt
@@ -162,7 +162,7 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
   - Handle 'custom' instruction type with user text
   - **Success:** All instruction types map to correct prompts or fallbacks
 
-- [ ] **Task 2.4: Create SystemPromptParser Unit Tests**
+- [x] **Task 2.4: Create SystemPromptParser Unit Tests**
   - Create `src/services/context/SystemPromptParser.test.ts`
   - Test markdown parsing with sample system prompt files
   - Test instruction mapping for all supported types
@@ -170,7 +170,7 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
   - Test caching behavior and cache invalidation
   - **Success:** Parser functionality fully tested with >90% coverage
 
-- [ ] **Task 2.5: Create PromptFileManager Service**
+- [x] **Task 2.5: Create PromptFileManager Service**
   - Create `src/services/context/PromptFileManager.ts`
   - Implement loadPromptFile() with file system access
   - Add validatePromptFile() for structure validation
