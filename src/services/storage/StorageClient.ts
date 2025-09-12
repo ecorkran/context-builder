@@ -7,6 +7,9 @@ interface StorageResponse {
   success: boolean;
   data?: string;
   error?: string;
+  recovered?: boolean;
+  message?: string;
+  notFound?: boolean;
 }
 
 declare global {
@@ -39,8 +42,9 @@ export class StorageClient {
 
   /**
    * Read file from app data directory
+   * Returns file contents and indicates if data was recovered from backup
    */
-  async readFile(filename: string): Promise<string> {
+  async readFile(filename: string): Promise<{ data: string; recovered?: boolean; message?: string }> {
     if (!this.isElectron) {
       throw new Error('Storage client is only available in Electron environment');
     }
@@ -49,10 +53,18 @@ export class StorageClient {
       const response = await window.electronAPI.storage.read(filename);
       
       if (!response.success) {
+        if (response.notFound) {
+          // File doesn't exist, return empty data
+          return { data: '' };
+        }
         throw new Error(response.error || 'Failed to read file');
       }
       
-      return response.data || '';
+      return {
+        data: response.data || '',
+        recovered: response.recovered,
+        message: response.message
+      };
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error reading file';
       throw new Error(`Failed to read file: ${message}`);

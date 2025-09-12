@@ -21,8 +21,19 @@ export class ElectronStorageService {
 
     try {
       // Try to read main file first
-      const data = await storageClient.readFile(this.mainFile);
-      const projects = JSON.parse(data);
+      const result = await storageClient.readFile(this.mainFile);
+      
+      // Handle recovery notification
+      if (result.recovered) {
+        console.log(result.message || 'Data recovered from backup');
+        // Could emit an event or show user notification here
+      }
+      
+      if (!result.data) {
+        return [];
+      }
+      
+      const projects = JSON.parse(result.data);
       
       // Validate the data structure
       if (!Array.isArray(projects)) {
@@ -38,22 +49,7 @@ export class ElectronStorageService {
       
       return projects;
     } catch (error) {
-      // If main file doesn't exist or is corrupted, try backup
-      try {
-        const backupData = await storageClient.readFile(this.backupFile);
-        const projects = JSON.parse(backupData);
-        
-        if (Array.isArray(projects)) {
-          console.log('Recovered data from backup file');
-          // Restore the main file from backup
-          await this.writeProjects(projects);
-          return projects;
-        }
-      } catch (backupError) {
-        // No valid backup either
-        console.log('No existing project data found, starting fresh');
-      }
-      
+      console.log('No existing project data found, starting fresh');
       // Return empty array if no valid data found
       return [];
     }

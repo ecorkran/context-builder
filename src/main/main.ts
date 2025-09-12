@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain, shell, Menu } from 'electron'
 import { fileURLToPath } from 'node:url'
 import { URL } from 'node:url'
 import { join } from 'node:path'
-import { readFile, writeFile, mkdir, copyFile } from 'node:fs/promises'
+import { readFile, writeFile, mkdir, copyFile, rename, unlink } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 
 function isAllowedUrl(target: string): boolean {
@@ -70,14 +70,66 @@ function createWindow(): void {
       
       const storagePath = getStoragePath()
       const filePath = join(storagePath, filename)
+      const backupPath = join(storagePath, `${filename}.backup`)
       
       // Ensure file is within allowed directory
       if (!filePath.startsWith(storagePath)) {
         throw new Error('Access denied')
       }
       
-      const data = await readFile(filePath, 'utf-8')
-      return { success: true, data }
+      try {
+        // Try to read main file first
+        const data = await readFile(filePath, 'utf-8')
+        
+        // Validate JSON structure
+        try {
+          JSON.parse(data)
+          return { success: true, data }
+        } catch (parseError) {
+          // Main file is corrupted, try backup
+          console.warn(`Main file corrupted: ${filename}, attempting backup recovery`)
+          throw new Error('Main file corrupted')
+        }
+      } catch (mainFileError) {
+        // Main file doesn't exist or is corrupted, try backup
+        try {
+          const backupData = await readFile(backupPath, 'utf-8')
+          
+          // Validate backup JSON structure
+          JSON.parse(backupData)
+          
+          console.log(`Recovered data from backup: ${filename}`)
+          
+          // Try to restore main file from backup
+          try {
+            await copyFile(backupPath, filePath)
+            console.log(`Restored main file from backup: ${filename}`)
+          } catch (restoreError) {
+            console.warn(`Could not restore main file, but backup is available: ${restoreError}`)
+          }
+          
+          return { 
+            success: true, 
+            data: backupData,
+            recovered: true,
+            message: 'Data recovered from backup file'
+          }
+        } catch (backupError) {
+          // Neither main nor backup file is available/valid
+          if (mainFileError instanceof Error && mainFileError.message.includes('ENOENT')) {
+            return { 
+              success: false, 
+              error: 'File not found',
+              notFound: true 
+            }
+          }
+          
+          return { 
+            success: false, 
+            error: 'File corrupted and no valid backup available' 
+          }
+        }
+      }
     } catch (error) {
       return { 
         success: false, 
@@ -101,13 +153,37 @@ function createWindow(): void {
       }
       
       const filePath = join(storagePath, filename)
+      const tempPath = join(storagePath, `${filename}.tmp`)
+      const backupPath = join(storagePath, `${filename}.backup`)
       
-      // Ensure file is within allowed directory
-      if (!filePath.startsWith(storagePath)) {
+      // Ensure paths are within allowed directory
+      if (!filePath.startsWith(storagePath) || !tempPath.startsWith(storagePath)) {
         throw new Error('Access denied')
       }
       
-      await writeFile(filePath, data, 'utf-8')
+      // Atomic write process:
+      // 1. Create backup of existing file
+      if (existsSync(filePath)) {
+        await copyFile(filePath, backupPath)
+      }
+      
+      // 2. Write to temporary file first
+      await writeFile(tempPath, data, 'utf-8')
+      
+      // 3. Validate JSON structure
+      try {
+        JSON.parse(data)
+      } catch (parseError) {
+        // Clean up temp file and restore backup
+        if (existsSync(tempPath)) {
+          await unlink(tempPath)
+        }
+        throw new Error('Invalid JSON data')
+      }
+      
+      // 4. Atomically rename temp file to main file
+      await rename(tempPath, filePath)
+      
       return { success: true }
     } catch (error) {
       return { 
