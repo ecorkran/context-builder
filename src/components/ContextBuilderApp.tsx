@@ -3,8 +3,9 @@ import { SplitPaneLayout } from './layout/SplitPaneLayout';
 import { ProjectConfigForm } from './forms/ProjectConfigForm';
 import { ContextOutput } from './display/ContextOutput';
 import { SimpleProjectStore } from '../services/storage/SimpleProjectStore';
-import { ContextGenerator } from '../services/context/ContextGenerator';
 import { CreateProjectData, ProjectData } from '../services/storage/types/ProjectData';
+import { useContextGeneration } from '../hooks/useContextGeneration';
+import { useDebounce } from '../hooks/useDebounce';
 
 /**
  * Main application component that integrates all functionality
@@ -14,24 +15,25 @@ export const ContextBuilderApp: React.FC = () => {
     name: '',
     template: '',
     slice: '',
-    isMonorepo: false
+    instruction: 'implementation',
+    isMonorepo: false,
+    customData: {
+      recentEvents: '',
+      additionalNotes: ''
+    }
   });
-  
-  const [additionalNotes, setAdditionalNotes] = useState('');
 
   // Create service instances
   const projectStore = useMemo(() => new SimpleProjectStore(), []);
-  const contextGenerator = useMemo(() => new ContextGenerator(), []);
 
-  // Generate context when form data changes
-  const generatedContext = useMemo(() => {
-    // Only generate if we have minimum required data
+  // Create a temporary project object for context generation
+  const tempProject: ProjectData | null = useMemo(() => {
+    // Only create project if we have minimum required data
     if (!formData.name || !formData.template || !formData.slice) {
-      return '';
+      return null;
     }
 
-    // Create a temporary project object for context generation
-    const tempProject: ProjectData = {
+    return {
       id: 'temp',
       ...formData,
       instruction: formData.instruction || 'implementation',
@@ -39,9 +41,13 @@ export const ContextBuilderApp: React.FC = () => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
+  }, [formData]);
 
-    return contextGenerator.generateContext(tempProject, additionalNotes);
-  }, [formData, additionalNotes, contextGenerator]);
+  // Debounce the project data for smoother real-time updates (300ms delay)
+  const debouncedProject = useDebounce(tempProject, 300);
+
+  // Use the context generation hook
+  const { contextString, isLoading, error } = useContextGeneration(debouncedProject);
 
   const handleFormChange = useCallback((data: CreateProjectData) => {
     setFormData(data);
@@ -68,28 +74,28 @@ export const ContextBuilderApp: React.FC = () => {
           onSubmit={handleCreateProject}
         />
       </div>
-
-      <div>
-        <label htmlFor="additional-notes" className="block text-sm font-medium text-neutral-11 mb-2">
-          Additional Notes
-        </label>
-        <textarea
-          id="additional-notes"
-          value={additionalNotes}
-          onChange={(e) => setAdditionalNotes(e.target.value)}
-          rows={4}
-          className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-none"
-          placeholder="Add any additional context, recent events, or specific instructions..."
-        />
-      </div>
     </div>
   );
 
   const rightPanelContent = (
-    <ContextOutput
-      context={generatedContext}
-      title="Generated Context for Claude Code"
-    />
+    <div className="space-y-4">
+      {error && (
+        <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+          <p className="text-sm text-red-700">⚠️ Error: {error}</p>
+        </div>
+      )}
+      
+      {isLoading && (
+        <div className="p-3 bg-blue-50 border border-blue-200 rounded-md">
+          <p className="text-sm text-blue-700">🔄 Generating context...</p>
+        </div>
+      )}
+      
+      <ContextOutput
+        context={contextString}
+        title="Generated Context for Claude Code"
+      />
+    </div>
   );
 
   return (
