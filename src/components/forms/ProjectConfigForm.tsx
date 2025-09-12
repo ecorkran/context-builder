@@ -29,7 +29,12 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
     name: initialData?.name || '',
     template: initialData?.template || '',
     slice: initialData?.slice || '',
-    isMonorepo: initialData?.isMonorepo || false
+    instruction: initialData?.instruction || 'implementation',
+    isMonorepo: initialData?.isMonorepo || false,
+    customData: {
+      recentEvents: initialData?.customData?.recentEvents || '',
+      additionalNotes: initialData?.customData?.additionalNotes || ''
+    }
   });
 
   // Call onChange when form data changes
@@ -42,7 +47,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
     onSubmit?.(formData);
   };
 
-  const handleInputChange = (field: keyof CreateProjectData, value: string | boolean) => {
+  const handleInputChange = (field: keyof CreateProjectData, value: any) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
@@ -102,6 +107,27 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
           />
         </div>
 
+        <div>
+          <label htmlFor="instruction" className="block text-sm font-medium text-neutral-11 mb-2">
+            Development Phase
+          </label>
+          <Select 
+            value={formData.instruction || 'implementation'} 
+            onValueChange={(value) => handleInputChange('instruction', value)}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select development phase..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="planning">Planning</SelectItem>
+              <SelectItem value="implementation">Implementation</SelectItem>
+              <SelectItem value="debugging">Debugging</SelectItem>
+              <SelectItem value="testing">Testing</SelectItem>
+              <SelectItem value="custom">Custom</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
         <div className="flex items-center">
           <input
             id="is-monorepo"
@@ -113,6 +139,52 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
           <label htmlFor="is-monorepo" className="ml-2 block text-sm text-neutral-11">
             Monorepo project
           </label>
+        </div>
+
+        <div>
+          <label htmlFor="recent-events" className="block text-sm font-medium text-neutral-11 mb-2">
+            Recent Events (optional)
+          </label>
+          <textarea
+            id="recent-events"
+            value={formData.customData?.recentEvents || ''}
+            onChange={(e) => handleInputChange('customData', {
+              ...formData.customData,
+              recentEvents: e.target.value
+            })}
+            className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical"
+            placeholder="• Recent changes, bug fixes, features added..."
+            rows={4}
+            maxLength={500}
+          />
+          <div className="flex justify-end mt-1">
+            <span className="text-xs text-neutral-9">
+              {(formData.customData?.recentEvents || '').length}/500
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="additional-notes" className="block text-sm font-medium text-neutral-11 mb-2">
+            Additional Context (optional)
+          </label>
+          <textarea
+            id="additional-notes"
+            value={formData.customData?.additionalNotes || ''}
+            onChange={(e) => handleInputChange('customData', {
+              ...formData.customData,
+              additionalNotes: e.target.value
+            })}
+            className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical"
+            placeholder="Any additional context or specific focus areas..."
+            rows={3}
+            maxLength={300}
+          />
+          <div className="flex justify-end mt-1">
+            <span className="text-xs text-neutral-9">
+              {(formData.customData?.additionalNotes || '').length}/300
+            </span>
+          </div>
         </div>
       </div>
 
