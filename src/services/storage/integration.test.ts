@@ -27,6 +27,9 @@ describe('Storage Integration Tests', () => {
     // Setup mock storage behavior
     const mockStorageClient = storageClient as any
     
+    // Ensure isAvailable returns true
+    mockStorageClient.isAvailable.mockReturnValue(true)
+    
     mockStorageClient.readFile.mockImplementation(async (filename: string) => {
       const data = mockStorage.get(filename) || ''
       return { data }

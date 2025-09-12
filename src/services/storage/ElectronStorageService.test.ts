@@ -42,6 +42,10 @@ describe('ElectronStorageService', () => {
       }
     ]
     vi.clearAllMocks()
+    
+    // Reset the mock to return true by default
+    const mockStorageClient = storageClient as any
+    mockStorageClient.isAvailable.mockReturnValue(true)
   })
 
   describe('readProjects', () => {
