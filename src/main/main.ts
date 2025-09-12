@@ -1,6 +1,9 @@
 import { app, BrowserWindow, ipcMain, shell, Menu } from 'electron'
 import { fileURLToPath } from 'node:url'
 import { URL } from 'node:url'
+import { join } from 'node:path'
+import { readFile, writeFile, mkdir, copyFile } from 'node:fs/promises'
+import { existsSync } from 'node:fs'
 
 function isAllowedUrl(target: string): boolean {
   try {
@@ -50,6 +53,97 @@ function createWindow(): void {
 
   ipcMain.handle('get-app-version', () => {
     return app.getVersion()
+  })
+
+  // Storage IPC handlers
+  const getStoragePath = () => {
+    const userDataPath = app.getPath('userData')
+    return join(userDataPath, 'context-builder')
+  }
+
+  ipcMain.handle('storage:read', async (_, filename: string) => {
+    try {
+      // Validate filename to prevent directory traversal
+      if (filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+        throw new Error('Invalid filename')
+      }
+      
+      const storagePath = getStoragePath()
+      const filePath = join(storagePath, filename)
+      
+      // Ensure file is within allowed directory
+      if (!filePath.startsWith(storagePath)) {
+        throw new Error('Access denied')
+      }
+      
+      const data = await readFile(filePath, 'utf-8')
+      return { success: true, data }
+    } catch (error) {
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      }
+    }
+  })
+
+  ipcMain.handle('storage:write', async (_, filename: string, data: string) => {
+    try {
+      // Validate filename to prevent directory traversal
+      if (filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+        throw new Error('Invalid filename')
+      }
+      
+      const storagePath = getStoragePath()
+      
+      // Create directory if it doesn't exist
+      if (!existsSync(storagePath)) {
+        await mkdir(storagePath, { recursive: true })
+      }
+      
+      const filePath = join(storagePath, filename)
+      
+      // Ensure file is within allowed directory
+      if (!filePath.startsWith(storagePath)) {
+        throw new Error('Access denied')
+      }
+      
+      await writeFile(filePath, data, 'utf-8')
+      return { success: true }
+    } catch (error) {
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      }
+    }
+  })
+
+  ipcMain.handle('storage:backup', async (_, filename: string) => {
+    try {
+      // Validate filename to prevent directory traversal
+      if (filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+        throw new Error('Invalid filename')
+      }
+      
+      const storagePath = getStoragePath()
+      const filePath = join(storagePath, filename)
+      const backupPath = join(storagePath, `${filename}.backup`)
+      
+      // Ensure paths are within allowed directory
+      if (!filePath.startsWith(storagePath) || !backupPath.startsWith(storagePath)) {
+        throw new Error('Access denied')
+      }
+      
+      if (existsSync(filePath)) {
+        await copyFile(filePath, backupPath)
+      }
+      
+      return { success: true }
+    } catch (error) {
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      }
+    }
   })
 
   if (process.env.ELECTRON_RENDERER_URL) {
