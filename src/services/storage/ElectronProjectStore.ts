@@ -21,17 +21,51 @@ export class ElectronProjectStore {
   }
 
   /**
-   * Loads all projects from storage
+   * Loads all projects from storage and migrates them if necessary
    */
   async load(): Promise<ProjectData[]> {
     try {
-      this.projects = await this.storageService.readProjects();
+      const rawProjects = await this.storageService.readProjects();
+      this.projects = this.migrateProjects(rawProjects);
+      
+      // Save migrated projects if any were updated
+      const hasMigrations = rawProjects.some((project, index) => 
+        JSON.stringify(project) !== JSON.stringify(this.projects[index])
+      );
+      
+      if (hasMigrations) {
+        console.log('Migrating project data to include new fields');
+        await this.storageService.writeProjects(this.projects);
+      }
+      
       return this.projects;
     } catch (error) {
       console.error('Failed to load projects:', error);
       this.projects = [];
       return [];
     }
+  }
+
+  /**
+   * Migrates project data to include new required fields
+   */
+  private migrateProjects(projects: any[]): ProjectData[] {
+    return projects.map(project => {
+      // Ensure all required fields exist with defaults
+      const migrated: ProjectData = {
+        id: project.id,
+        name: project.name,
+        template: project.template,
+        slice: project.slice,
+        instruction: project.instruction || 'implementation', // Default to implementation
+        isMonorepo: project.isMonorepo || false,
+        customData: project.customData || {}, // Default to empty object
+        createdAt: project.createdAt,
+        updatedAt: project.updatedAt
+      };
+
+      return migrated;
+    });
   }
 
   /**
@@ -55,6 +89,8 @@ export class ElectronProjectStore {
     const newProject: ProjectData = {
       ...projectData,
       id: this.generateId(),
+      instruction: projectData.instruction || 'implementation', // Default to implementation
+      customData: projectData.customData || {}, // Default to empty object
       createdAt: now,
       updatedAt: now,
     };

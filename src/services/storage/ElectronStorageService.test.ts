@@ -27,7 +27,9 @@ describe('ElectronStorageService', () => {
         name: 'Test Project 1',
         template: 'react',
         slice: 'foundation',
+        instruction: 'implementation',
         isMonorepo: false,
+        customData: {},
         createdAt: '2024-01-01T00:00:00Z',
         updatedAt: '2024-01-01T00:00:00Z'
       },
@@ -36,7 +38,9 @@ describe('ElectronStorageService', () => {
         name: 'Test Project 2',
         template: 'nextjs',
         slice: 'feature',
+        instruction: 'planning',
         isMonorepo: true,
+        customData: {},
         createdAt: '2024-01-02T00:00:00Z',
         updatedAt: '2024-01-02T00:00:00Z'
       }

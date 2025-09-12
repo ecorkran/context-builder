@@ -4,7 +4,7 @@ import { ProjectConfigForm } from './forms/ProjectConfigForm';
 import { ContextOutput } from './display/ContextOutput';
 import { SimpleProjectStore } from '../services/storage/SimpleProjectStore';
 import { ContextGenerator } from '../services/context/ContextGenerator';
-import { CreateProjectData } from '../services/storage/types/ProjectData';
+import { CreateProjectData, ProjectData } from '../services/storage/types/ProjectData';
 
 /**
  * Main application component that integrates all functionality
@@ -31,9 +31,11 @@ export const ContextBuilderApp: React.FC = () => {
     }
 
     // Create a temporary project object for context generation
-    const tempProject = {
+    const tempProject: ProjectData = {
       id: 'temp',
       ...formData,
+      instruction: formData.instruction || 'implementation',
+      customData: formData.customData || {},
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };

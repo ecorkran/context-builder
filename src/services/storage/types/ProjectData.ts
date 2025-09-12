@@ -6,17 +6,29 @@ export interface ProjectData {
   name: string;
   template: string;
   slice: string;
+  instruction: string;
   isMonorepo: boolean;
+  customData?: {
+    recentEvents?: string;
+    additionalNotes?: string;
+  };
   createdAt: string;
   updatedAt: string;
 }
 
 /**
  * Type for creating a new project (without auto-generated fields)
+ * instruction and customData are optional during creation and will get defaults
  */
-export type CreateProjectData = Omit<ProjectData, 'id' | 'createdAt' | 'updatedAt'>;
+export type CreateProjectData = Omit<ProjectData, 'id' | 'createdAt' | 'updatedAt' | 'instruction' | 'customData'> & {
+  instruction?: string;
+  customData?: {
+    recentEvents?: string;
+    additionalNotes?: string;
+  };
+};
 
 /**
  * Type for updating an existing project (partial updates allowed)
  */
-export type UpdateProjectData = Partial<Pick<ProjectData, 'name' | 'template' | 'slice' | 'isMonorepo'>>;
+export type UpdateProjectData = Partial<Pick<ProjectData, 'name' | 'template' | 'slice' | 'instruction' | 'isMonorepo' | 'customData'>>;

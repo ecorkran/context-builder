@@ -55,6 +55,8 @@ export class ProjectStore {
     const newProject: ProjectData = {
       ...projectData,
       id: this.generateId(),
+      instruction: projectData.instruction || 'implementation',
+      customData: projectData.customData || {},
       createdAt: now,
       updatedAt: now,
     };
