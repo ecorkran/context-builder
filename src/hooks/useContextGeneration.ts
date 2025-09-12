@@ -30,10 +30,15 @@ export const useContextGeneration = (projectData: ProjectData | null) => {
         // Set loading state (only for operations that might be slow)
         setIsLoading(true);
         
-        // Generate context
+        // Generate context with performance monitoring
         const startTime = Date.now();
         const generatedContext = contextIntegrator.generateContextFromProject(projectData);
         const duration = Date.now() - startTime;
+
+        // Log performance for optimization (development only)
+        if (process.env.NODE_ENV === 'development' && duration > 100) {
+          console.warn(`Context generation took ${duration}ms (target: <100ms)`);
+        }
 
         // Only show loading state for operations > 50ms to avoid flicker
         if (duration < 50) {

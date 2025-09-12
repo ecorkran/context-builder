@@ -152,14 +152,15 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
               ...formData.customData,
               recentEvents: e.target.value
             })}
-            className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical"
+            className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical transition-colors"
             placeholder="• Recent changes, bug fixes, features added..."
             rows={4}
             maxLength={500}
+            aria-describedby="recent-events-help"
           />
           <div className="flex justify-end mt-1">
-            <span className="text-xs text-neutral-9">
-              {(formData.customData?.recentEvents || '').length}/500
+            <span id="recent-events-help" className="text-xs text-neutral-9">
+              {(formData.customData?.recentEvents || '').length}/500 characters
             </span>
           </div>
         </div>
@@ -175,14 +176,15 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
               ...formData.customData,
               additionalNotes: e.target.value
             })}
-            className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical"
+            className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical transition-colors"
             placeholder="Any additional context or specific focus areas..."
             rows={3}
             maxLength={300}
+            aria-describedby="additional-notes-help"
           />
           <div className="flex justify-end mt-1">
-            <span className="text-xs text-neutral-9">
-              {(formData.customData?.additionalNotes || '').length}/300
+            <span id="additional-notes-help" className="text-xs text-neutral-9">
+              {(formData.customData?.additionalNotes || '').length}/300 characters
             </span>
           </div>
         </div>
