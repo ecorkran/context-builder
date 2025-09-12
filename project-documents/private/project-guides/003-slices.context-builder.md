@@ -12,27 +12,27 @@ dependsOn: [03-hld.context-builder.md]
 
 ## Foundation Work
 
-1. [ ] **Electron Application Setup**
+1. [x] **Electron Application Setup**
    - Note: this should already be done, just verify.
    - Initialize Electron project with React, TypeScript, Tailwind CSS v4
    - Configure development environment with hot reload
    - Set up build pipeline and basic window management
    - **Success:** Application launches with basic window and React renders
 
-2. [ ] **manta-templates Integration** 
+2. [x] **manta-templates Integration** 
    - Note: this should already be done, just verify.
    - Integrate manta-templates ui-core component library
    - Configure Tailwind with existing design tokens
    - Set up Radix UI component primitives
    - **Success:** Basic UI components render and match design system
 
-3. [ ] **Core Layout Structure**
+3. [x] **Core Layout Structure**
    - Implement split-pane layout (controls left, output right)
    - Create responsive window sizing and layout management
    - Basic application shell with title bar and menu structure
    - **Success:** Layout responds correctly to window resizing
 
-4. [ ] **Local Storage Foundation**
+4. [x] **Local Storage Foundation**
    - Set up JSON-based file storage in app data directory
    - Create basic CRUD operations for project data
    - Implement data serialization and error handling
@@ -158,7 +158,7 @@ dependsOn: [03-hld.context-builder.md]
 **Slice Dependencies Summary:**
 ```
 Foundation Work (1-4) → Basic Context Generation (1) → Project Configuration (2)
-                                     ↓                           ↓
+                                     ↓                            ↓
 Template Selection (4) ← Multi-Project Support (3) ← Project Configuration (2)
          ↓                           ↓
 Context Customization (5) ← Multi-Project Support (3)

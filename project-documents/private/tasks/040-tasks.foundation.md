@@ -3,7 +3,7 @@ slice: foundation
 project: context-builder
 lld: private/slices/040-slice.foundation.md
 dependencies: [electron-setup, manta-templates-integration]
-projectState: Foundation slice mostly complete - core functionality implemented
+projectState: Complete
 lastUpdated: 2025-01-27
 ---
 
