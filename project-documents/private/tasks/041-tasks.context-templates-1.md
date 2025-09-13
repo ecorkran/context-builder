@@ -214,15 +214,15 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
 ### Task 4: Template Engine Core
 **Effort: 4/5**
 
-- [ ] **Task 4.1: Create ContextTemplateEngine Service**
-  - [ ] **4.1.1: Create ContextTemplateEngine class structure**
+- [x] **Task 4.1: Create ContextTemplateEngine Service**
+  - [x] **4.1.1: Create ContextTemplateEngine class structure**
     - Create `src/services/context/ContextTemplateEngine.ts`
     - Create class with private service dependencies (promptParser, statementManager, sectionBuilder)
     - Add constructor with dependency injection pattern
     - Import all required types and establish service contracts
     - **Success:** Template engine class structure exists with proper dependencies
     
-  - [ ] **4.1.2: Implement generateContext() main method**
+  - [x] **4.1.2: Implement generateContext() main method**
     - Add generateContext(data: EnhancedContextData): string method
     - Call buildTemplate() to create template configuration
     - Call assembleSections() to process template into sections
@@ -230,7 +230,7 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
     - Add comprehensive error handling with fallback to DEFAULT_TEMPLATE
     - **Success:** Main context generation method orchestrates all steps
     
-  - [ ] **4.1.3: Implement buildTemplate() configuration method**
+  - [x] **4.1.3: Implement buildTemplate() configuration method**
     - Create template configuration based on input data
     - Define all required sections with their properties:
       ```typescript
@@ -246,15 +246,15 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
     - Return complete ContextTemplate object
     - **Success:** Template configuration correctly defines all sections
     
-  - [ ] **4.1.4: Add utility methods**
+  - [x] **4.1.4: Add utility methods**
     - Add formatOutput() method for final cleanup (remove extra whitespace, normalize line endings)
     - Add validateInputData() method to check required fields
     - Add getErrorContext() fallback method for error scenarios
     - Include logging and debugging utilities
     - **Success:** Template engine has all required utility methods
 
-- [ ] **Task 4.2: Implement Section Assembly Logic**
-  - [ ] **4.2.1: Create assembleSections() core method**
+- [x] **Task 4.2: Implement Section Assembly Logic**
+  - [x] **4.2.1: Create assembleSections() core method**
     - Add assembleSections(template: ContextTemplate, data: EnhancedContextData): string method
     - Filter sections based on conditional logic evaluation
     - Sort sections by order field for proper sequence
@@ -262,42 +262,42 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
     - Combine all sections into final context string
     - **Success:** Section assembly produces properly ordered context
     
-  - [ ] **4.2.2: Implement section filtering logic**
+  - [x] **4.2.2: Implement section filtering logic**
     - Add evaluateCondition() helper method for conditional sections
     - Implement hasToolsOrMCP() condition checker
     - Add section inclusion logic based on data properties
     - Handle edge cases where conditions are undefined
     - **Success:** Conditional sections appear/disappear correctly based on data
     
-  - [ ] **4.2.3: Add section content processing**
+  - [x] **4.2.3: Add section content processing**
     - Implement processSection() method for individual section handling
     - Add template variable substitution within section content
     - Include section title formatting (### Title format for markdown)
     - Handle empty sections gracefully (skip or show placeholder)
     - **Success:** Individual sections are properly formatted with content
     
-  - [ ] **4.2.4: Add section combining logic**
+  - [x] **4.2.4: Add section combining logic**
     - Combine processed sections with proper spacing
     - Add section separators (double newlines between sections)
     - Handle edge cases like all sections being conditional and hidden
     - Ensure final output has proper markdown structure
     - **Success:** Final context has proper section formatting and spacing
 
-- [ ] **Task 4.3: Add Error Handling and Fallbacks**
+- [x] **Task 4.3: Add Error Handling and Fallbacks**
   - Implement getErrorContext() fallback to current DEFAULT_TEMPLATE
   - Add handleMissingPromptFile() with fallback prompts
   - Include error logging without breaking context generation
   - Add validation for required services and data
   - **Success:** Engine handles all error conditions gracefully
 
-- [ ] **Task 4.4: Create Enhanced Context Data Types**
+- [x] **Task 4.4: Create Enhanced Context Data Types**
   - Create EnhancedContextData interface extending ContextData
   - Add fields for availableTools, mcpServers, templateVersion
   - Include customSections field for future extensibility
   - Update related types and interfaces
   - **Success:** Enhanced data types support all template engine features
 
-- [ ] **Task 4.5: Create ContextTemplateEngine Unit Tests**
+- [x] **Task 4.5: Create ContextTemplateEngine Unit Tests**
   - Create `src/services/context/ContextTemplateEngine.test.ts`
   - Test complete context generation with various project configurations
   - Test section assembly and ordering logic
@@ -308,22 +308,22 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
 ### Task 5: Integration with Existing System
 **Effort: 3/5**
 
-- [ ] **Task 5.1: Update Context Data Types**
+- [x] **Task 5.1: Update Context Data Types**
   - Modify `src/services/context/types/ContextData.ts`
   - Add optional fields for enhanced functionality
   - Ensure backward compatibility with existing code
   - Update exports and related type definitions
   - **Success:** ContextData types support both old and new systems
 
-- [ ] **Task 5.2: Update ContextIntegrator Service**
-  - [ ] **5.2.1: Add new template engine integration**
+- [x] **Task 5.2: Update ContextIntegrator Service**
+  - [x] **5.2.1: Add new template engine integration**
     - Modify `src/services/context/ContextIntegrator.ts` to import ContextTemplateEngine
     - Add private templateEngine property to class
     - Create feature flag ENABLE_NEW_TEMPLATE_ENGINE in constructor
     - Maintain existing templateProcessor for fallback compatibility
     - **Success:** ContextIntegrator can switch between old and new systems
     
-  - [ ] **5.2.2: Update generateContextFromProject() method**
+  - [x] **5.2.2: Update generateContextFromProject() method**
     - Modify main context generation method to use feature flag
     - Add conditional logic:
       ```typescript
@@ -338,7 +338,7 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
     - Add error handling to fallback between systems
     - **Success:** Context generation works with both old and new systems
     
-  - [ ] **5.2.3: Enhance project data mapping**
+  - [x] **5.2.3: Enhance project data mapping**
     - Update mapProjectToContext() to return EnhancedContextData
     - Add detectAvailableTools() method for tool detection
     - Add detectMCPServers() method for MCP detection
@@ -346,100 +346,196 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
     - Maintain backward compatibility with existing ContextData usage
     - **Success:** Enhanced data mapping supports new template features
     
-  - [ ] **5.2.4: Add tool and MCP detection logic**
+  - [x] **5.2.4: Add tool and MCP detection logic**
     - Implement detectAvailableTools() with placeholder logic
     - Implement detectMCPServers() with placeholder logic
     - Document interfaces for future integration with actual detection
     - Return sensible defaults for development
     - **Success:** Detection methods provide appropriate placeholder data
 
-- [ ] **Task 5.3: Update Project Data Mapping**
+- [x] **Task 5.3: Update Project Data Mapping**
   - Enhance mapProjectToContext() in ContextIntegrator
   - Add availableTools detection and mapping
   - Add mcpServers detection and mapping
   - Include templateVersion for tracking
   - **Success:** Project data maps correctly to enhanced context data
 
-- [ ] **Task 5.4: Add Integration Configuration**
+- [x] **Task 5.4: Add Integration Configuration**
   - Create configuration flag to enable/disable new template system
   - Add feature flag support for gradual rollout
   - Include performance monitoring hooks
   - Add debugging/logging configuration
   - **Success:** System can switch between old and new template engines
 
-- [ ] **Task 5.5: Update Integration Tests**
+- [x] **Task 5.5: Update Integration Tests**
   - Modify existing integration tests to work with both systems
   - Add tests for enhanced context data mapping
   - Test real-time preview integration with new templates
   - Test copy functionality with new context format
   - **Success:** All existing functionality works with new template system
 
-### Task 6: Performance and Caching
+### Task 6: Electron IPC Architecture Migration
+**Effort: 4/5**
+
+- [ ] **Task 6.1: Move File Services to Main Process**
+  - [ ] **6.1.1: Create main process service directory**
+    - Create `src/main/services/context/` directory structure
+    - Move StatementManager.ts to main process location
+    - Move SystemPromptParser.ts to main process location  
+    - Move PromptFileManager.ts to main process location
+    - Keep all existing logic intact (filesystem access works in main process)
+    - **Success:** File services operate in main process with full filesystem access
+    
+  - [ ] **6.1.2: Update main process service imports**
+    - Update imports to remove renderer-specific dependencies
+    - Ensure services can operate independently in main process
+    - Add proper error handling for main process context
+    - Test services work in isolation in main process
+    - **Success:** Services compile and run correctly in main process
+
+- [ ] **Task 6.2: Create IPC Interface**
+  - [ ] **6.2.1: Extend electronAPI interface**
+    - Add statements IPC methods to `electronAPI` in preload script:
+      ```typescript
+      statements: {
+        load: (filename?: string) => Promise<Record<string, TemplateStatement>>;
+        save: (filename: string, statements: Record<string, TemplateStatement>) => Promise<void>;
+        getStatement: (filename: string, key: string) => Promise<string>;
+        updateStatement: (filename: string, key: string, content: string) => Promise<void>;
+      }
+      ```
+    - Add systemPrompts IPC methods:
+      ```typescript
+      systemPrompts: {
+        parse: (filename?: string) => Promise<SystemPrompt[]>;
+        getContextInit: (filename?: string) => Promise<SystemPrompt | null>;
+        getToolUse: (filename?: string) => Promise<SystemPrompt | null>;
+        getForInstruction: (filename: string, instruction: string) => Promise<SystemPrompt | null>;
+      }
+      ```
+    - **Success:** IPC interface provides all required file service methods
+    
+  - [ ] **6.2.2: Implement IPC handlers in main process**
+    - Create `src/main/ipc/contextServices.ts` with IPC handlers
+    - Implement statement management handlers using moved StatementManager
+    - Implement system prompt handlers using moved SystemPromptParser
+    - Add proper error handling and response formatting
+    - Register all handlers with `ipcMain.handle()`
+    - **Success:** Main process responds correctly to all IPC calls
+
+- [ ] **Task 6.3: Create Renderer IPC Adapters**
+  - [ ] **6.3.1: Create StatementManager IPC adapter**
+    - Create `src/services/context/StatementManagerIPC.ts`
+    - Implement same interface as original StatementManager
+    - Delegate all operations to IPC calls via `window.electronAPI.statements`
+    - Maintain async/await patterns and error handling
+    - Include caching for performance (cache results from IPC calls)
+    - **Success:** StatementManagerIPC provides identical interface to original
+    
+  - [ ] **6.3.2: Create SystemPromptParser IPC adapter**
+    - Create `src/services/context/SystemPromptParserIPC.ts`
+    - Implement same interface as original SystemPromptParser
+    - Delegate parsing operations to main process via IPC
+    - Maintain caching and instruction mapping logic in renderer
+    - Handle file path resolution through main process
+    - **Success:** SystemPromptParserIPC provides identical interface to original
+    
+  - [ ] **6.3.3: Update service exports**
+    - Update `src/services/context/index.ts` to export IPC adapters
+    - Create factory functions to choose between direct and IPC implementations
+    - Add environment detection (Electron vs browser) for adapter selection
+    - Maintain backward compatibility with existing imports
+    - **Success:** Services can be imported and used without code changes
+
+- [ ] **Task 6.4: Update Template Engine Integration**
+  - [ ] **6.4.1: Update ContextTemplateEngine dependencies**
+    - Modify ContextTemplateEngine constructor to use IPC adapters
+    - Update dependency injection to pass IPC versions of services
+    - Test that template engine works with IPC-based file services
+    - Verify async operations work correctly across IPC boundary
+    - **Success:** ContextTemplateEngine works seamlessly with IPC services
+    
+  - [ ] **6.4.2: Update ContextIntegrator integration**
+    - Modify ContextIntegrator to instantiate IPC versions of services
+    - Test that context generation works end-to-end with IPC
+    - Verify performance is acceptable with IPC overhead
+    - Add error handling for IPC communication failures
+    - **Success:** Full context generation pipeline works via IPC
+
+- [ ] **Task 6.5: Create IPC Integration Tests**
+  - Create test suite for IPC communication between renderer and main
+  - Test all statement management operations via IPC
+  - Test system prompt parsing operations via IPC  
+  - Test error scenarios (main process errors, communication failures)
+  - Verify data integrity across IPC boundary
+  - **Success:** IPC layer fully tested and reliable
+
+### Task 7: Performance and Caching
 **Effort: 2/5**
 
-- [ ] **Task 6.1: Implement Basic Caching**
-  - Add prompt file caching in SystemPromptParser
-  - Add statement caching in StatementManager
+- [ ] **Task 7.1: Implement Basic Caching**
+  - Add prompt file caching in SystemPromptParser (via IPC)
+  - Add statement caching in StatementManager (via IPC)
   - Implement cache invalidation on file changes
   - Add memory usage monitoring and limits
   - **Success:** Caching improves performance without excessive memory usage
 
-- [ ] **Task 6.2: Add Performance Monitoring**
+- [ ] **Task 7.2: Add Performance Monitoring**
   - Add timing measurements for context generation
   - Include memory usage tracking for cached data
   - Add logging for performance metrics
   - Create performance test suite with benchmarks
   - **Success:** Performance monitoring identifies bottlenecks and tracks improvements
 
-- [ ] **Task 6.3: Optimize Critical Paths**
+- [ ] **Task 7.3: Optimize Critical Paths**
   - Profile context generation with various project sizes
   - Optimize section building and template processing
-  - Minimize file system access through intelligent caching
+  - Minimize IPC calls through intelligent caching
   - Ensure <200ms generation time for typical projects
   - **Success:** Context generation meets performance targets
 
-### Task 7: Testing and Validation
+### Task 8: Testing and Validation
 **Effort: 2/5**
 
-- [ ] **Task 7.1: Create End-to-End Tests**
+- [ ] **Task 8.1: Create End-to-End Tests**
   - Create comprehensive test suite for complete workflows
   - Test context generation with various project configurations
   - Test monorepo vs single-repo scenarios
   - Test different instruction types and custom instructions
   - **Success:** E2E tests verify complete system functionality
 
-- [ ] **Task 7.2: Create Error Scenario Tests**
+- [ ] **Task 8.2: Create Error Scenario Tests**
   - Test missing prompt.ai-project.system.md file
   - Test malformed markdown files
   - Test network/file system errors
   - Test invalid project configurations
   - **Success:** All error scenarios handled gracefully with meaningful messages
 
-- [ ] **Task 7.3: Validate Against Requirements**
+- [ ] **Task 8.3: Validate Against Requirements**
   - Test structured context format matches specification
   - Verify all conditional sections work correctly
   - Test system prompt integration with real prompt file
   - Validate user statement customization workflow
   - **Success:** All functional requirements met and tested
 
-- [ ] **Task 7.4: Performance Validation**
+- [ ] **Task 8.4: Performance Validation**
   - Benchmark context generation times with various project sizes
   - Test memory usage with extended operation
   - Validate real-time preview responsiveness
   - Test concurrent generation scenarios
   - **Success:** All performance targets met and documented
 
-### Task 8: Documentation and Integration
+### Task 9: Documentation and Integration
 **Effort: 1/5**
 
-- [ ] **Task 8.1: Create Service Documentation**
+- [ ] **Task 9.1: Create Service Documentation**
   - Document all public APIs for new services
   - Create usage examples for StatementManager
   - Document SystemPromptParser integration points
   - Include troubleshooting guide for common issues
   - **Success:** Complete API documentation exists for all services
 
-- [ ] **Task 8.2: Update Existing Documentation**
+- [ ] **Task 9.2: Update Existing Documentation**
   - Update any references to old template system
   - Document new context format and sections
   - Include migration guide for existing projects
@@ -453,12 +549,13 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
 - Task 2 (System Prompt Integration) must complete before Task 4 (Template Engine)  
 - Task 3 (Section Building) must complete before Task 4 (Template Engine)
 - Task 4 (Template Engine) must complete before Task 5 (Integration)
-- Task 5 (Integration) must complete before Task 7 (Testing)
+- Task 5 (Integration) must complete before Task 6 (IPC Architecture)
+- Task 6 (IPC Architecture) must complete before Task 8 (Testing)
 
 ### Parallel Work Opportunities
 - Tasks 1, 2, and 3 can be developed in parallel
-- Task 6 (Performance) can be developed alongside Task 4 (Template Engine)
-- Task 8 (Documentation) can be developed alongside testing phases
+- Task 7 (Performance) can be developed alongside Task 6 (IPC Architecture)
+- Task 9 (Documentation) can be developed alongside testing phases
 
 ## Risk Mitigation
 

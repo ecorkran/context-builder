@@ -22,6 +22,18 @@ declare global {
         write: (filename: string, data: string) => Promise<StorageResponse>;
         backup: (filename: string) => Promise<StorageResponse>;
       };
+      statements: {
+        load: (filename?: string) => Promise<Record<string, any>>;
+        save: (filename: string, statements: Record<string, any>) => Promise<void>;
+        getStatement: (filename: string, key: string) => Promise<string>;
+        updateStatement: (filename: string, key: string, content: string) => Promise<void>;
+      };
+      systemPrompts: {
+        parse: (filename?: string) => Promise<any[]>;
+        getContextInit: (filename?: string) => Promise<any | null>;
+        getToolUse: (filename?: string) => Promise<any | null>;
+        getForInstruction: (filename: string, instruction: string) => Promise<any | null>;
+      };
     };
   }
 }
