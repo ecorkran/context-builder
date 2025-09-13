@@ -181,8 +181,7 @@ export class SystemPromptParser {
     
     return parsed.prompts.find(prompt =>
       prompt.key === SpecialPromptKeys.TOOL_USE ||
-      prompt.name.toLowerCase().includes('3rd party tool') ||
-      prompt.name.toLowerCase().includes('tool')
+      prompt.name.toLowerCase().includes('tool usage')
     ) || null;
   }
 
@@ -201,13 +200,16 @@ export class SystemPromptParser {
       if (exactMatch) return exactMatch;
     }
     
-    // Try fuzzy matching
-    const fuzzyMatch = parsed.prompts.find(prompt =>
-      prompt.name.toLowerCase().includes(instruction.toLowerCase()) ||
-      prompt.key.includes(instruction.toLowerCase())
-    );
+    // Try simple matching for standardized names
+    const simpleMatch = parsed.prompts.find(prompt => {
+      const nameLower = prompt.name.toLowerCase();
+      const instructionLower = instruction.toLowerCase();
+      
+      return nameLower.includes(instructionLower) ||
+             prompt.key.includes(instructionLower);
+    });
     
-    return fuzzyMatch || null;
+    return simpleMatch || null;
   }
 
   /**

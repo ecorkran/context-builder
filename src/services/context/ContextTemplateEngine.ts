@@ -108,20 +108,14 @@ export class ContextTemplateEngine {
       order: 2
     });
 
-    // 3. Tools and MCP section (conditional)
-    const hasToolsOrMCP = (data.availableTools && data.availableTools.length > 0) ||
-                          (data.mcpServers && data.mcpServers.length > 0);
-    
-    if (hasToolsOrMCP) {
-      sections.push({
-        key: 'tools-section',
-        title: '### 3rd-Party Tools & MCP',
-        content: await this.sectionBuilder.buildToolsSection(data),
-        conditional: true,
-        condition: () => hasToolsOrMCP,
-        order: 3
-      });
-    }
+    // 3. Tools and MCP section (always included)
+    sections.push({
+      key: 'tools-section',
+      title: '### 3rd-Party Tools & MCP',
+      content: await this.sectionBuilder.buildToolsSection(data),
+      conditional: false,
+      order: 3
+    });
 
     // 4. Monorepo section (conditional)
     if (data.isMonorepo) {
