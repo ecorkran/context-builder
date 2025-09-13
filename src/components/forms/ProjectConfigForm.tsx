@@ -132,7 +132,29 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
           />
         </div>
 
-        {/* 4. Repository structure */}
+        {/* 4. Development Phase */}
+        <div>
+          <label htmlFor="instruction" className="block text-sm font-medium text-neutral-11 mb-2">
+            Development Phase
+          </label>
+          <Select 
+            value={formData.instruction || 'implementation'} 
+            onValueChange={(value) => handleInputChange('instruction', value)}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select development phase..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="planning">Planning</SelectItem>
+              <SelectItem value="implementation">Implementation</SelectItem>
+              <SelectItem value="debugging">Debugging</SelectItem>
+              <SelectItem value="testing">Testing</SelectItem>
+              <SelectItem value="custom">Custom</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* 5. Repository structure */}
         <div className="space-y-3 pt-2" >
           <Checkbox
             id="is-monorepo"
@@ -202,29 +224,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
           </div>
         </div>
 
-        {/* 5. Instructions (development phase) */}
-        <div>
-          <label htmlFor="instruction" className="block text-sm font-medium text-neutral-11 mb-2">
-            Development Phase
-          </label>
-          <Select 
-            value={formData.instruction || 'implementation'} 
-            onValueChange={(value) => handleInputChange('instruction', value)}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select development phase..." />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="planning">Planning</SelectItem>
-              <SelectItem value="implementation">Implementation</SelectItem>
-              <SelectItem value="debugging">Debugging</SelectItem>
-              <SelectItem value="testing">Testing</SelectItem>
-              <SelectItem value="custom">Custom</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* 5. Additional notes */}
+        {/* 6. Additional notes */}
         <div>
           <label htmlFor="additional-notes" className="block text-sm font-medium text-neutral-11 mb-2">
             Additional Context (optional)
