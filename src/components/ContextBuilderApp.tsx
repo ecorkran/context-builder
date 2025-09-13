@@ -28,14 +28,19 @@ export const ContextBuilderApp: React.FC = () => {
 
   // Create a temporary project object for context generation
   const tempProject: ProjectData | null = useMemo(() => {
-    // Only create project if we have minimum required data
-    if (!formData.name || !formData.template || !formData.slice) {
+    // Start generating context when we have project name and slice
+    // Template is only required for monorepo projects
+    const hasRequiredFields = formData.name && formData.slice;
+    const hasTemplateIfNeeded = !formData.isMonorepo || formData.template;
+    
+    if (!hasRequiredFields || !hasTemplateIfNeeded) {
       return null;
     }
 
     return {
       id: 'temp',
       ...formData,
+      template: formData.template || 'default', // Provide default template for non-monorepo
       instruction: formData.instruction || 'implementation',
       customData: formData.customData || {},
       createdAt: new Date().toISOString(),

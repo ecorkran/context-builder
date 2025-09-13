@@ -377,8 +377,8 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
 ### Task 6: Electron IPC Architecture Migration
 **Effort: 4/5**
 
-- [ ] **Task 6.1: Move File Services to Main Process**
-  - [ ] **6.1.1: Create main process service directory**
+- [x] **Task 6.1: Move File Services to Main Process**
+  - [x] **6.1.1: Create main process service directory**
     - Create `src/main/services/context/` directory structure
     - Move StatementManager.ts to main process location
     - Move SystemPromptParser.ts to main process location  
@@ -386,15 +386,15 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
     - Keep all existing logic intact (filesystem access works in main process)
     - **Success:** File services operate in main process with full filesystem access
     
-  - [ ] **6.1.2: Update main process service imports**
+  - [x] **6.1.2: Update main process service imports**
     - Update imports to remove renderer-specific dependencies
     - Ensure services can operate independently in main process
     - Add proper error handling for main process context
     - Test services work in isolation in main process
     - **Success:** Services compile and run correctly in main process
 
-- [ ] **Task 6.2: Create IPC Interface**
-  - [ ] **6.2.1: Extend electronAPI interface**
+- [x] **Task 6.2: Create IPC Interface**
+  - [x] **6.2.1: Extend electronAPI interface**
     - Add statements IPC methods to `electronAPI` in preload script:
       ```typescript
       statements: {
@@ -415,7 +415,7 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
       ```
     - **Success:** IPC interface provides all required file service methods
     
-  - [ ] **6.2.2: Implement IPC handlers in main process**
+  - [x] **6.2.2: Implement IPC handlers in main process**
     - Create `src/main/ipc/contextServices.ts` with IPC handlers
     - Implement statement management handlers using moved StatementManager
     - Implement system prompt handlers using moved SystemPromptParser
@@ -423,8 +423,8 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
     - Register all handlers with `ipcMain.handle()`
     - **Success:** Main process responds correctly to all IPC calls
 
-- [ ] **Task 6.3: Create Renderer IPC Adapters**
-  - [ ] **6.3.1: Create StatementManager IPC adapter**
+- [x] **Task 6.3: Create Renderer IPC Adapters**
+  - [x] **6.3.1: Create StatementManager IPC adapter**
     - Create `src/services/context/StatementManagerIPC.ts`
     - Implement same interface as original StatementManager
     - Delegate all operations to IPC calls via `window.electronAPI.statements`
@@ -432,7 +432,7 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
     - Include caching for performance (cache results from IPC calls)
     - **Success:** StatementManagerIPC provides identical interface to original
     
-  - [ ] **6.3.2: Create SystemPromptParser IPC adapter**
+  - [x] **6.3.2: Create SystemPromptParser IPC adapter**
     - Create `src/services/context/SystemPromptParserIPC.ts`
     - Implement same interface as original SystemPromptParser
     - Delegate parsing operations to main process via IPC
@@ -440,29 +440,29 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
     - Handle file path resolution through main process
     - **Success:** SystemPromptParserIPC provides identical interface to original
     
-  - [ ] **6.3.3: Update service exports**
+  - [x] **6.3.3: Update service exports**
     - Update `src/services/context/index.ts` to export IPC adapters
     - Create factory functions to choose between direct and IPC implementations
     - Add environment detection (Electron vs browser) for adapter selection
     - Maintain backward compatibility with existing imports
     - **Success:** Services can be imported and used without code changes
 
-- [ ] **Task 6.4: Update Template Engine Integration**
-  - [ ] **6.4.1: Update ContextTemplateEngine dependencies**
+- [x] **Task 6.4: Update Template Engine Integration**
+  - [x] **6.4.1: Update ContextTemplateEngine dependencies**
     - Modify ContextTemplateEngine constructor to use IPC adapters
     - Update dependency injection to pass IPC versions of services
     - Test that template engine works with IPC-based file services
     - Verify async operations work correctly across IPC boundary
     - **Success:** ContextTemplateEngine works seamlessly with IPC services
     
-  - [ ] **6.4.2: Update ContextIntegrator integration**
+  - [x] **6.4.2: Update ContextIntegrator integration**
     - Modify ContextIntegrator to instantiate IPC versions of services
     - Test that context generation works end-to-end with IPC
     - Verify performance is acceptable with IPC overhead
     - Add error handling for IPC communication failures
     - **Success:** Full context generation pipeline works via IPC
 
-- [ ] **Task 6.5: Create IPC Integration Tests**
+- [x] **Task 6.5: Create IPC Integration Tests**
   - Create test suite for IPC communication between renderer and main
   - Test all statement management operations via IPC
   - Test system prompt parsing operations via IPC  

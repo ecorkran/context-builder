@@ -2,6 +2,7 @@ import { ProjectData } from '../storage/types/ProjectData';
 import { ContextData, EnhancedContextData } from './types/ContextData';
 import { TemplateProcessor } from './TemplateProcessor';
 import { ContextTemplateEngine } from './ContextTemplateEngine';
+import { createSystemPromptParser, createStatementManager } from './ServiceFactory';
 
 /**
  * Default template for context generation
@@ -33,7 +34,10 @@ export class ContextIntegrator {
 
   constructor(enableNewEngine: boolean = true) {
     this.templateProcessor = new TemplateProcessor();
-    this.templateEngine = new ContextTemplateEngine();
+    // Create template engine with IPC-aware services
+    const promptParser = createSystemPromptParser();
+    const statementManager = createStatementManager();
+    this.templateEngine = new ContextTemplateEngine(promptParser, statementManager);
     this.enableNewEngine = enableNewEngine;
   }
 

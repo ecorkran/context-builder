@@ -32,6 +32,16 @@ export class StatementManagerIPC {
   }
 
   /**
+   * Get all loaded statements
+   */
+  getAllStatements(): Record<string, TemplateStatement> {
+    if (!this.isLoaded) {
+      throw new Error('Statements not loaded. Call loadStatements() first.');
+    }
+    return this.statementsCache;
+  }
+
+  /**
    * Save statements to file via IPC
    */
   async saveStatements(): Promise<void> {
@@ -94,17 +104,6 @@ export class StatementManagerIPC {
     statement.content = content;
   }
 
-  /**
-   * Get all statements
-   */
-  getAllStatements(): Record<string, TemplateStatement> {
-    if (!this.isLoaded) {
-      throw new Error('Statements not loaded. Call loadStatements() first.');
-    }
-
-    // Return a copy to prevent external modifications
-    return { ...this.statementsCache };
-  }
 
   /**
    * Reset statements to defaults

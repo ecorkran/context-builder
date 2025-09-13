@@ -3,6 +3,7 @@ import { ContextSection, ContextTemplate } from './types/ContextSection';
 import { SystemPromptParser } from './SystemPromptParser';
 import { StatementManager } from './StatementManager';
 import { SectionBuilder } from './SectionBuilder';
+import { createSystemPromptParser, createStatementManager } from './ServiceFactory';
 
 // Fallback template for error scenarios
 const DEFAULT_TEMPLATE = `# Project: {{projectName}}
@@ -16,8 +17,8 @@ Monorepo: {{isMonorepo}}`;
  * Coordinates between statement manager, prompt parser, and section builder
  */
 export class ContextTemplateEngine {
-  private promptParser: SystemPromptParser;
-  private statementManager: StatementManager;
+  private promptParser: SystemPromptParser | any; // Could be IPC or direct implementation
+  private statementManager: StatementManager | any; // Could be IPC or direct implementation
   private sectionBuilder: SectionBuilder;
   private enableNewEngine: boolean = true;
 
@@ -26,8 +27,8 @@ export class ContextTemplateEngine {
     statementManager?: StatementManager,
     sectionBuilder?: SectionBuilder
   ) {
-    this.promptParser = promptParser || new SystemPromptParser();
-    this.statementManager = statementManager || new StatementManager();
+    this.promptParser = promptParser || createSystemPromptParser();
+    this.statementManager = statementManager || createStatementManager();
     this.sectionBuilder = sectionBuilder || new SectionBuilder(this.promptParser, this.statementManager);
   }
 
