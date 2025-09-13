@@ -7,6 +7,7 @@ export interface ProjectData {
   template: string;
   slice: string;
   instruction: string;
+  workType?: 'start' | 'continue'; // For selecting appropriate opening statement
   isMonorepo: boolean;
   customData?: {
     recentEvents?: string;
@@ -18,10 +19,11 @@ export interface ProjectData {
 
 /**
  * Type for creating a new project (without auto-generated fields)
- * instruction and customData are optional during creation and will get defaults
+ * instruction, workType and customData are optional during creation and will get defaults
  */
-export type CreateProjectData = Omit<ProjectData, 'id' | 'createdAt' | 'updatedAt' | 'instruction' | 'customData'> & {
+export type CreateProjectData = Omit<ProjectData, 'id' | 'createdAt' | 'updatedAt' | 'instruction' | 'workType' | 'customData'> & {
   instruction?: string;
+  workType?: 'start' | 'continue';
   customData?: {
     recentEvents?: string;
     additionalNotes?: string;

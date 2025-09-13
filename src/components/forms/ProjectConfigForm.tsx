@@ -30,6 +30,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
     template: initialData?.template || '',
     slice: initialData?.slice || '',
     instruction: initialData?.instruction || 'implementation',
+    workType: initialData?.workType || 'continue',
     isMonorepo: initialData?.isMonorepo || false,
     customData: {
       recentEvents: initialData?.customData?.recentEvents || '',
@@ -48,19 +49,10 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
   };
 
   const handleInputChange = (field: keyof CreateProjectData, value: any) => {
-    setFormData(prev => {
-      const updated = {
-        ...prev,
-        [field]: value
-      };
-      
-      // Clear template when monorepo is disabled
-      if (field === 'isMonorepo' && !value) {
-        updated.template = '';
-      }
-      
-      return updated;
-    });
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   return (
@@ -92,6 +84,24 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
             className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
             placeholder="foundation, auth, ui-components..."
           />
+        </div>
+
+        <div>
+          <label htmlFor="work-type" className="block text-sm font-medium text-neutral-11 mb-2">
+            Work Type
+          </label>
+          <Select
+            value={formData.workType || 'continue'}
+            onValueChange={(value) => handleInputChange('workType', value as 'start' | 'continue')}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select work type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="start">Start - Beginning new work</SelectItem>
+              <SelectItem value="continue">Continue - Resuming existing work</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         <div>

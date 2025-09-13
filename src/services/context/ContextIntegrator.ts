@@ -101,6 +101,7 @@ export class ContextIntegrator {
       template: project.template || '',
       slice: project.slice || 'Unknown Slice',
       instruction: project.instruction || 'implementation',
+      workType: project.workType || 'continue',
       isMonorepo: project.isMonorepo || false,
       recentEvents: project.customData?.recentEvents || '',
       additionalNotes: project.customData?.additionalNotes || '',

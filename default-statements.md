@@ -3,8 +3,13 @@ version: "1.0.0"
 lastUpdated: "2025-09-12"
 ---
 
-## Project Intro Statement
-<!-- key: project-intro-statement, editable: true -->
+## Start Project Statement
+<!-- key: start-project-statement, editable: true -->
+
+We are starting work on our project. Project information, environment context, instructions, and notes follow:
+
+## Continue Project Statement  
+<!-- key: continue-project-statement, editable: true -->
 
 We are continuing work on our project. Project information, environment context, instructions, and notes follow:
 

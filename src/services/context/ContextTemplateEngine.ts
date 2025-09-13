@@ -79,12 +79,23 @@ export class ContextTemplateEngine {
     const sections: ContextSection[] = [];
 
     // 1. Project intro section (always included)
+    // Select appropriate opening statement based on work type
+    const statementKey = data.workType === 'start' ? 'start-project-statement' : 'continue-project-statement';
     sections.push({
       key: 'project-intro',
       title: '',
-      content: await this.statementManager.getStatement('project-intro-statement'),
+      content: await this.statementManager.getStatement(statementKey),
       conditional: false,
       order: 1
+    });
+
+    // 1.5. Project information object (always included)
+    sections.push({
+      key: 'project-info',
+      title: '',
+      content: await this.sectionBuilder.buildProjectInfoSection(data),
+      conditional: false,
+      order: 1.5
     });
 
     // 2. Context initialization prompt (always included)

@@ -14,6 +14,7 @@ describe('SectionBuilder', () => {
   let mockPromptParser: SystemPromptParser;
   
   const createMockData = (): EnhancedContextData => ({
+    name: 'test-project',
     projectName: 'test-project',
     template: 'react',
     slice: 'test-slice',
@@ -406,6 +407,47 @@ describe('SectionBuilder', () => {
       const tools = sectionBuilder.detectAvailableTools(data);
       
       expect(tools).toEqual([]);
+    });
+  });
+
+  describe('buildProjectInfoSection', () => {
+    it('should build project info object with all fields', async () => {
+      const data = createMockData();
+      data.template = 'react-vite';
+      data.isMonorepo = true;
+      
+      const result = await sectionBuilder.buildProjectInfoSection(data);
+      
+      expect(result).toBe(`{\n  project: test-project,\n  template: react-vite,\n  slice: test-slice,\n  monorepo: true\n}`);
+    });
+
+    it('should exclude template when default or empty', async () => {
+      const data = createMockData();
+      data.template = 'default';
+      data.isMonorepo = false;
+      
+      const result = await sectionBuilder.buildProjectInfoSection(data);
+      
+      expect(result).toBe(`{\n  project: test-project,\n  slice: test-slice,\n  monorepo: false\n}`);
+    });
+
+    it('should show slice as null when empty', async () => {
+      const data = createMockData();
+      data.slice = '';
+      data.template = 'default'; // Make sure template gets excluded
+      
+      const result = await sectionBuilder.buildProjectInfoSection(data);
+      
+      expect(result).toBe(`{\n  project: test-project,\n  slice: null,\n  monorepo: false\n}`);
+    });
+
+    it('should handle errors with fallback', async () => {
+      const data = createMockData();
+      data.projectName = undefined as any;
+      
+      const result = await sectionBuilder.buildProjectInfoSection(data);
+      
+      expect(result).toBe(`{\n  project: unknown\n}`);
     });
   });
 });

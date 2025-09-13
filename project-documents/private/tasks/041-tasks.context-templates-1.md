@@ -374,7 +374,7 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
   - Test copy functionality with new context format
   - **Success:** All existing functionality works with new template system
 
-### Task 6: Electron IPC Architecture Migration
+### Task 6: Electron IPC Architecture Migration ✅ COMPLETED
 **Effort: 4/5**
 
 - [x] **Task 6.1: Move File Services to Main Process**
@@ -470,77 +470,84 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
   - Verify data integrity across IPC boundary
   - **Success:** IPC layer fully tested and reliable
 
-### Task 7: Performance and Caching
-**Effort: 2/5**
-
-- [ ] **Task 7.1: Implement Basic Caching**
-  - Add prompt file caching in SystemPromptParser (via IPC)
-  - Add statement caching in StatementManager (via IPC)
-  - Implement cache invalidation on file changes
-  - Add memory usage monitoring and limits
-  - **Success:** Caching improves performance without excessive memory usage
-
-- [ ] **Task 7.2: Add Performance Monitoring**
-  - Add timing measurements for context generation
-  - Include memory usage tracking for cached data
-  - Add logging for performance metrics
-  - Create performance test suite with benchmarks
-  - **Success:** Performance monitoring identifies bottlenecks and tracks improvements
-
-- [ ] **Task 7.3: Optimize Critical Paths**
-  - Profile context generation with various project sizes
-  - Optimize section building and template processing
-  - Minimize IPC calls through intelligent caching
-  - Ensure <200ms generation time for typical projects
-  - **Success:** Context generation meets performance targets
-
-### Task 8: Testing and Validation
-**Effort: 2/5**
-
-- [ ] **Task 8.1: Create End-to-End Tests**
-  - Create comprehensive test suite for complete workflows
-  - Test context generation with various project configurations
-  - Test monorepo vs single-repo scenarios
-  - Test different instruction types and custom instructions
-  - **Success:** E2E tests verify complete system functionality
-
-- [ ] **Task 8.2: Create Error Scenario Tests**
-  - Test missing prompt.ai-project.system.md file
-  - Test malformed markdown files
-  - Test network/file system errors
-  - Test invalid project configurations
-  - **Success:** All error scenarios handled gracefully with meaningful messages
-
-- [ ] **Task 8.3: Validate Against Requirements**
-  - Test structured context format matches specification
-  - Verify all conditional sections work correctly
-  - Test system prompt integration with real prompt file
-  - Validate user statement customization workflow
-  - **Success:** All functional requirements met and tested
-
-- [ ] **Task 8.4: Performance Validation**
-  - Benchmark context generation times with various project sizes
-  - Test memory usage with extended operation
-  - Validate real-time preview responsiveness
-  - Test concurrent generation scenarios
-  - **Success:** All performance targets met and documented
-
 ### Task 9: Documentation and Integration
 **Effort: 1/5**
 
-- [ ] **Task 9.1: Create Service Documentation**
+- [x] **Task 9.1: Create Service Documentation**
   - Document all public APIs for new services
   - Create usage examples for StatementManager
   - Document SystemPromptParser integration points
   - Include troubleshooting guide for common issues
   - **Success:** Complete API documentation exists for all services
 
-- [ ] **Task 9.2: Update Existing Documentation**
+- [x] **Task 9.2: Update Existing Documentation**
   - Update any references to old template system
   - Document new context format and sections
   - Include migration guide for existing projects
   - Update development setup instructions
   - **Success:** All documentation reflects new template system
+
+### Task 10: Core Template Validation & Testing
+**Effort: 3/5**
+
+- [x] **Task 10.1: Start/Continue Statement Logic**
+  - Add start/continue toggle to form
+  - Create statement selection logic based on start vs continue
+  - Update statements file with both options
+  - Test statement switching in UI
+  - **Success:** Users can choose appropriate opening statement
+
+- [ ] **Task 10.2: Form Field Organization**
+  - Reorganize form fields to match output order:
+    1. Project name and slice
+    2. Start/continue selection
+    3. Context initialization settings
+    4. 3rd party tools/MCP toggle
+    5. Repository structure toggle (optional)
+    6. Recent events
+    7. Current work/task file
+    8. Instructions (development phase)
+    9. Additional notes
+  - Add optional field toggles with "disable but keep" behavior
+  - **Success:** Form mirrors expected output structure
+
+- [ ] **Task 10.3: Real Prompt File Integration**
+  - Test with actual prompt.ai-project.system.md file
+  - Verify context initialization prompt integration
+  - Test 3rd party tools prompt mapping
+  - Test instruction prompt mapping for development phases
+  - Validate template variable substitution (project name, etc.)
+  - **Success:** All prompts correctly referenced and substituted
+
+- [ ] **Task 10.4: Template Output Validation**
+  - Generate complete context with all sections
+  - Verify output matches expected structure:
+    ```
+    {start/continue-statement}
+    { project: projectname, slice: slicename }
+    
+    {context-initialization-prompt}
+    
+    ### 3rd-Party Tools & MCP
+    {tools-prompt}
+    
+    ### Repository Structure (if enabled)
+    {repository-info}
+    
+    ### Recent Events
+    {recent-events}
+    
+    ### Current Work
+    {task-file-info}
+    
+    ### Instructions
+    {instruction-prompt}
+    
+    ### Additional Notes
+    {additional-notes}
+    ```
+  - Test with various combinations of optional sections
+  - **Success:** Output structure matches specification exactly
 
 ## Task Dependencies
 

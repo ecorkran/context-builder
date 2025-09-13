@@ -131,6 +131,38 @@ export class SectionBuilder {
   }
 
   /**
+   * Build the project information object section
+   */
+  async buildProjectInfoSection(data: EnhancedContextData): Promise<string> {
+    try {
+      const infoLines: string[] = [];
+      
+      // Always include project name
+      infoLines.push(`  project: ${data.projectName}`);
+      
+      // Include template if present (monorepo projects)
+      if (data.template && data.template !== 'default') {
+        infoLines.push(`  template: ${data.template}`);
+      }
+      
+      // Include slice if present, or null if empty
+      if (data.slice && data.slice.trim()) {
+        infoLines.push(`  slice: ${data.slice}`);
+      } else {
+        infoLines.push(`  slice: null`);
+      }
+      
+      // Always include monorepo status
+      infoLines.push(`  monorepo: ${data.isMonorepo}`);
+      
+      return `{\n${infoLines.join(',\n')}\n}`;
+    } catch (error) {
+      console.error('Error building project info section:', error);
+      return `{\n  project: ${data.projectName || 'unknown'}\n}`;
+    }
+  }
+
+  /**
    * Build a generic section with content
    */
   buildSection(section: ContextSection, data: EnhancedContextData): string {

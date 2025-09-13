@@ -7,6 +7,7 @@ export interface ContextData {
   template: string;
   slice: string;
   instruction: string;
+  workType?: 'start' | 'continue';
   isMonorepo: boolean;
   recentEvents: string;
   additionalNotes: string;

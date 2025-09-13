@@ -27,9 +27,6 @@ export const useContextGeneration = (projectData: ProjectData | null) => {
       }
 
       try {
-        // Set loading state (only for operations that might be slow)
-        setIsLoading(true);
-        
         // Generate context with performance monitoring
         const startTime = Date.now();
         const generatedContext = await contextIntegrator.generateContextFromProject(projectData);
@@ -40,15 +37,15 @@ export const useContextGeneration = (projectData: ProjectData | null) => {
           console.warn(`Context generation took ${duration}ms (target: <100ms)`);
         }
 
-        // Only show loading state for operations > 50ms to avoid flicker
-        if (duration < 50) {
-          setIsLoading(false);
-        }
-
         setContextString(generatedContext);
         
-        // Ensure loading state is cleared
-        setTimeout(() => setIsLoading(false), Math.max(0, 100 - duration));
+        // Only show loading for slow operations (>150ms) to avoid flash
+        if (duration > 150) {
+          setIsLoading(true);
+          setTimeout(() => setIsLoading(false), 100);
+        } else {
+          setIsLoading(false);
+        }
         
       } catch (err) {
         console.error('Context generation failed:', err);

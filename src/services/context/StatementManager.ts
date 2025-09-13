@@ -6,10 +6,16 @@ import { TemplateStatement, StatementConfig, ParsedStatement } from './types/Tem
  * Default statements for fallback when files are missing
  */
 const DEFAULT_STATEMENTS: Record<string, TemplateStatement> = {
-  'project-intro-statement': {
-    key: 'project-intro-statement',
+  'start-project-statement': {
+    key: 'start-project-statement',
+    content: 'We are starting work on our project. Project information, environment context, instructions, and notes follow:',
+    description: 'Opening statement for starting new work',
+    editable: true
+  },
+  'continue-project-statement': {
+    key: 'continue-project-statement',
     content: 'We are continuing work on our project. Project information, environment context, instructions, and notes follow:',
-    description: 'Introductory statement for project context',
+    description: 'Opening statement for continuing existing work',
     editable: true
   },
   'tool-intro-statement': {
