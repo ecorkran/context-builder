@@ -29,7 +29,7 @@ export class ContextTemplateEngine {
   ) {
     this.promptParser = promptParser || createSystemPromptParser();
     this.statementManager = statementManager || createStatementManager();
-    this.sectionBuilder = sectionBuilder || new SectionBuilder(this.promptParser, this.statementManager);
+    this.sectionBuilder = sectionBuilder || new SectionBuilder(this.statementManager, this.promptParser);
   }
 
   /**

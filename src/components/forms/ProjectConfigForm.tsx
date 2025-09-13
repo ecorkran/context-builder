@@ -36,7 +36,8 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
     customData: {
       recentEvents: initialData?.customData?.recentEvents || '',
       additionalNotes: initialData?.customData?.additionalNotes || '',
-      monorepoNote: initialData?.customData?.monorepoNote || ''
+      monorepoNote: initialData?.customData?.monorepoNote || '',
+      availableTools: initialData?.customData?.availableTools || ''
     }
   });
 
@@ -54,6 +55,16 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
     setFormData(prev => ({
       ...prev,
       [field]: value
+    }));
+  };
+
+  const handleCustomDataChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      customData: {
+        ...prev.customData,
+        [field]: value
+      }
     }));
   };
 
@@ -106,7 +117,22 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
           </Select>
         </div>
 
-        {/* 3. Repository structure */}
+        {/* 3. Available Tools */}
+        <div className="space-y-2">
+          <label htmlFor="available-tools" className="block text-sm font-medium text-neutral-12">
+            Available Tools
+          </label>
+          <textarea
+            id="available-tools"
+            value={formData.customData?.availableTools || ''}
+            onChange={(e) => handleCustomDataChange('availableTools', e.target.value)}
+            placeholder="List available tools (e.g., context7, Radix)"
+            className="w-full px-3 py-2 text-sm border border-neutral-6 rounded-md bg-neutral-1 text-neutral-12 placeholder-neutral-9 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y min-h-[2.5rem]"
+            rows={1}
+          />
+        </div>
+
+        {/* 4. Repository structure */}
         <div className="space-y-3 pt-2" >
           <Checkbox
             id="is-monorepo"
@@ -176,7 +202,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
           </div>
         </div>
 
-        {/* 4. Instructions (development phase) */}
+        {/* 5. Instructions (development phase) */}
         <div>
           <label htmlFor="instruction" className="block text-sm font-medium text-neutral-11 mb-2">
             Development Phase

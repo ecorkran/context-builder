@@ -13,6 +13,7 @@ export interface ProjectData {
     recentEvents?: string;
     additionalNotes?: string;
     monorepoNote?: string;
+    availableTools?: string;
   };
   createdAt: string;
   updatedAt: string;
@@ -29,6 +30,7 @@ export type CreateProjectData = Omit<ProjectData, 'id' | 'createdAt' | 'updatedA
     recentEvents?: string;
     additionalNotes?: string;
     monorepoNote?: string;
+    availableTools?: string;
   };
 };
 

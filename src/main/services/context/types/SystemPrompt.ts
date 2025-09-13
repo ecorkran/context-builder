@@ -35,7 +35,7 @@ export interface InstructionMapping {
  */
 export const INSTRUCTION_MAPPING: InstructionMapping = {
   'planning': 'Slice Planning (Phase 3)',
-  'implementation': 'Task Implementation (Phase 7)',
+  'implementation': 'Slice | Feature Implementation (Phase 7)',
   'debugging': 'Analysis Task Implementation',
   'spec-creation': 'Spec Creation (Phase 2)',
   'slice-design': 'Slice Design (Phase 4)',

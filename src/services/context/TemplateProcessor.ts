@@ -48,8 +48,15 @@ export class TemplateProcessor {
           return expression;
         }
         
-        // Handle simple variable names
-        const value = (data as any)[expression];
+        // Handle simple variable names with common aliases
+        let variableName = expression;
+        
+        // Map common template variables to data field names
+        if (expression === 'project') {
+          variableName = 'projectName';
+        }
+        
+        const value = (data as any)[variableName];
         if (value !== undefined && value !== null) {
           return String(value);
         }

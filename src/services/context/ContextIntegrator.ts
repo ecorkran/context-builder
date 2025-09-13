@@ -107,7 +107,8 @@ export class ContextIntegrator {
       additionalNotes: project.customData?.additionalNotes || '',
       availableTools,
       mcpServers,
-      templateVersion: '1.0.0'
+      templateVersion: '1.0.0',
+      customData: project.customData
     };
   }
 

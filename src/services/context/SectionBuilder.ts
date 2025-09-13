@@ -45,6 +45,23 @@ export class SectionBuilder {
         sections.push(toolIntro);
       }
       
+      // Add available tools and MCP servers at the top
+      const toolsList: string[] = [];
+      
+      // Add user-specified tools
+      if (data.customData?.availableTools && data.customData.availableTools.trim()) {
+        toolsList.push(`Tools: ${data.customData.availableTools}`);
+      }
+      
+      // Add MCP servers (mcpInfo already includes "Available MCP servers:" prefix)
+      if (mcpInfo) {
+        toolsList.push(mcpInfo);
+      }
+      
+      if (toolsList.length > 0) {
+        sections.push(toolsList.join('\n'));
+      }
+      
       // Add tool prompt if available
       if (toolPrompt) {
         const processedPrompt = this.templateProcessor.processTemplate(
@@ -52,11 +69,6 @@ export class SectionBuilder {
           data
         );
         sections.push(processedPrompt);
-      }
-      
-      // Add MCP info if available
-      if (mcpInfo) {
-        sections.push(mcpInfo);
       }
       
       // If no tools available, use fallback statement
