@@ -13,6 +13,16 @@ export interface ContextData {
 }
 
 /**
+ * Enhanced context data with additional fields for template system
+ */
+export interface EnhancedContextData extends ContextData {
+  availableTools?: string[];
+  mcpServers?: string[];
+  templateVersion?: string;
+  customSections?: Record<string, string>;
+}
+
+/**
  * Type for context generation functions
  */
 export interface ContextGenerator {

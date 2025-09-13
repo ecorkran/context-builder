@@ -48,10 +48,19 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
   };
 
   const handleInputChange = (field: keyof CreateProjectData, value: any) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    setFormData(prev => {
+      const updated = {
+        ...prev,
+        [field]: value
+      };
+      
+      // Clear template when monorepo is disabled
+      if (field === 'isMonorepo' && !value) {
+        updated.template = '';
+      }
+      
+      return updated;
+    });
   };
 
   return (
@@ -69,28 +78,6 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
             className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
             placeholder="my-project"
           />
-        </div>
-
-        <div>
-          <label htmlFor="template" className="block text-sm font-medium text-neutral-11 mb-2">
-            Template
-          </label>
-          <Select 
-            value={formData.template} 
-            onValueChange={(value) => handleInputChange('template', value)}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select template..." />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="react-nextjs">React + Next.js</SelectItem>
-              <SelectItem value="react-vite">React + Vite</SelectItem>
-              <SelectItem value="electron-react">Electron + React</SelectItem>
-              <SelectItem value="node-express">Node.js + Express</SelectItem>
-              <SelectItem value="python-django">Python + Django</SelectItem>
-              <SelectItem value="custom">Custom</SelectItem>
-            </SelectContent>
-          </Select>
         </div>
 
         <div>
@@ -142,6 +129,29 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
         </div>
 
         <div>
+          <label htmlFor="template" className={`block text-sm font-medium mb-2 ${formData.isMonorepo ? 'text-neutral-11' : 'text-neutral-8'}`}>
+            Template
+          </label>
+          <Select 
+            value={formData.template} 
+            onValueChange={(value) => handleInputChange('template', value)}
+            disabled={!formData.isMonorepo}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder={formData.isMonorepo ? "Select template..." : "Enable monorepo to select template"} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="react-nextjs">React + Next.js</SelectItem>
+              <SelectItem value="react-vite">React + Vite</SelectItem>
+              <SelectItem value="electron-react">Electron + React</SelectItem>
+              <SelectItem value="node-express">Node.js + Express</SelectItem>
+              <SelectItem value="python-django">Python + Django</SelectItem>
+              <SelectItem value="custom">Custom</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div>
           <label htmlFor="recent-events" className="block text-sm font-medium text-neutral-11 mb-2">
             Recent Events (optional)
           </label>
@@ -154,13 +164,13 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
             })}
             className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical transition-colors"
             placeholder="• Recent changes, bug fixes, features added..."
-            rows={4}
-            maxLength={500}
+            rows={6}
+            maxLength={8000}
             aria-describedby="recent-events-help"
           />
           <div className="flex justify-end mt-1">
             <span id="recent-events-help" className="text-xs text-neutral-9">
-              {(formData.customData?.recentEvents || '').length}/500 characters
+              {(formData.customData?.recentEvents || '').length}/8000 characters
             </span>
           </div>
         </div>
@@ -178,13 +188,13 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
             })}
             className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical transition-colors"
             placeholder="Any additional context or specific focus areas..."
-            rows={3}
-            maxLength={300}
+            rows={5}
+            maxLength={8000}
             aria-describedby="additional-notes-help"
           />
           <div className="flex justify-end mt-1">
             <span id="additional-notes-help" className="text-xs text-neutral-9">
-              {(formData.customData?.additionalNotes || '').length}/300 characters
+              {(formData.customData?.additionalNotes || '').length}/8000 characters
             </span>
           </div>
         </div>
