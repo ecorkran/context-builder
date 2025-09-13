@@ -1,6 +1,7 @@
 import { ProjectData } from '../storage/types/ProjectData';
-import { ContextData } from './types/ContextData';
+import { ContextData, EnhancedContextData } from './types/ContextData';
 import { TemplateProcessor } from './TemplateProcessor';
+import { ContextTemplateEngine } from './ContextTemplateEngine';
 
 /**
  * Default template for context generation
@@ -27,9 +28,13 @@ Ready for {{instruction}} work on {{slice}} slice.`;
  */
 export class ContextIntegrator {
   private templateProcessor: TemplateProcessor;
+  private templateEngine: ContextTemplateEngine;
+  private enableNewEngine: boolean;
 
-  constructor() {
+  constructor(enableNewEngine: boolean = true) {
     this.templateProcessor = new TemplateProcessor();
+    this.templateEngine = new ContextTemplateEngine();
+    this.enableNewEngine = enableNewEngine;
   }
 
   /**
@@ -38,16 +43,13 @@ export class ContextIntegrator {
    * @param project Project data from storage
    * @returns Formatted context string ready for display/copying
    */
-  generateContextFromProject(project: ProjectData): string {
+  async generateContextFromProject(project: ProjectData): Promise<string> {
     try {
-      // Map project data to context data structure
-      const contextData = this.mapProjectToContext(project);
-      
-      // Process template with context data
-      const processedContext = this.templateProcessor.processTemplate(DEFAULT_TEMPLATE, contextData);
-      
-      // Apply final formatting
-      return this.formatOutput(processedContext);
+      if (this.enableNewEngine) {
+        return await this.generateWithTemplateEngine(project);
+      } else {
+        return this.generateWithLegacySystem(project);
+      }
     } catch (error) {
       console.error('Error generating context from project:', error);
       return this.getErrorContext(project, error);
@@ -55,7 +57,57 @@ export class ContextIntegrator {
   }
 
   /**
-   * Maps ProjectData structure to ContextData structure
+   * Generate context using the new template engine
+   */
+  private async generateWithTemplateEngine(project: ProjectData): Promise<string> {
+    // Map project data to enhanced context data
+    const enhancedData = await this.mapProjectToEnhancedContext(project);
+    
+    // Generate using template engine
+    return await this.templateEngine.generateContext(enhancedData);
+  }
+
+  /**
+   * Generate context using the legacy system
+   */
+  private generateWithLegacySystem(project: ProjectData): string {
+    // Map project data to context data structure
+    const contextData = this.mapProjectToContext(project);
+    
+    // Process template with context data
+    const processedContext = this.templateProcessor.processTemplate(DEFAULT_TEMPLATE, contextData);
+    
+    // Apply final formatting
+    return this.formatOutput(processedContext);
+  }
+
+  /**
+   * Maps ProjectData structure to EnhancedContextData structure
+   * Includes tool detection and additional template features
+   * @param project Project data from storage
+   * @returns Enhanced context data ready for template engine
+   */
+  private async mapProjectToEnhancedContext(project: ProjectData): Promise<EnhancedContextData> {
+    // Detect available tools and MCP servers
+    const availableTools = await this.detectAvailableTools();
+    const mcpServers = await this.detectMCPServers();
+
+    return {
+      projectName: project.name || 'Unknown Project',
+      template: project.template || '',
+      slice: project.slice || 'Unknown Slice',
+      instruction: project.instruction || 'implementation',
+      isMonorepo: project.isMonorepo || false,
+      recentEvents: project.customData?.recentEvents || '',
+      additionalNotes: project.customData?.additionalNotes || '',
+      availableTools,
+      mcpServers,
+      templateVersion: '1.0.0'
+    };
+  }
+
+  /**
+   * Maps ProjectData structure to ContextData structure (legacy)
    * Handles null/undefined values with appropriate defaults
    * @param project Project data from storage
    * @returns Context data ready for template processing
@@ -129,7 +181,40 @@ Please check the console for detailed error information.`;
   }
 
   /**
-   * Gets the default template string
+   * Detect available tools for the project
+   * Currently returns placeholder data - can be enhanced for actual detection
+   */
+  private async detectAvailableTools(): Promise<string[]> {
+    // Placeholder implementation - can be enhanced to actually detect tools
+    // For example, check package.json, detect CLI tools, etc.
+    return ['npm', 'git', 'vscode'];
+  }
+
+  /**
+   * Detect available MCP servers for the project
+   * Currently returns placeholder data - can be enhanced for actual detection
+   */
+  private async detectMCPServers(): Promise<string[]> {
+    // Placeholder implementation - can be enhanced to detect actual MCP servers
+    return ['context7'];
+  }
+
+  /**
+   * Check if new template engine is enabled
+   */
+  isNewEngineEnabled(): boolean {
+    return this.enableNewEngine;
+  }
+
+  /**
+   * Toggle between new and legacy template systems
+   */
+  setNewEngineEnabled(enabled: boolean): void {
+    this.enableNewEngine = enabled;
+  }
+
+  /**
+   * Gets the default template string (legacy)
    * Useful for testing and template customization
    * @returns Default template string
    */

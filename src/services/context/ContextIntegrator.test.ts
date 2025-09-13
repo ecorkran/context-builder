@@ -5,11 +5,11 @@ describe('ContextIntegrator', () => {
   let contextIntegrator: ContextIntegrator;
   
   beforeEach(() => {
-    contextIntegrator = new ContextIntegrator();
+    contextIntegrator = new ContextIntegrator(false); // Use legacy system for legacy tests
   });
 
   describe('generateContextFromProject', () => {
-    it('should generate context with all project fields', () => {
+    it('should generate context with all project fields', async () => {
       const mockProject: ProjectData = {
         id: 'test-project-1',
         name: 'Test Project',
@@ -25,7 +25,7 @@ describe('ContextIntegrator', () => {
         updatedAt: '2024-01-01T00:00:00Z'
       };
 
-      const result = contextIntegrator.generateContextFromProject(mockProject);
+      const result = await contextIntegrator.generateContextFromProject(mockProject);
 
       // Check that all fields are included in the output
       expect(result).toContain('Project: Test Project');
@@ -38,7 +38,7 @@ describe('ContextIntegrator', () => {
       expect(result).toContain('Ready for implementation work on foundation slice');
     });
 
-    it('should handle monorepo project correctly', () => {
+    it('should handle monorepo project correctly', async () => {
       const mockProject: ProjectData = {
         id: 'test-project-2',
         name: 'Monorepo Project',
@@ -51,13 +51,13 @@ describe('ContextIntegrator', () => {
         updatedAt: '2024-01-01T00:00:00Z'
       };
 
-      const result = contextIntegrator.generateContextFromProject(mockProject);
+      const result = await contextIntegrator.generateContextFromProject(mockProject);
 
       expect(result).toContain('Monorepo: Yes');
       expect(result).toContain('Ready for planning work on ui-components slice');
     });
 
-    it('should handle empty optional fields gracefully', () => {
+    it('should handle empty optional fields gracefully', async () => {
       const mockProject: ProjectData = {
         id: 'test-project-3',
         name: 'Minimal Project',
@@ -73,7 +73,7 @@ describe('ContextIntegrator', () => {
         updatedAt: '2024-01-01T00:00:00Z'
       };
 
-      const result = contextIntegrator.generateContextFromProject(mockProject);
+      const result = await contextIntegrator.generateContextFromProject(mockProject);
 
       expect(result).toContain('Project: Minimal Project');
       expect(result).toContain('Template: vue');
@@ -83,7 +83,7 @@ describe('ContextIntegrator', () => {
       expect(result).toContain('Ready for debugging work on auth slice');
     });
 
-    it('should handle missing customData', () => {
+    it('should handle missing customData', async () => {
       const mockProject: ProjectData = {
         id: 'test-project-4',
         name: 'No Custom Data',
@@ -95,7 +95,7 @@ describe('ContextIntegrator', () => {
         updatedAt: '2024-01-01T00:00:00Z'
       };
 
-      const result = contextIntegrator.generateContextFromProject(mockProject);
+      const result = await contextIntegrator.generateContextFromProject(mockProject);
 
       expect(result).toContain('Project: No Custom Data');
       expect(result).toContain('Monorepo: Yes');
@@ -152,6 +152,66 @@ describe('ContextIntegrator', () => {
       expect(template).toContain('## Recent Events');
       expect(template).toContain('{{recentEvents}}');
       expect(template).toContain('{{additionalNotes}}');
+    });
+  });
+
+  describe('template engine integration', () => {
+    it('should use new template engine when enabled', async () => {
+      const mockProject: ProjectData = {
+        id: 'test-new-engine',
+        name: 'New Engine Test',
+        template: 'react-vite',
+        slice: 'test-slice',
+        instruction: 'implementation',
+        isMonorepo: false,
+        customData: {
+          recentEvents: 'Testing new engine',
+          additionalNotes: 'Should use structured format'
+        },
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z'
+      };
+
+      const newEngineIntegrator = new ContextIntegrator(true);
+      const result = await newEngineIntegrator.generateContextFromProject(mockProject);
+
+      // New template engine should produce structured output
+      expect(result).toContain('We are continuing work on our project');
+      expect(newEngineIntegrator.isNewEngineEnabled()).toBe(true);
+    });
+
+    it('should use legacy system when disabled', async () => {
+      const mockProject: ProjectData = {
+        id: 'test-legacy',
+        name: 'Legacy Test',
+        template: 'react-vite',
+        slice: 'test-slice',
+        instruction: 'implementation',
+        isMonorepo: false,
+        customData: {},
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z'
+      };
+
+      const legacyIntegrator = new ContextIntegrator(false);
+      const result = await legacyIntegrator.generateContextFromProject(mockProject);
+
+      // Legacy system should produce old template format
+      expect(result).toContain('# Project: Legacy Test');
+      expect(result).toContain('Template: react-vite');
+      expect(legacyIntegrator.isNewEngineEnabled()).toBe(false);
+    });
+
+    it('should allow toggling template engine', async () => {
+      const integrator = new ContextIntegrator(true);
+      
+      expect(integrator.isNewEngineEnabled()).toBe(true);
+      
+      integrator.setNewEngineEnabled(false);
+      expect(integrator.isNewEngineEnabled()).toBe(false);
+      
+      integrator.setNewEngineEnabled(true);
+      expect(integrator.isNewEngineEnabled()).toBe(true);
     });
   });
 });

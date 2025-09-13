@@ -32,7 +32,7 @@ export const useContextGeneration = (projectData: ProjectData | null) => {
         
         // Generate context with performance monitoring
         const startTime = Date.now();
-        const generatedContext = contextIntegrator.generateContextFromProject(projectData);
+        const generatedContext = await contextIntegrator.generateContextFromProject(projectData);
         const duration = Date.now() - startTime;
 
         // Log performance for optimization (development only)

@@ -28,7 +28,21 @@ export class ContextTemplateEngine {
   ) {
     this.promptParser = promptParser || new SystemPromptParser();
     this.statementManager = statementManager || new StatementManager();
-    this.sectionBuilder = sectionBuilder || new SectionBuilder();
+    this.sectionBuilder = sectionBuilder || new SectionBuilder(this.promptParser, this.statementManager);
+  }
+
+  /**
+   * Ensure statement manager is initialized
+   */
+  private async ensureStatementManagerInitialized(): Promise<void> {
+    try {
+      // Try to load statements, this will set isLoaded to true
+      await this.statementManager.loadStatements();
+    } catch (error) {
+      // If loading fails, initialize with defaults
+      console.warn('Failed to load custom statements, using defaults:', error);
+      // The StatementManager should handle this gracefully with its fallback system
+    }
   }
 
   /**
@@ -36,6 +50,9 @@ export class ContextTemplateEngine {
    */
   async generateContext(data: EnhancedContextData): Promise<string> {
     try {
+      // Ensure statement manager is initialized
+      await this.ensureStatementManagerInitialized();
+
       // Validate input data
       this.validateInputData(data);
 
