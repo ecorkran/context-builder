@@ -167,6 +167,7 @@ export class SystemPromptParser {
     
     return parsed.prompts.find(prompt => 
       prompt.key === SpecialPromptKeys.CONTEXT_INITIALIZATION ||
+      prompt.name.toLowerCase().includes('context initialization') ||
       prompt.name.toLowerCase().includes('model change') ||
       prompt.name.toLowerCase().includes('context refresh')
     ) || null;

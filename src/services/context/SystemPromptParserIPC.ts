@@ -10,7 +10,8 @@ export class SystemPromptParserIPC {
   private cacheTimestamp: number = 0;
 
   constructor(filename?: string) {
-    this.filename = filename || 'prompt.ai-project.system.md';
+    // Default to the same path as the main process SystemPromptParser
+    this.filename = filename || 'project-documents/project-guides/prompt.ai-project.system.md';
   }
 
   /**

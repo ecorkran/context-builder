@@ -90,7 +90,7 @@ export interface PromptCacheEntry {
  * Special prompt keys for commonly used prompts
  */
 export enum SpecialPromptKeys {
-  CONTEXT_INITIALIZATION = 'model-change-or-context-refresh',
+  CONTEXT_INITIALIZATION = 'context-initialization',
   TOOL_USE = 'use-3rd-party-tool',
   PROJECT_KICKOFF = 'project-kickoff',
   FEATURE_DESIGN = 'feature-design'
