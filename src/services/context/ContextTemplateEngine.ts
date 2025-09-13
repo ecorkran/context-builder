@@ -231,6 +231,11 @@ export class ContextTemplateEngine {
       result = result.replace(/{{mcpServers}}/g, data.mcpServers.join(', '));
     }
 
+    // Also handle single-brace format for compatibility with prompt files
+    result = result.replace(/\{project\}/g, data.projectName || '');
+    result = result.replace(/\{slice\}/g, data.slice || '');
+    result = result.replace(/\{tool\}/g, data.template || '');
+
     return result;
   }
 
