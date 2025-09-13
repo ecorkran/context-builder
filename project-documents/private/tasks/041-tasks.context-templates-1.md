@@ -497,7 +497,7 @@ Key technical components: SystemPromptParser, StatementManager, SectionBuilder, 
   - Test statement switching in UI
   - **Success:** Users can choose appropriate opening statement
 
-- [ ] **Task 10.2: Form Field Organization**
+- [x] **Task 10.2: Form Field Organization**
   - Reorganize form fields to match output order:
     1. Project name and slice
     2. Start/continue selection

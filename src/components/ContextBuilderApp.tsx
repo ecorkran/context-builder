@@ -73,7 +73,7 @@ export const ContextBuilderApp: React.FC = () => {
   const leftPanelContent = (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-neutral-12 mb-4">Project Configuration</h2>
+        <h2 className="text-xl font-semibold text-neutral-12 mb-4 ml-[calc(var(--radius)*0.25)]">Project Configuration</h2>
         <ProjectConfigForm
           initialData={formData}
           onChange={handleFormChange}

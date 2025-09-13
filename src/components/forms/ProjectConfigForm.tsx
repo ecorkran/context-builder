@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue 
 } from '../../lib/ui-core/components/form/select';
+import { Checkbox } from '../../lib/ui-core/components/form/checkbox';
 import { CreateProjectData } from '../../services/storage/types/ProjectData';
 
 interface ProjectConfigFormProps {
@@ -34,7 +35,8 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
     isMonorepo: initialData?.isMonorepo || false,
     customData: {
       recentEvents: initialData?.customData?.recentEvents || '',
-      additionalNotes: initialData?.customData?.additionalNotes || ''
+      additionalNotes: initialData?.customData?.additionalNotes || '',
+      monorepoNote: initialData?.customData?.monorepoNote || ''
     }
   });
 
@@ -104,61 +106,50 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
           </Select>
         </div>
 
-        <div>
-          <label htmlFor="instruction" className="block text-sm font-medium text-neutral-11 mb-2">
-            Development Phase
-          </label>
-          <Select 
-            value={formData.instruction || 'implementation'} 
-            onValueChange={(value) => handleInputChange('instruction', value)}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select development phase..." />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="planning">Planning</SelectItem>
-              <SelectItem value="implementation">Implementation</SelectItem>
-              <SelectItem value="debugging">Debugging</SelectItem>
-              <SelectItem value="testing">Testing</SelectItem>
-              <SelectItem value="custom">Custom</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="flex items-center">
-          <input
+        {/* 3. Repository structure */}
+        <div className="space-y-3 pt-2" >
+          <Checkbox
             id="is-monorepo"
-            type="checkbox"
             checked={formData.isMonorepo}
-            onChange={(e) => handleInputChange('isMonorepo', e.target.checked)}
-            className="h-4 w-4 text-accent-9 focus:ring-accent-8 border-neutral-3 rounded bg-neutral-1"
+            onCheckedChange={(checked) => handleInputChange('isMonorepo', checked)}
+            label="Monorepo project"
+            uiVariant="accent"
+            className='ml-[calc(var(--radius)*0.25)]'
           />
-          <label htmlFor="is-monorepo" className="ml-2 block text-sm text-neutral-11">
-            Monorepo project
-          </label>
-        </div>
-
-        <div>
-          <label htmlFor="template" className={`block text-sm font-medium mb-2 ${formData.isMonorepo ? 'text-neutral-11' : 'text-neutral-8'}`}>
-            Template
-          </label>
-          <Select 
-            value={formData.template} 
-            onValueChange={(value) => handleInputChange('template', value)}
-            disabled={!formData.isMonorepo}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder={formData.isMonorepo ? "Select template..." : "Enable monorepo to select template"} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="react-nextjs">React + Next.js</SelectItem>
-              <SelectItem value="react-vite">React + Vite</SelectItem>
-              <SelectItem value="electron-react">Electron + React</SelectItem>
-              <SelectItem value="node-express">Node.js + Express</SelectItem>
-              <SelectItem value="python-django">Python + Django</SelectItem>
-              <SelectItem value="custom">Custom</SelectItem>
-            </SelectContent>
-          </Select>
+          
+          <div className='pt-2'>
+            <label htmlFor="template" className={`block text-sm font-medium mb-2 ${formData.isMonorepo ? 'text-neutral-11' : 'text-neutral-8'}`}>
+              Template
+            </label>
+            <input
+              id="template"
+              type="text"
+              value={formData.template}
+              onChange={(e) => handleInputChange('template', e.target.value)}
+              disabled={!formData.isMonorepo}
+              className={`w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent ${!formData.isMonorepo ? 'opacity-60' : ''}`}
+              placeholder={formData.isMonorepo ? "templates/react" : "Enable monorepo to set template"}
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="monorepo-note" className={`block text-sm font-medium mb-2 ${formData.isMonorepo ? 'text-neutral-11' : 'text-neutral-8'}`}>
+              Monorepo Structure (optional)
+            </label>
+            <textarea
+              id="monorepo-note"
+              value={formData.customData?.monorepoNote || ''}
+              onChange={(e) => handleInputChange('customData', {
+                ...formData.customData,
+                monorepoNote: e.target.value
+              })}
+              disabled={!formData.isMonorepo}
+              className={`w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical transition-colors ${!formData.isMonorepo ? 'opacity-60' : ''}`}
+              placeholder={formData.isMonorepo ? "Package structure, workspace organization..." : "Enable monorepo for structure notes"}
+              rows={1}
+              maxLength={2000}
+            />
+          </div>
         </div>
 
         <div>
@@ -185,6 +176,29 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
           </div>
         </div>
 
+        {/* 4. Instructions (development phase) */}
+        <div>
+          <label htmlFor="instruction" className="block text-sm font-medium text-neutral-11 mb-2">
+            Development Phase
+          </label>
+          <Select 
+            value={formData.instruction || 'implementation'} 
+            onValueChange={(value) => handleInputChange('instruction', value)}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select development phase..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="planning">Planning</SelectItem>
+              <SelectItem value="implementation">Implementation</SelectItem>
+              <SelectItem value="debugging">Debugging</SelectItem>
+              <SelectItem value="testing">Testing</SelectItem>
+              <SelectItem value="custom">Custom</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* 5. Additional notes */}
         <div>
           <label htmlFor="additional-notes" className="block text-sm font-medium text-neutral-11 mb-2">
             Additional Context (optional)

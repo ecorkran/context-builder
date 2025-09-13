@@ -74,6 +74,7 @@
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--color-neutral-12);
+  padding-left: calc(var(--radius) * 0.25);
 }
 
 .form-field__description {
@@ -91,6 +92,11 @@
 .form-field__required::after {
   content: " *";
   color: var(--color-destructive);
+}
+
+/* Form labels with theme-aware padding */
+form label {
+  padding-left: calc(var(--radius) * 0.25);
 }
 
 /* Optional indicator */
