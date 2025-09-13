@@ -20,7 +20,8 @@ export class TemplateProcessor {
       // First handle boolean conditionals: {{#if isMonorepo}}Yes{{else}}No{{/if}}
       processed = this.processBooleanConditionals(processed, data);
 
-      // Then replace simple variables: {{variableName}}
+      // Then replace simple variables: {{variableName}} and {variableName}
+      // First handle double brace format: {{variableName}}
       processed = processed.replace(/\{\{(\w+)\}\}/g, (match, variableName) => {
         const value = (data as any)[variableName];
         if (value !== undefined && value !== null) {
@@ -30,6 +31,32 @@ export class TemplateProcessor {
         // Log warning for missing variables but don't fail
         console.warn(`Template variable '${variableName}' not found in data, replacing with empty string`);
         return '';
+      });
+      
+      // Then handle single brace format with more flexible patterns: {variableName}, {slice | feature}, etc.
+      processed = processed.replace(/\{([^}]+)\}/g, (match, expression) => {
+        // Handle pipe expressions like {slice | feature}
+        if (expression.includes(' | ')) {
+          const parts = expression.split(' | ').map(part => part.trim());
+          // Use the first part as the primary variable name
+          const primaryVar = parts[0];
+          const value = (data as any)[primaryVar];
+          if (value !== undefined && value !== null) {
+            return String(value);
+          }
+          // If primary variable not found, return the expression as-is for now
+          return expression;
+        }
+        
+        // Handle simple variable names
+        const value = (data as any)[expression];
+        if (value !== undefined && value !== null) {
+          return String(value);
+        }
+        
+        // For parameters that might not be in our data, don't log warnings
+        // These might be template placeholders that should remain as-is
+        return expression;
       });
 
       return processed;
