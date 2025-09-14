@@ -2,8 +2,10 @@ import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { SplitPaneLayout } from './layout/SplitPaneLayout';
 import { ProjectConfigForm } from './forms/ProjectConfigForm';
 import { ContextOutput } from './display/ContextOutput';
+import { ProjectSelector } from './project/ProjectSelector';
 import { PersistentProjectStore } from '../services/storage/PersistentProjectStore';
 import { CreateProjectData, ProjectData } from '../services/storage/types/ProjectData';
+import { ProjectManager } from '../services/project/ProjectManager';
 import { useContextGeneration } from '../hooks/useContextGeneration';
 import { useDebounce } from '../hooks/useDebounce';
 
@@ -26,6 +28,9 @@ export const ContextBuilderApp: React.FC = () => {
 
   // Add persistence state management
   const [currentProjectId, setCurrentProjectId] = useState<string | null>(null);
+  const [projects, setProjects] = useState<ProjectData[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [multiProjectError, setMultiProjectError] = useState<string | null>(null);
 
   // Create persistent storage service instance
   const persistentStore = useMemo(() => {
@@ -36,6 +41,17 @@ export const ContextBuilderApp: React.FC = () => {
       return null;
     }
   }, []);
+
+  // Create ProjectManager instance
+  const projectManager = useMemo(() => {
+    if (!persistentStore) return null;
+    try {
+      return new ProjectManager(persistentStore);
+    } catch (error) {
+      console.error('Failed to initialize project manager:', error);
+      return null;
+    }
+  }, [persistentStore]);
 
   // Create a temporary project object for context generation
   const tempProject: ProjectData | null = useMemo(() => {
@@ -68,12 +84,13 @@ export const ContextBuilderApp: React.FC = () => {
   // Load last session on mount (simple, fast)
   useEffect(() => {
     const loadLastSession = async () => {
-      if (!persistentStore) return;
+      if (!projectManager) return;
 
       try {
-        const projects = await persistentStore.loadProjects();
+        const allProjects = await projectManager.loadAllProjects();
+        setProjects(allProjects);
         
-        if (projects.length === 0) {
+        if (allProjects.length === 0) {
           // Create default project for first-time users
           const defaultProject = {
             id: `project_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
@@ -88,15 +105,16 @@ export const ContextBuilderApp: React.FC = () => {
             updatedAt: new Date().toISOString(),
           };
           
-          await persistentStore.saveProject(defaultProject);
-          setCurrentProjectId(defaultProject.id);
+          const newProject = await projectManager.createNewProject();
+          setProjects([newProject]);
+          setCurrentProjectId(newProject.id);
           setFormData({
-            name: defaultProject.name,
-            template: defaultProject.template,
-            slice: defaultProject.slice,
-            instruction: defaultProject.instruction,
-            workType: defaultProject.workType,
-            isMonorepo: defaultProject.isMonorepo,
+            name: newProject.name,
+            template: newProject.template,
+            slice: newProject.slice,
+            instruction: newProject.instruction,
+            workType: newProject.workType,
+            isMonorepo: newProject.isMonorepo,
             customData: {
               recentEvents: '',
               additionalNotes: '',
@@ -106,8 +124,7 @@ export const ContextBuilderApp: React.FC = () => {
           });
         } else {
           // Restore last active project
-          const lastActiveId = await persistentStore.getLastActiveProject();
-          const activeProject = projects.find(p => p.id === lastActiveId) || projects[0];
+          const activeProject = projectManager.getCurrentProject() || allProjects[0];
           
           setCurrentProjectId(activeProject.id);
           const restoredFormData = {
@@ -133,7 +150,7 @@ export const ContextBuilderApp: React.FC = () => {
     };
 
     loadLastSession();
-  }, [persistentStore]);
+  }, [projectManager]);
 
   // Simple auto-save on form changes
   useEffect(() => {
@@ -168,6 +185,116 @@ export const ContextBuilderApp: React.FC = () => {
     console.log('Project auto-saved via persistence layer');
   }, []);
 
+  // Project Management Handlers
+  const handleProjectSwitch = useCallback(async (projectId: string) => {
+    if (!projectManager || projectId === currentProjectId) return;
+    
+    setLoading(true);
+    setMultiProjectError(null);
+    
+    try {
+      const switchedProject = await projectManager.switchToProject(projectId);
+      setCurrentProjectId(projectId);
+      
+      // Update form with switched project data
+      setFormData({
+        name: switchedProject.name,
+        template: switchedProject.template,
+        slice: switchedProject.slice,
+        instruction: switchedProject.instruction,
+        workType: switchedProject.workType,
+        isMonorepo: switchedProject.isMonorepo,
+        customData: {
+          recentEvents: switchedProject.customData?.recentEvents || '',
+          additionalNotes: switchedProject.customData?.additionalNotes || '',
+          monorepoNote: switchedProject.customData?.monorepoNote || '',
+          availableTools: switchedProject.customData?.availableTools || ''
+        },
+      });
+    } catch (error) {
+      console.error('Failed to switch project:', error);
+      setMultiProjectError(`Failed to switch project: ${error instanceof Error ? error.message : String(error)}`);
+    } finally {
+      setLoading(false);
+    }
+  }, [projectManager, currentProjectId]);
+
+  const handleProjectCreate = useCallback(async () => {
+    if (!projectManager) return;
+    
+    setLoading(true);
+    setMultiProjectError(null);
+    
+    try {
+      const newProject = await projectManager.createNewProject();
+      const updatedProjects = await projectManager.loadAllProjects();
+      setProjects(updatedProjects);
+      setCurrentProjectId(newProject.id);
+      
+      // Clear form and populate with new project defaults
+      setFormData({
+        name: newProject.name,
+        template: newProject.template,
+        slice: newProject.slice,
+        instruction: newProject.instruction,
+        workType: newProject.workType,
+        isMonorepo: newProject.isMonorepo,
+        customData: {
+          recentEvents: '',
+          additionalNotes: '',
+          monorepoNote: '',
+          availableTools: ''
+        },
+      });
+    } catch (error) {
+      console.error('Failed to create project:', error);
+      setMultiProjectError(`Failed to create project: ${error instanceof Error ? error.message : String(error)}`);
+    } finally {
+      setLoading(false);
+    }
+  }, [projectManager]);
+
+  const handleProjectDelete = useCallback(async (projectId: string) => {
+    if (!projectManager || projects.length <= 1) return;
+    
+    const confirmDelete = window.confirm('Are you sure you want to delete this project? This action cannot be undone.');
+    if (!confirmDelete) return;
+    
+    setLoading(true);
+    setMultiProjectError(null);
+    
+    try {
+      await projectManager.deleteProject(projectId);
+      const updatedProjects = await projectManager.loadAllProjects();
+      setProjects(updatedProjects);
+      
+      // If we deleted the current project, switch to another one
+      if (projectId === currentProjectId && updatedProjects.length > 0) {
+        const newActiveProject = updatedProjects[0];
+        setCurrentProjectId(newActiveProject.id);
+        setFormData({
+          name: newActiveProject.name,
+          template: newActiveProject.template,
+          slice: newActiveProject.slice,
+          instruction: newActiveProject.instruction,
+          workType: newActiveProject.workType,
+          isMonorepo: newActiveProject.isMonorepo,
+          customData: {
+            recentEvents: newActiveProject.customData?.recentEvents || '',
+            additionalNotes: newActiveProject.customData?.additionalNotes || '',
+            monorepoNote: newActiveProject.customData?.monorepoNote || '',
+            availableTools: newActiveProject.customData?.availableTools || ''
+          },
+        });
+      }
+    } catch (error) {
+      console.error('Failed to delete project:', error);
+      setMultiProjectError(`Failed to delete project: ${error instanceof Error ? error.message : String(error)}`);
+    } finally {
+      setLoading(false);
+    }
+  }, [projectManager, projects.length, currentProjectId]);
+
   const leftPanelContent = (
     <div className="space-y-6">
       <div>
@@ -176,6 +303,23 @@ export const ContextBuilderApp: React.FC = () => {
           initialData={formData}
           onChange={handleFormChange}
           onSubmit={handleCreateProject}
+          customProjectNameField={
+            <div>
+              <label className="block text-sm font-medium text-neutral-11 mb-2">
+                Project
+              </label>
+              <ProjectSelector
+                projects={projects}
+                currentProjectId={currentProjectId}
+                loading={loading}
+                error={multiProjectError}
+                disabled={loading}
+                onProjectSwitch={handleProjectSwitch}
+                onProjectCreate={handleProjectCreate}
+                onProjectDelete={handleProjectDelete}
+              />
+            </div>
+          }
         />
       </div>
     </div>

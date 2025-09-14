@@ -15,6 +15,7 @@ interface ProjectConfigFormProps {
   onSubmit?: (data: CreateProjectData) => void;
   onChange?: (data: CreateProjectData) => void;
   className?: string;
+  customProjectNameField?: React.ReactNode;
 }
 
 /**
@@ -24,7 +25,8 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
   initialData,
   onSubmit,
   onChange,
-  className
+  className,
+  customProjectNameField
 }) => {
   const [formData, setFormData] = useState<CreateProjectData>({
     name: initialData?.name || '',
@@ -96,19 +98,23 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
   return (
     <form onSubmit={handleSubmit} className={cn('space-y-6', className)}>
       <div className="space-y-4">
-        <div>
-          <label htmlFor="project-name" className="block text-sm font-medium text-neutral-11 mb-2">
-            Project Name
-          </label>
-          <input
-            id="project-name"
-            type="text"
-            value={formData.name}
-            onChange={(e) => handleInputChange('name', e.target.value)}
-            className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
-            placeholder="my-project"
-          />
-        </div>
+        {customProjectNameField ? (
+          customProjectNameField
+        ) : (
+          <div>
+            <label htmlFor="project-name" className="block text-sm font-medium text-neutral-11 mb-2">
+              Project Name
+            </label>
+            <input
+              id="project-name"
+              type="text"
+              value={formData.name}
+              onChange={(e) => handleInputChange('name', e.target.value)}
+              className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
+              placeholder="my-project"
+            />
+          </div>
+        )}
 
         <div>
           <label htmlFor="slice" className="block text-sm font-medium text-neutral-11 mb-2">
