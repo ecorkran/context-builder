@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { SplitPaneLayout } from './layout/SplitPaneLayout';
 import { ProjectConfigForm } from './forms/ProjectConfigForm';
 import { ContextOutput } from './display/ContextOutput';
-import { SimpleProjectStore } from '../services/storage/SimpleProjectStore';
+import { PersistentProjectStore } from '../services/storage/PersistentProjectStore';
 import { CreateProjectData, ProjectData } from '../services/storage/types/ProjectData';
 import { useContextGeneration } from '../hooks/useContextGeneration';
 import { useDebounce } from '../hooks/useDebounce';
@@ -24,8 +24,18 @@ export const ContextBuilderApp: React.FC = () => {
     }
   });
 
-  // Create service instances
-  const projectStore = useMemo(() => new SimpleProjectStore(), []);
+  // Add persistence state management
+  const [currentProjectId, setCurrentProjectId] = useState<string | null>(null);
+
+  // Create persistent storage service instance
+  const persistentStore = useMemo(() => {
+    try {
+      return new PersistentProjectStore();
+    } catch (error) {
+      console.error('Failed to initialize persistent storage:', error);
+      return null;
+    }
+  }, []);
 
   // Create a temporary project object for context generation
   const tempProject: ProjectData | null = useMemo(() => {
@@ -53,22 +63,98 @@ export const ContextBuilderApp: React.FC = () => {
   const debouncedProject = useDebounce(tempProject, 300);
 
   // Use the context generation hook
-  const { contextString, isLoading, error } = useContextGeneration(debouncedProject);
+  const { contextString, isLoading: isGenerating, error } = useContextGeneration(debouncedProject);
+
+  // Load last session on mount (simple, fast)
+  useEffect(() => {
+    const loadLastSession = async () => {
+      if (!persistentStore) return;
+
+      try {
+        const projects = await persistentStore.loadProjects();
+        
+        if (projects.length === 0) {
+          // Create default project for first-time users
+          const defaultProject = {
+            id: `project_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+            name: 'My Project',
+            template: '',
+            slice: '',
+            instruction: 'implementation' as const,
+            workType: 'continue' as const,
+            isMonorepo: false,
+            customData: {},
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          };
+          
+          await persistentStore.saveProject(defaultProject);
+          setCurrentProjectId(defaultProject.id);
+          setFormData({
+            name: defaultProject.name,
+            template: defaultProject.template,
+            slice: defaultProject.slice,
+            instruction: defaultProject.instruction,
+            workType: defaultProject.workType,
+            isMonorepo: defaultProject.isMonorepo,
+            customData: defaultProject.customData,
+          });
+        } else {
+          // Restore last active project
+          const lastActiveId = await persistentStore.getLastActiveProject();
+          const activeProject = projects.find(p => p.id === lastActiveId) || projects[0];
+          
+          setCurrentProjectId(activeProject.id);
+          setFormData({
+            name: activeProject.name,
+            template: activeProject.template,
+            slice: activeProject.slice,
+            instruction: activeProject.instruction,
+            workType: activeProject.workType,
+            isMonorepo: activeProject.isMonorepo,
+            customData: activeProject.customData,
+          });
+        }
+      } catch (error) {
+        console.error('Failed to load project:', error);
+      }
+    };
+
+    loadLastSession();
+  }, [persistentStore]);
+
+  // Simple auto-save on form changes
+  useEffect(() => {
+    if (!persistentStore || !currentProjectId) return;
+
+    const timeoutId = setTimeout(async () => {
+      try {
+        await persistentStore.updateProject(currentProjectId, {
+          name: formData.name,
+          template: formData.template,
+          slice: formData.slice,
+          instruction: formData.instruction,
+          workType: formData.workType,
+          isMonorepo: formData.isMonorepo,
+          customData: formData.customData,
+        });
+        await persistentStore.setLastActiveProject(currentProjectId);
+      } catch (error) {
+        console.error('Auto-save failed:', error);
+      }
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [formData, currentProjectId, persistentStore]);
 
   const handleFormChange = useCallback((data: CreateProjectData) => {
     setFormData(data);
   }, []);
 
   const handleCreateProject = useCallback(async (data: CreateProjectData) => {
-    try {
-      await projectStore.create(data);
-      console.log('Project created successfully!');
-      // TODO: Add user feedback/notification
-    } catch (error) {
-      console.error('Failed to create project:', error);
-      // TODO: Add error handling/notification
-    }
-  }, [projectStore]);
+    // This is now handled by auto-save - keeping for form compatibility
+    console.log('Project auto-saved via persistence layer');
+  }, []);
 
   const leftPanelContent = (
     <div className="space-y-6">
@@ -101,7 +187,7 @@ export const ContextBuilderApp: React.FC = () => {
           context={contextString}
           title="Generated Context for Claude Code"
         />
-        {isLoading && (
+        {isGenerating && (
           <div className="absolute top-2 right-2 bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs flex items-center">
             <svg className="animate-spin -ml-1 mr-1 h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
