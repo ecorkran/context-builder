@@ -36,65 +36,65 @@ Phase 1 focuses on automatic persistence without any UI changes. Phase 2 (future
 ### Task 2: Create PersistentProjectStore Service
 **Effort: 3/5**
 
-- [ ] **Task 2.1: Create PersistentProjectStore Class Structure**
+- [x] **Task 2.1: Create PersistentProjectStore Class Structure**
   - Create `src/services/storage/PersistentProjectStore.ts`
   - Import ElectronStorageService and StorageClient
   - Create class with private storage service instance
   - Add constructor with initialization logic
   - **Success:** Basic class structure exists and compiles
 
-- [ ] **Task 2.2: Implement Project Operations**
-  - [ ] **2.2.1: Implement loadProjects() method**
+- [x] **Task 2.2: Implement Project Operations**
+  - [x] **2.2.1: Implement loadProjects() method**
     - Call ElectronStorageService.readProjects()
     - Handle empty state (return empty array)
     - Add error handling with console logging
     - **Success:** Can load existing projects or return empty array
   
-  - [ ] **2.2.2: Implement saveProject() method**
+  - [x] **2.2.2: Implement saveProject() method**
     - Validate project data before saving
     - Call ElectronStorageService.writeProjects() with updated array
     - Handle write errors gracefully
     - **Success:** New projects persist to disk
   
-  - [ ] **2.2.3: Implement updateProject() method**
+  - [x] **2.2.3: Implement updateProject() method**
     - Find project by ID in loaded projects
     - Merge updates with existing data
     - Update the updatedAt timestamp
     - Save entire projects array back to disk
     - **Success:** Project updates persist correctly
   
-  - [ ] **2.2.4: Implement deleteProject() method**
+  - [x] **2.2.4: Implement deleteProject() method**
     - Filter out project by ID
     - Save updated projects array
     - Handle case where project doesn't exist
     - **Success:** Projects can be removed from storage
 
-- [ ] **Task 2.3: Implement App State Operations**
-  - [ ] **2.3.1: Implement getAppState() method**
+- [x] **Task 2.3: Implement App State Operations**
+  - [x] **2.3.1: Implement getAppState() method**
     - Read from 'app-state.json' file
     - Return default state if file doesn't exist
     - Parse JSON and validate structure
     - **Success:** App state loads or returns defaults
   
-  - [ ] **2.3.2: Implement updateAppState() method**
+  - [x] **2.3.2: Implement updateAppState() method**
     - Merge partial updates with existing state
     - Update lastOpened timestamp
     - Write to 'app-state.json' atomically
     - **Success:** App state changes persist
   
-  - [ ] **2.3.3: Implement lastActiveProject helpers**
+  - [x] **2.3.3: Implement lastActiveProject helpers**
     - Add getLastActiveProject() method
     - Add setLastActiveProject() method
     - These should use app state internally
     - **Success:** Can track which project was last used
 
-- [ ] **Task 2.4: Add Utility Methods**
-  - [ ] **2.4.1: Implement generateId() helper**
+- [x] **Task 2.4: Add Utility Methods**
+  - [x] **2.4.1: Implement generateId() helper**
     - Create unique project IDs using timestamp + random
     - Format: `project_${Date.now()}_${randomString}`
     - **Success:** Generated IDs are unique
   
-  - [ ] **2.4.2: Implement createDefaultProject() method**
+  - [x] **2.4.2: Implement createDefaultProject() method**
     - Create project with sensible defaults
     - Set name to "My Project"
     - Initialize all required fields
