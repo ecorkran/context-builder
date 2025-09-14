@@ -34,20 +34,20 @@ The implementation leverages existing robust infrastructure:
   - Add constructor with dependency injection pattern
   - **Success:** Basic service structure exists and compiles
 
-- [ ] **Task 1.2: Implement Project Loading and Listing**
-  - [ ] **1.2.1: Add loadAllProjects() method**
+- [x] **Task 1.2: Implement Project Loading and Listing**
+  - [x] **1.2.1: Add loadAllProjects() method**
     - Call persistentStore.loadProjects()
     - Add error handling with fallback to empty array
     - Return projects sorted by updatedAt (most recent first)
     - **Success:** Method returns all projects or empty array on error
   
-  - [ ] **1.2.2: Add getCurrentProject() method**
+  - [x] **1.2.2: Add getCurrentProject() method**
     - Get current project ID from app state
     - Find project in loaded projects array
     - Return project data or null if not found
     - **Success:** Method returns current project or null consistently
   
-  - [ ] **1.2.3: Add project metadata helpers**
+  - [x] **1.2.3: Add project metadata helpers**
     - Add getProjectCount() method returning number of projects
     - Add hasMultipleProjects() method returning boolean
     - Add getProjectNames() method returning array of project names
