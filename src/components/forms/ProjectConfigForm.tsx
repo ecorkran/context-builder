@@ -220,8 +220,13 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
               className={`w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical transition-colors ${!formData.isMonorepo ? 'opacity-60' : ''}`}
               placeholder={formData.isMonorepo ? "Package structure, workspace organization..." : "Enable monorepo for structure notes"}
               rows={1}
-              maxLength={2000}
+              maxLength={8000}
             />
+            <div className="flex justify-end mt-1">
+              <span className="text-xs text-neutral-9">
+                {(formData.customData?.monorepoNote || '').length}/8000 characters
+              </span>
+            </div>
           </div>
         </div>
 
