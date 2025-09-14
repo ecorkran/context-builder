@@ -36,15 +36,18 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
     customData: {
       recentEvents: initialData?.customData?.recentEvents || '',
       additionalNotes: initialData?.customData?.additionalNotes || '',
-      monorepoNote: initialData?.customData?.monorepoNote || ''
+      monorepoNote: initialData?.customData?.monorepoNote || '',
+      availableTools: initialData?.customData?.availableTools || ''
     }
   });
 
-  // Sync with parent data only on initial load (prevent overwriting user input)
+  // Sync with parent data only when we have meaningful data to load
   const [isInitialized, setIsInitialized] = useState(false);
   
   useEffect(() => {
-    if (initialData && !isInitialized) {
+    // Only initialize if we have initialData with actual content (not just empty defaults)
+    if (initialData && !isInitialized && (initialData.name || initialData.slice)) {
+      console.log('ProjectConfigForm: Initializing with data:', initialData);
       setFormData({
         name: initialData.name || '',
         template: initialData.template || '',
@@ -55,7 +58,8 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
         customData: {
           recentEvents: initialData.customData?.recentEvents || '',
           additionalNotes: initialData.customData?.additionalNotes || '',
-          monorepoNote: initialData.customData?.monorepoNote || ''
+          monorepoNote: initialData.customData?.monorepoNote || '',
+          availableTools: initialData.customData?.availableTools || ''
         }
       });
       setIsInitialized(true);

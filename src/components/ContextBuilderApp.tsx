@@ -100,7 +100,8 @@ export const ContextBuilderApp: React.FC = () => {
             customData: {
               recentEvents: '',
               additionalNotes: '',
-              monorepoNote: ''
+              monorepoNote: '',
+              availableTools: ''
             },
           });
         } else {
@@ -109,7 +110,7 @@ export const ContextBuilderApp: React.FC = () => {
           const activeProject = projects.find(p => p.id === lastActiveId) || projects[0];
           
           setCurrentProjectId(activeProject.id);
-          setFormData({
+          const restoredFormData = {
             name: activeProject.name,
             template: activeProject.template,
             slice: activeProject.slice,
@@ -119,9 +120,12 @@ export const ContextBuilderApp: React.FC = () => {
             customData: {
               recentEvents: activeProject.customData?.recentEvents || '',
               additionalNotes: activeProject.customData?.additionalNotes || '',
-              monorepoNote: activeProject.customData?.monorepoNote || ''
+              monorepoNote: activeProject.customData?.monorepoNote || '',
+              availableTools: activeProject.customData?.availableTools || ''
             },
-          });
+          };
+          console.log('ContextBuilderApp: Restoring project data:', restoredFormData);
+          setFormData(restoredFormData);
         }
       } catch (error) {
         console.error('Failed to load project:', error);
