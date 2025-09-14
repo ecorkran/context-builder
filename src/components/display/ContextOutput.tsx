@@ -56,14 +56,14 @@ export const ContextOutput: React.FC<ContextOutputProps> = ({
     };
   }, [context, handleCopy]);
 
+  // Check if we should use full height
+  const useFullHeight = className?.includes('h-full');
+  
   return (
-    <div ref={containerRef} className={cn('space-y-4', className)}>
-      <div className="flex items-center justify-between">
+    <div ref={containerRef} className={cn('flex flex-col', useFullHeight ? 'h-full' : 'space-y-4', className)}>
+      <div className="flex items-center justify-between flex-shrink-0">
         <h3 className="text-lg font-semibold text-neutral-12">{title}</h3>
         <div className="flex items-center space-x-2">
-          <span className="text-xs text-neutral-9">
-            {context ? 'Ctrl/Cmd+C to copy' : ''}
-          </span>
           <button
             onClick={handleCopy}
             disabled={!context}
@@ -80,17 +80,18 @@ export const ContextOutput: React.FC<ContextOutputProps> = ({
         </div>
       </div>
 
-      <div className="relative">
+      <div className={cn('relative flex-grow pt-3 pb-3', useFullHeight ? 'min-h-0' : '')}>
         <pre 
           tabIndex={0}
           className={cn(
-            'w-full h-96 p-4 text-sm font-mono',
+            'w-full p-4 text-sm font-mono',
             'bg-neutral-2 border border-neutral-3 rounded-md',
             'text-neutral-11 leading-relaxed',
             'overflow-auto resize-none',
             'whitespace-pre-wrap',
             'focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent',
-            'cursor-text'
+            'cursor-text',
+            useFullHeight ? 'h-full' : 'h-96'
           )}
         >
           {context || (
@@ -102,7 +103,7 @@ export const ContextOutput: React.FC<ContextOutputProps> = ({
       </div>
 
       {context && (
-        <div className="flex items-center justify-between text-sm text-neutral-10">
+        <div className="flex items-center justify-between pb-2 text-sm text-neutral-10 flex-shrink-0">
           <span>{context.length} characters</span>
           <span>{context.split('\n').length} lines</span>
         </div>

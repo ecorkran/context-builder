@@ -170,11 +170,13 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
               <SelectValue placeholder="Select development phase..." />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="planning">Planning</SelectItem>
+              <SelectItem value="planning">Planning & Design</SelectItem>
               <SelectItem value="implementation">Implementation</SelectItem>
-              <SelectItem value="debugging">Debugging</SelectItem>
-              <SelectItem value="testing">Testing</SelectItem>
-              <SelectItem value="custom">Custom</SelectItem>
+              <SelectItem value="debugging">Debugging & Fixes</SelectItem>
+              <SelectItem value="testing">Testing & Validation</SelectItem>
+              <SelectItem value="refactoring">Refactoring & Optimization</SelectItem>
+              <SelectItem value="documentation">Documentation</SelectItem>
+              <SelectItem value="review">Code Review</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -275,14 +277,6 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
         </div>
       </div>
 
-      {onSubmit && (
-        <button
-          type="submit"
-          className="w-full bg-accent-9 hover:bg-accent-10 text-white font-medium py-2 px-4 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-accent-8 focus:ring-offset-2"
-        >
-          Create Project
-        </button>
-      )}
     </form>
   );
 };
