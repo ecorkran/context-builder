@@ -46,6 +46,9 @@ describe('ProjectManager', () => {
     // Mock store methods
     mockPersistentStore.loadProjects = vi.fn().mockResolvedValue(mockProjects)
     mockPersistentStore.getLastActiveProject = vi.fn().mockResolvedValue('project-2')
+    mockPersistentStore.setLastActiveProject = vi.fn().mockResolvedValue(undefined)
+    mockPersistentStore.saveProject = vi.fn().mockResolvedValue(undefined)
+    mockPersistentStore.deleteProject = vi.fn().mockResolvedValue(undefined)
     
     // Create ProjectManager with mocked store
     projectManager = new ProjectManager(mockPersistentStore)
@@ -168,6 +171,162 @@ describe('ProjectManager', () => {
       const result = await projectManager.getProjectNames()
       
       expect(result).toEqual([])
+    })
+  })
+
+  describe('switchToProject', () => {
+    it('should switch to existing project', async () => {
+      const result = await projectManager.switchToProject('project-1')
+      
+      expect(mockPersistentStore.setLastActiveProject).toHaveBeenCalledWith('project-1')
+      expect(result).not.toBeNull()
+      expect(result?.id).toBe('project-1')
+      expect(result?.name).toBe('Test Project 1')
+    })
+
+    it('should handle switching to already-current project', async () => {
+      // project-2 is already the current project per mock
+      const result = await projectManager.switchToProject('project-2')
+      
+      expect(result?.id).toBe('project-2')
+      // Should still return the project data, even though it's a no-op
+      expect(result?.name).toBe('Test Project 2')
+    })
+
+    it('should throw error for non-existent project', async () => {
+      await expect(projectManager.switchToProject('non-existent')).rejects.toThrow('Project with id non-existent not found')
+      expect(mockPersistentStore.setLastActiveProject).not.toHaveBeenCalled()
+    })
+
+    it('should throw error on storage failure', async () => {
+      mockPersistentStore.setLastActiveProject = vi.fn().mockRejectedValue(new Error('Storage error'))
+      
+      await expect(projectManager.switchToProject('project-1')).rejects.toThrow('Failed to switch to project')
+    })
+  })
+
+  describe('validateProjectSwitch', () => {
+    it('should return true for existing project', async () => {
+      const result = await projectManager.validateProjectSwitch('project-1')
+      expect(result).toBe(true)
+    })
+
+    it('should return false for non-existent project', async () => {
+      const result = await projectManager.validateProjectSwitch('non-existent')
+      expect(result).toBe(false)
+    })
+
+    it('should return false for empty project ID', async () => {
+      const result = await projectManager.validateProjectSwitch('')
+      expect(result).toBe(false)
+    })
+
+    it('should return false on error', async () => {
+      mockPersistentStore.loadProjects = vi.fn().mockRejectedValue(new Error('Storage error'))
+      
+      const result = await projectManager.validateProjectSwitch('project-1')
+      expect(result).toBe(false)
+    })
+  })
+
+  describe('createNewProject', () => {
+    it('should create new project with unique name', async () => {
+      const result = await projectManager.createNewProject()
+      
+      expect(mockPersistentStore.saveProject).toHaveBeenCalledWith(
+        expect.objectContaining({
+          name: 'New Project', // No conflicting names in test data, so uses base name
+          instruction: 'implementation',
+          workType: 'continue',
+          isMonorepo: false,
+          template: '',
+          slice: '',
+          customData: {}
+        })
+      )
+      expect(mockPersistentStore.setLastActiveProject).toHaveBeenCalledWith(result.id)
+      expect(result.id).toMatch(/^project_\d+_[a-z0-9]+$/)
+    })
+
+    it('should create "New Project" when no conflicting names exist', async () => {
+      mockPersistentStore.loadProjects = vi.fn().mockResolvedValue([])
+      
+      const result = await projectManager.createNewProject()
+      
+      expect(result.name).toBe('New Project')
+    })
+
+    it('should throw error on save failure', async () => {
+      mockPersistentStore.saveProject = vi.fn().mockRejectedValue(new Error('Storage error'))
+      
+      await expect(projectManager.createNewProject()).rejects.toThrow('Failed to create project')
+    })
+  })
+
+  describe('deleteProject', () => {
+    it('should delete non-current project', async () => {
+      const result = await projectManager.deleteProject('project-1')
+      
+      expect(mockPersistentStore.deleteProject).toHaveBeenCalledWith('project-1')
+      expect(result).toBe(true)
+    })
+
+    it('should switch away from current project before deleting', async () => {
+      // project-2 is current per mock
+      const result = await projectManager.deleteProject('project-2')
+      
+      expect(mockPersistentStore.setLastActiveProject).toHaveBeenCalledWith('project-1') // switch to other project first
+      expect(mockPersistentStore.deleteProject).toHaveBeenCalledWith('project-2')
+      expect(result).toBe(true)
+    })
+
+    it('should throw error for non-existent project', async () => {
+      await expect(projectManager.deleteProject('non-existent')).rejects.toThrow('Project with id non-existent not found')
+      expect(mockPersistentStore.deleteProject).not.toHaveBeenCalled()
+    })
+
+    it('should throw error when trying to delete last project', async () => {
+      mockPersistentStore.loadProjects = vi.fn().mockResolvedValue([mockProjects[0]]) // only one project
+      
+      await expect(projectManager.deleteProject('project-1')).rejects.toThrow('Cannot delete the last remaining project')
+      expect(mockPersistentStore.deleteProject).not.toHaveBeenCalled()
+    })
+
+    it('should throw error on deletion failure', async () => {
+      mockPersistentStore.deleteProject = vi.fn().mockRejectedValue(new Error('Storage error'))
+      
+      await expect(projectManager.deleteProject('project-1')).rejects.toThrow('Failed to delete project')
+    })
+  })
+
+  describe('canDeleteProject', () => {
+    it('should return true when multiple projects exist', async () => {
+      const result = await projectManager.canDeleteProject('project-1')
+      expect(result).toBe(true)
+    })
+
+    it('should return false when only one project exists', async () => {
+      mockPersistentStore.loadProjects = vi.fn().mockResolvedValue([mockProjects[0]])
+      
+      const result = await projectManager.canDeleteProject('project-1')
+      expect(result).toBe(false)
+    })
+
+    it('should return false for non-existent project', async () => {
+      const result = await projectManager.canDeleteProject('non-existent')
+      expect(result).toBe(false)
+    })
+
+    it('should return false for empty project ID', async () => {
+      const result = await projectManager.canDeleteProject('')
+      expect(result).toBe(false)
+    })
+
+    it('should return false on error', async () => {
+      mockPersistentStore.loadProjects = vi.fn().mockRejectedValue(new Error('Storage error'))
+      
+      const result = await projectManager.canDeleteProject('project-1')
+      expect(result).toBe(false)
     })
   })
 })
