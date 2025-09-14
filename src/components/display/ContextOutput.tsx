@@ -36,10 +36,16 @@ export const ContextOutput: React.FC<ContextOutputProps> = ({
         // Only handle if the context output area is focused or clicked
         const container = containerRef.current;
         if (container && (container.contains(document.activeElement) || container === document.activeElement)) {
-          event.preventDefault();
-          if (context) {
+          // Check if there's any text selected
+          const selection = window.getSelection();
+          const hasTextSelection = selection && selection.toString().length > 0;
+          
+          // Only handle if NO text is selected
+          if (!hasTextSelection && context) {
+            event.preventDefault();
             handleCopy();
           }
+          // If text IS selected, let browser handle it naturally (don't preventDefault)
         }
       }
     };
