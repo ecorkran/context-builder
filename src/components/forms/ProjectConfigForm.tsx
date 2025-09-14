@@ -40,6 +40,28 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
     }
   });
 
+  // Sync with parent data only on initial load (prevent overwriting user input)
+  const [isInitialized, setIsInitialized] = useState(false);
+  
+  useEffect(() => {
+    if (initialData && !isInitialized) {
+      setFormData({
+        name: initialData.name || '',
+        template: initialData.template || '',
+        slice: initialData.slice || '',
+        instruction: initialData.instruction || 'implementation',
+        workType: initialData.workType || 'continue',
+        isMonorepo: initialData.isMonorepo || false,
+        customData: {
+          recentEvents: initialData.customData?.recentEvents || '',
+          additionalNotes: initialData.customData?.additionalNotes || '',
+          monorepoNote: initialData.customData?.monorepoNote || ''
+        }
+      });
+      setIsInitialized(true);
+    }
+  }, [initialData, isInitialized]);
+
   // Call onChange when form data changes  
   useEffect(() => {
     onChange?.(formData);
