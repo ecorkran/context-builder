@@ -98,63 +98,63 @@ The implementation leverages existing robust infrastructure:
 ### Task 2: Interim Project Selection UI  
 **Effort: 2/5**
 
-- [ ] **Task 2.1: Create Basic ProjectSelector Component**
+- [x] **Task 2.1: Create Basic ProjectSelector Component**
   - Create `src/components/project/ProjectSelector.tsx`
   - Import existing Select, Button components from manta-templates
   - Define ProjectSelectorProps interface with required callbacks
   - Create component structure with Select + New/Delete buttons
   - **Success:** Component renders with existing manta-templates styling
 
-- [ ] **Task 2.2: Implement Project Selection Dropdown**
-  - [ ] **2.2.1: Create project list for Select component**
+- [x] **Task 2.2: Implement Project Selection Dropdown**
+  - [x] **2.2.1: Create project list for Select component**
     - Map projects array to SelectItem components
     - Display project name with last modified info
     - Handle empty project list state
     - Show current project as selected value
     - **Success:** Select dropdown shows all projects with metadata
   
-  - [ ] **2.2.2: Handle project selection changes**
+  - [x] **2.2.2: Handle project selection changes**
     - Connect Select onValueChange to onProjectSwitch callback
     - Pass selected project ID to parent component
     - Add loading state during project switching
     - **Success:** Selecting projects from dropdown triggers switch logic
   
-  - [ ] **2.2.3: Add project selection feedback**
+  - [x] **2.2.3: Add project selection feedback**
     - Show visual indicator for currently selected project
     - Add subtle loading indicator during switches
     - Handle selection of already-current project gracefully
     - **Success:** User receives clear feedback about project selection state
 
-- [ ] **Task 2.3: Implement Project Management Buttons**
-  - [ ] **2.3.1: Add New Project button**
+- [x] **Task 2.3: Implement Project Management Buttons**
+  - [x] **2.3.1: Add New Project button**
     - Create Button with "+" text and appropriate styling
     - Connect click handler to onProjectCreate callback
     - Add visual feedback (disable during creation)
     - Position button next to Select component
     - **Success:** "+" button creates projects and provides user feedback
   
-  - [ ] **2.3.2: Add Delete Project button**  
+  - [x] **2.3.2: Add Delete Project button**  
     - Create Button with "×" text and warning styling
     - Connect click handler to onProjectDelete callback
     - Only show when multiple projects exist
     - Add confirmation dialog for destructive action
     - **Success:** "×" button safely removes projects with confirmation
   
-  - [ ] **2.3.3: Layout buttons with Select component**
+  - [x] **2.3.3: Layout buttons with Select component**
     - Arrange Select and buttons in horizontal layout
     - Use consistent spacing and alignment
     - Ensure responsive behavior on narrow screens
     - Match existing form styling patterns
     - **Success:** Components layout cleanly within existing form structure
 
-- [ ] **Task 2.4: Add ProjectSelector Integration Points**
-  - [ ] **2.4.1: Create component prop interface**
+- [x] **Task 2.4: Add ProjectSelector Integration Points**
+  - [x] **2.4.1: Create component prop interface**
     - Define all required callback props clearly
     - Add optional props for customization
     - Include TypeScript types for all props
     - **Success:** Component interface is complete and type-safe
   
-  - [ ] **2.4.2: Add error handling props**
+  - [x] **2.4.2: Add error handling props**
     - Add error state prop for displaying errors
     - Add loading state prop for operation feedback
     - Add disabled state prop for preventing interactions
