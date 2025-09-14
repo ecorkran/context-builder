@@ -21,13 +21,13 @@ Phase 1 focuses on automatic persistence without any UI changes. Phase 2 (future
 ### Task 1: Create App State Types and Interfaces
 **Effort: 1/5**
 
-- [ ] **Task 1.1: Create AppState Type Definition**
+- [x] **Task 1.1: Create AppState Type Definition**
   - Create `src/services/storage/types/AppState.ts`
   - Define AppState interface with lastActiveProjectId, windowBounds, panelSizes, appVersion, lastOpened
   - Export all types for use in storage services
   - **Success:** TypeScript types compile without errors
 
-- [ ] **Task 1.2: Extend ProjectData Type**
+- [x] **Task 1.2: Extend ProjectData Type**
   - Update `src/services/storage/types/ProjectData.ts` if needed
   - Ensure all form fields are captured in ProjectData interface
   - Add any missing fields (availableTools, recentEvents, etc.)
