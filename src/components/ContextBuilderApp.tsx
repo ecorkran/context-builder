@@ -76,7 +76,7 @@ export const ContextBuilderApp: React.FC = () => {
         if (projects.length === 0) {
           // Create default project for first-time users
           const defaultProject = {
-            id: `project_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+            id: `project_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
             name: 'My Project',
             template: '',
             slice: '',
@@ -97,7 +97,11 @@ export const ContextBuilderApp: React.FC = () => {
             instruction: defaultProject.instruction,
             workType: defaultProject.workType,
             isMonorepo: defaultProject.isMonorepo,
-            customData: defaultProject.customData,
+            customData: {
+              recentEvents: '',
+              additionalNotes: '',
+              monorepoNote: ''
+            },
           });
         } else {
           // Restore last active project
@@ -112,7 +116,11 @@ export const ContextBuilderApp: React.FC = () => {
             instruction: activeProject.instruction,
             workType: activeProject.workType,
             isMonorepo: activeProject.isMonorepo,
-            customData: activeProject.customData,
+            customData: {
+              recentEvents: activeProject.customData?.recentEvents || '',
+              additionalNotes: activeProject.customData?.additionalNotes || '',
+              monorepoNote: activeProject.customData?.monorepoNote || ''
+            },
           });
         }
       } catch (error) {
@@ -151,7 +159,7 @@ export const ContextBuilderApp: React.FC = () => {
     setFormData(data);
   }, []);
 
-  const handleCreateProject = useCallback(async (data: CreateProjectData) => {
+  const handleCreateProject = useCallback(async () => {
     // This is now handled by auto-save - keeping for form compatibility
     console.log('Project auto-saved via persistence layer');
   }, []);

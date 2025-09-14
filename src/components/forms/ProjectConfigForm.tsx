@@ -36,12 +36,11 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
     customData: {
       recentEvents: initialData?.customData?.recentEvents || '',
       additionalNotes: initialData?.customData?.additionalNotes || '',
-      monorepoNote: initialData?.customData?.monorepoNote || '',
-      availableTools: initialData?.customData?.availableTools || ''
+      monorepoNote: initialData?.customData?.monorepoNote || ''
     }
   });
 
-  // Call onChange when form data changes
+  // Call onChange when form data changes  
   useEffect(() => {
     onChange?.(formData);
   }, [formData, onChange]);

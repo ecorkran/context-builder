@@ -37,4 +37,4 @@ export type CreateProjectData = Omit<ProjectData, 'id' | 'createdAt' | 'updatedA
 /**
  * Type for updating an existing project (partial updates allowed)
  */
-export type UpdateProjectData = Partial<Pick<ProjectData, 'name' | 'template' | 'slice' | 'instruction' | 'isMonorepo' | 'customData'>>;
+export type UpdateProjectData = Partial<Pick<ProjectData, 'name' | 'template' | 'slice' | 'instruction' | 'workType' | 'isMonorepo' | 'customData'>>;
