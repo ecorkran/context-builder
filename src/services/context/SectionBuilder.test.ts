@@ -129,6 +129,34 @@ describe('SectionBuilder', () => {
       expect(result).toBe('Project is configured as a monorepo. Working in package: react, Slice: test-slice');
     });
 
+    it('should append custom monorepo note when provided', () => {
+      const data = createMockData();
+      data.isMonorepo = true;
+      data.customData = {
+        ...data.customData,
+        monorepoNote: 'Custom monorepo structure notes here\nWith multiple lines'
+      };
+      
+      const result = sectionBuilder.buildMonorepoSection(data);
+      
+      expect(result).toContain('Monorepo project: react, Slice: test-slice');
+      expect(result).toContain('Custom monorepo structure notes here');
+      expect(result).toContain('With multiple lines');
+    });
+
+    it('should not append empty custom monorepo note', () => {
+      const data = createMockData();
+      data.isMonorepo = true;
+      data.customData = {
+        ...data.customData,
+        monorepoNote: '   '  // Only whitespace
+      };
+      
+      const result = sectionBuilder.buildMonorepoSection(data);
+      
+      expect(result).toBe('Monorepo project: react, Slice: test-slice');
+    });
+
     it('should handle errors gracefully', () => {
       vi.mocked(mockStatementManager.getStatement).mockImplementation(() => {
         throw new Error('Statement error');

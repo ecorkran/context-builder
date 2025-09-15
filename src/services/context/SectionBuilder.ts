@@ -91,11 +91,20 @@ export class SectionBuilder {
     try {
       const monorepoStatement = this.statementManager.getStatement('monorepo-statement');
       
+      let baseStatement: string;
       if (!monorepoStatement) {
-        return `Project is configured as a monorepo. Working in package: ${data.template}, Slice: ${data.slice}`;
+        baseStatement = `Project is configured as a monorepo. Working in package: ${data.template}, Slice: ${data.slice}`;
+      } else {
+        baseStatement = this.templateProcessor.processTemplate(monorepoStatement, data);
       }
       
-      return this.templateProcessor.processTemplate(monorepoStatement, data);
+      // Append custom monorepo note if provided
+      const customNote = data.customData?.monorepoNote;
+      if (customNote && customNote.trim()) {
+        return `${baseStatement}\n\n${customNote.trim()}`;
+      }
+      
+      return baseStatement;
     } catch (error) {
       console.error('Error building monorepo section:', error);
       return '';
