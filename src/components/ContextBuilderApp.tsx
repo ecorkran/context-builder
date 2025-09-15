@@ -219,7 +219,7 @@ export const ContextBuilderApp: React.FC = () => {
     }
   }, [projectManager, currentProjectId]);
 
-  const handleProjectCreate = useCallback(async () => {
+  const handleNewProjectCreate = useCallback(async () => {
     if (!projectManager) return;
     
     setLoading(true);
@@ -231,11 +231,11 @@ export const ContextBuilderApp: React.FC = () => {
       setProjects(updatedProjects);
       setCurrentProjectId(newProject.id);
       
-      // Clear form and populate with new project defaults
-      setFormData({
+      // Populate new project with current form template/slice for immediate preview
+      const newFormData = {
         name: newProject.name,
-        template: newProject.template,
-        slice: newProject.slice,
+        template: formData.template || '',  // Inherit from current project
+        slice: formData.slice || '',        // Inherit from current project
         instruction: newProject.instruction,
         workType: newProject.workType,
         isMonorepo: newProject.isMonorepo,
@@ -245,14 +245,30 @@ export const ContextBuilderApp: React.FC = () => {
           monorepoNote: '',
           availableTools: ''
         },
-      });
+      };
+      
+      setFormData(newFormData);
+      
+      // Update the project with inherited values for immediate save
+      if (formData.template || formData.slice) {
+        setTimeout(async () => {
+          try {
+            await projectManager.persistentStore.updateProject(newProject.id, {
+              template: formData.template,
+              slice: formData.slice
+            });
+          } catch (error) {
+            console.error('Failed to update new project with inherited values:', error);
+          }
+        }, 100);
+      }
     } catch (error) {
       console.error('Failed to create project:', error);
       setMultiProjectError(`Failed to create project: ${error instanceof Error ? error.message : String(error)}`);
     } finally {
       setLoading(false);
     }
-  }, [projectManager]);
+  }, [projectManager, formData.template, formData.slice]);
 
   const handleProjectDelete = useCallback(async (projectId: string) => {
     if (!projectManager || projects.length <= 1) return;
@@ -304,20 +320,35 @@ export const ContextBuilderApp: React.FC = () => {
           onChange={handleFormChange}
           onSubmit={handleCreateProject}
           customProjectNameField={
-            <div>
-              <label className="block text-sm font-medium text-neutral-11 mb-2">
-                Project
-              </label>
-              <ProjectSelector
-                projects={projects}
-                currentProjectId={currentProjectId}
-                loading={loading}
-                error={multiProjectError}
-                disabled={loading}
-                onProjectSwitch={handleProjectSwitch}
-                onProjectCreate={handleProjectCreate}
-                onProjectDelete={handleProjectDelete}
-              />
+            <div className="space-y-3">
+              <div>
+                <label className="block text-sm font-medium text-neutral-11 mb-2">
+                  Project
+                </label>
+                <ProjectSelector
+                  projects={projects}
+                  currentProjectId={currentProjectId}
+                  loading={loading}
+                  error={multiProjectError}
+                  disabled={loading}
+                  onProjectSwitch={handleProjectSwitch}
+                  onProjectCreate={handleNewProjectCreate}
+                  onProjectDelete={handleProjectDelete}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-neutral-11 mb-2">
+                  Project Name
+                </label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => handleFormChange({ ...formData, name: e.target.value })}
+                  className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
+                  placeholder="Enter project name..."
+                  disabled={loading}
+                />
+              </div>
             </div>
           }
         />
