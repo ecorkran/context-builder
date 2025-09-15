@@ -58,7 +58,9 @@ export function ProjectSelector({
             <SelectValue 
               placeholder="Select project..."
               className="text-left"
-            />
+            >
+              {currentProject?.name || "Select project..."}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {projects.map((project) => (
