@@ -43,30 +43,32 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
     }
   });
 
-  // Sync with parent data only when we have meaningful data to load
-  const [isInitialized, setIsInitialized] = useState(false);
-  
   useEffect(() => {
-    // Only initialize if we have initialData with actual content (not just empty defaults)
-    if (initialData && !isInitialized && (initialData.name || initialData.slice)) {
-      console.log('ProjectConfigForm: Initializing with data:', initialData);
-      setFormData({
-        name: initialData.name || '',
-        template: initialData.template || '',
-        slice: initialData.slice || '',
-        instruction: initialData.instruction || 'implementation',
-        workType: initialData.workType || 'continue',
-        isMonorepo: initialData.isMonorepo || false,
-        customData: {
-          recentEvents: initialData.customData?.recentEvents || '',
-          additionalNotes: initialData.customData?.additionalNotes || '',
-          monorepoNote: initialData.customData?.monorepoNote || '',
-          availableTools: initialData.customData?.availableTools || ''
+    if (initialData) {
+      setFormData(prev => {
+        // Only update if the data actually changed
+        if (prev.name !== initialData.name || 
+            prev.isMonorepo !== initialData.isMonorepo ||
+            prev.template !== initialData.template) {
+          return {
+            name: initialData.name || '',
+            template: initialData.template || '',
+            slice: initialData.slice || '',
+            instruction: initialData.instruction || 'implementation',
+            workType: initialData.workType || 'continue',
+            isMonorepo: initialData.isMonorepo || false,
+            customData: {
+              recentEvents: initialData.customData?.recentEvents || '',
+              additionalNotes: initialData.customData?.additionalNotes || '',
+              monorepoNote: initialData.customData?.monorepoNote || '',
+              availableTools: initialData.customData?.availableTools || ''
+            }
+          };
         }
+        return prev;
       });
-      setIsInitialized(true);
     }
-  }, [initialData, isInitialized]);
+  }, [initialData]);
 
   // Call onChange when form data changes  
   useEffect(() => {

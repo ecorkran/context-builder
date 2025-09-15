@@ -124,7 +124,7 @@ export const ContextBuilderApp: React.FC = () => {
           });
         } else {
           // Restore last active project
-          const activeProject = projectManager.getCurrentProject() || allProjects[0];
+          const activeProject = await projectManager.getCurrentProject() || allProjects[0];
           
           setCurrentProjectId(activeProject.id);
           const restoredFormData = {
@@ -205,6 +205,10 @@ export const ContextBuilderApp: React.FC = () => {
     
     try {
       const switchedProject = await projectManager.switchToProject(projectId);
+      if (!switchedProject) {
+        throw new Error('Failed to get project data after switch');
+      }
+      
       setCurrentProjectId(projectId);
       
       // Update form with switched project data
@@ -222,6 +226,8 @@ export const ContextBuilderApp: React.FC = () => {
           availableTools: switchedProject.customData?.availableTools || ''
         },
       });
+      
+      console.log('ContextBuilderApp: Switched to project:', switchedProject.name, 'Template:', switchedProject.template, 'Monorepo:', switchedProject.isMonorepo);
     } catch (error) {
       console.error('Failed to switch project:', error);
       setMultiProjectError(`Failed to switch project: ${error instanceof Error ? error.message : String(error)}`);
