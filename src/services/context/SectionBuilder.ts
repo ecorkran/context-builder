@@ -152,8 +152,8 @@ export class SectionBuilder {
       // Always include project name
       infoLines.push(`  project: ${data.projectName}`);
       
-      // Include template if present (monorepo projects)
-      if (data.template && data.template !== 'default') {
+      // Include template only for monorepo projects
+      if (data.isMonorepo && data.template && data.template !== 'default') {
         infoLines.push(`  template: ${data.template}`);
       }
       

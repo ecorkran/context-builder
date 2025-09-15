@@ -76,7 +76,7 @@ describe('SectionBuilder', () => {
       
       expect(result).toContain('The following tools and MCP servers are available');
       // Template should process {project} as projectName
-      expect(result).toContain('Tools available for {project}'); // Raw template, not processed
+      expect(result).toContain('Tools available for test-project');
       expect(result).toContain('Available MCP servers: context7');
     });
 
@@ -148,8 +148,8 @@ describe('SectionBuilder', () => {
       const result = await sectionBuilder.buildInstructionSection(data);
       
       expect(result).toContain('Current development phase:');
-      // Template should have raw template variables
-      expect(result).toContain('Implementing {slice} in {project}');
+      // Template should be processed with actual values
+      expect(result).toContain('Implementing test-slice in test-project');
     });
 
     it('should use custom instruction for unknown types', async () => {
@@ -431,6 +431,16 @@ describe('SectionBuilder', () => {
       expect(result).toBe(`{\n  project: test-project,\n  slice: test-slice,\n  monorepo: false\n}`);
     });
 
+    it('should exclude template when isMonorepo is false even if template has value', async () => {
+      const data = createMockData();
+      data.template = 'react-vite';  // Has template value
+      data.isMonorepo = false;       // But monorepo is false
+      
+      const result = await sectionBuilder.buildProjectInfoSection(data);
+      
+      expect(result).toBe(`{\n  project: test-project,\n  slice: test-slice,\n  monorepo: false\n}`);
+    });
+
     it('should show slice as null when empty', async () => {
       const data = createMockData();
       data.slice = '';
@@ -447,7 +457,7 @@ describe('SectionBuilder', () => {
       
       const result = await sectionBuilder.buildProjectInfoSection(data);
       
-      expect(result).toBe(`{\n  project: unknown\n}`);
+      expect(result).toBe(`{\n  project: undefined,\n  slice: test-slice,\n  monorepo: false\n}`);
     });
   });
 });
