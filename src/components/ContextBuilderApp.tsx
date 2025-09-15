@@ -180,6 +180,17 @@ export const ContextBuilderApp: React.FC = () => {
     setFormData(data);
   }, []);
 
+  // Update project name in the projects list
+  const updateProjectName = useCallback(() => {
+    if (currentProjectId) {
+      setProjects(prev => prev.map(project => 
+        project.id === currentProjectId 
+          ? { ...project, name: formData.name }
+          : project
+      ));
+    }
+  }, [currentProjectId, formData.name]);
+
   const handleCreateProject = useCallback(async () => {
     // This is now handled by auto-save - keeping for form compatibility
     console.log('Project auto-saved via persistence layer');
@@ -344,6 +355,12 @@ export const ContextBuilderApp: React.FC = () => {
                   type="text"
                   value={formData.name}
                   onChange={(e) => handleFormChange({ ...formData, name: e.target.value })}
+                  onBlur={updateProjectName}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      updateProjectName();
+                    }
+                  }}
                   className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
                   placeholder="Enter project name..."
                   disabled={loading}
