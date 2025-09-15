@@ -26,7 +26,7 @@ const checkboxVariants = cva(
 );
 
 const checkboxIndicatorVariants = cva(
-  "flex items-center justify-center te  xt-current",
+  "flex items-center justify-center text-current",
   {
     variants: {
       uiSize: {
@@ -80,13 +80,21 @@ const Checkbox = React.forwardRef<
 
   if (label || description) {
     return (
-      <div className="flex gap-x-0.5">
+      <div className="flex items-start space-x-2">
         {checkbox}
-        <div className="grid gap-1.5 leading-none mt-0.25">
+        <div className="grid gap-1.5 leading-none">
           {label && (
-            <label
+              <label
               htmlFor={checkboxId}
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+              className="text-sm font-medium leading-none 
+peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+              onClick={(e) => {
+                // Fallback for Electron if htmlFor doesn't work
+                if (!props.disabled) {
+                  e.preventDefault();
+                  props.onCheckedChange?.(!props.checked);
+                }
+              }}
             >
               {label}
             </label>
