@@ -9,7 +9,6 @@ import {
 } from '../../lib/ui-core/components/form/select';
 import { Checkbox } from '../../lib/ui-core/components/form/checkbox';
 import { CreateProjectData } from '../../services/storage/types/ProjectData';
-import { SelectSeparator } from '@radix-ui/react-select';
 
 interface ProjectConfigFormProps {
   initialData?: CreateProjectData;
@@ -161,7 +160,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
             value={formData.customData?.availableTools || ''}
             onChange={(e) => handleCustomDataChange('availableTools', e.target.value)}
             placeholder="List available tools (e.g., context7, Radix)"
-            className="w-full px-3 py-2 text-sm border border-neutral-6 rounded-md bg-neutral-1 text-neutral-12 placeholder-neutral-9 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y min-h-[2.5rem]"
+            className="w-full px-3 py-2 text-sm border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 placeholder-neutral-9 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-y min-h-[2.5rem]"
             rows={1}
           />
         </div>
