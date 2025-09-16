@@ -9,6 +9,7 @@ import {
 } from '../../lib/ui-core/components/form/select';
 import { Checkbox } from '../../lib/ui-core/components/form/checkbox';
 import { CreateProjectData } from '../../services/storage/types/ProjectData';
+import { SelectSeparator } from '@radix-ui/react-select';
 
 interface ProjectConfigFormProps {
   initialData?: CreateProjectData;
@@ -178,11 +179,25 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
               <SelectValue placeholder="Select development phase..." />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="planning">Planning</SelectItem>
-              <SelectItem value="implementation">Implementation</SelectItem>
-              <SelectItem value="debugging">Debugging</SelectItem>
-              <SelectItem value="testing">Testing</SelectItem>
-              <SelectItem value="custom">Custom</SelectItem>
+              <SelectItem value="concept">Phase 1: Concept</SelectItem>
+              <SelectItem value="spec-creation">Phase 2: Spec Creation</SelectItem>
+              <SelectItem value="slice-planning">Phase 3: Slice Planning</SelectItem>
+              <SelectItem value="slice-design">Phase 4: Slice Design</SelectItem>
+              <SelectItem value="task-breakdown">Phase 5: Task Breakdown</SelectItem>
+              <SelectItem value="task-breakdown-x">Phase 5: Task Breakdown - Explicit Follow</SelectItem>
+              <SelectItem value="task-expansion">Phase 6: Task Expansion</SelectItem>
+              <SelectItem value="implementation">Phase 7: Implementation</SelectItem>
+              <SelectSeparator></SelectSeparator>
+
+              <SelectItem value="feature-design">Feature Design</SelectItem>
+              <SelectItem value="ad-hoc-tasks">Ad-Hoc Tasks</SelectItem>
+              <SelectSeparator></SelectSeparator>
+
+              <SelectItem value="analyze-codebase">Analyze Codebase</SelectItem>
+              <SelectItem value="analyze-processing">Analyze Processing</SelectItem>
+              <SelectItem value="analyze-lld">Analyze LLD</SelectItem>
+              <SelectItem value="analyze-tasks">Analyze Tasks</SelectItem>
+              <SelectItem value="analyze-implementation">Analyze Implementation</SelectItem>
             </SelectContent>
           </Select>
         </div>

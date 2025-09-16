@@ -34,13 +34,22 @@ export interface InstructionMapping {
  * Configuration for instruction type mappings
  */
 export const INSTRUCTION_MAPPING: InstructionMapping = {
-  'planning': 'Slice Planning (Phase 3)',
-  'implementation': 'Slice | Feature Implementation (Phase 7)',
-  'debugging': 'Analysis Task Implementation',
+  'concept': 'Concept Creation (Phase 1)',
   'spec-creation': 'Spec Creation (Phase 2)',
+  'slice-planning': 'Slice Planning (Phase 3)',
   'slice-design': 'Slice Design (Phase 4)',
   'task-breakdown': 'Slice | Feature Task Breakdown (Phase 5)',
-  'task-expansion': 'Slice Task Expansion (Phase 6)'
+  'task-breakdown-x': 'Slice | Feature Task Breakdown - Explicit Follow (Phase 5 - Extra)',
+  'task-expansion': 'Slice Task Expansion (Phase 6)',
+  'implementation': 'Slice | Feature Implementation (Phase 7)',
+  
+  'feature-design': 'Feature Design',
+  'ad-hoc-tasks': 'Ad-Hoc Tasks',
+  'analyze-codebase': 'Analyze Codebase',
+  'analyze-processing': 'Analyze Processing',
+  'analyze-lld': 'Analysis to LLD',
+  'analyze-tasks': 'Analysis Task Creation',  
+  'analyze-implementation': 'Analysis Task Implementation',
 };
 
 /**
