@@ -187,11 +187,11 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
               <SelectItem value="task-breakdown-x">Phase 5: Task Breakdown - Explicit Follow</SelectItem>
               <SelectItem value="task-expansion">Phase 6: Task Expansion</SelectItem>
               <SelectItem value="implementation">Phase 7: Implementation</SelectItem>
-              <SelectSeparator></SelectSeparator>
+              <div className="border-t border-neutral-6 my-1 mx-2" />
 
               <SelectItem value="feature-design">Feature Design</SelectItem>
               <SelectItem value="ad-hoc-tasks">Ad-Hoc Tasks</SelectItem>
-              <SelectSeparator></SelectSeparator>
+              <div className="border-t border-neutral-6 my-1 mx-2" />
 
               <SelectItem value="analyze-codebase">Analyze Codebase</SelectItem>
               <SelectItem value="analyze-processing">Analyze Processing</SelectItem>
