@@ -3,6 +3,7 @@ import { ContextSection, ContextTemplate } from './types/ContextSection';
 import { SystemPromptParser } from './SystemPromptParser';
 import { StatementManager } from './StatementManager';
 import { SectionBuilder } from './SectionBuilder';
+import { TemplateProcessor } from './TemplateProcessor';
 import { createSystemPromptParser, createStatementManager } from './ServiceFactory';
 
 // Fallback template for error scenarios
@@ -20,6 +21,7 @@ export class ContextTemplateEngine {
   private promptParser: SystemPromptParser | any; // Could be IPC or direct implementation
   private statementManager: StatementManager | any; // Could be IPC or direct implementation
   private sectionBuilder: SectionBuilder;
+  private templateProcessor: TemplateProcessor;
   private enableNewEngine: boolean = true;
 
   constructor(
@@ -30,6 +32,7 @@ export class ContextTemplateEngine {
     this.promptParser = promptParser || createSystemPromptParser();
     this.statementManager = statementManager || createStatementManager();
     this.sectionBuilder = sectionBuilder || new SectionBuilder(this.statementManager, this.promptParser);
+    this.templateProcessor = new TemplateProcessor();
   }
 
   /**
@@ -211,32 +214,11 @@ export class ContextTemplateEngine {
   }
 
   /**
-   * Replace template variables in content
+   * Replace template variables in content using enhanced TemplateProcessor
    */
   private replaceTemplateVariables(content: string, data: EnhancedContextData): string {
-    let result = content;
-
-    // Replace basic variables
-    result = result.replace(/{{projectName}}/g, data.projectName || '');
-    result = result.replace(/{{template}}/g, data.template || '');
-    result = result.replace(/{{slice}}/g, data.slice || '');
-    result = result.replace(/{{instruction}}/g, data.instruction || '');
-    result = result.replace(/{{isMonorepo}}/g, data.isMonorepo ? 'Yes' : 'No');
-
-    // Replace array variables
-    if (data.availableTools) {
-      result = result.replace(/{{availableTools}}/g, data.availableTools.join(', '));
-    }
-    if (data.mcpServers) {
-      result = result.replace(/{{mcpServers}}/g, data.mcpServers.join(', '));
-    }
-
-    // Also handle single-brace format for compatibility with prompt files
-    result = result.replace(/\{project\}/g, data.projectName || '');
-    result = result.replace(/\{slice\}/g, data.slice || '');
-    result = result.replace(/\{tool\}/g, data.template || '');
-
-    return result;
+    // Use the enhanced TemplateProcessor which handles slice parsing and all template variables
+    return this.templateProcessor.processTemplate(content, data);
   }
 
   /**
