@@ -4,20 +4,23 @@ import { ContextData } from './types/ContextData';
 describe('TemplateProcessor', () => {
   let processor: TemplateProcessor;
   
+  const createMockData = (overrides?: Partial<ContextData>): ContextData => ({
+    projectName: 'Test Project',
+    template: 'react-nextjs',
+    slice: 'foundation',
+    instruction: 'implementation',
+    isMonorepo: false,
+    recentEvents: 'Added user authentication',
+    additionalNotes: 'Focus on security',
+    ...overrides
+  });
+  
   beforeEach(() => {
     processor = new TemplateProcessor();
   });
 
   describe('processTemplate', () => {
-    const mockContextData: ContextData = {
-      projectName: 'Test Project',
-      template: 'react-nextjs',
-      slice: 'foundation',
-      instruction: 'implementation',
-      isMonorepo: false,
-      recentEvents: 'Added user authentication',
-      additionalNotes: 'Focus on security'
-    };
+    const mockContextData = createMockData();
 
     it('should replace simple variables correctly', () => {
       const template = 'Project: {{projectName}}, Template: {{template}}';
@@ -61,19 +64,82 @@ Recent: {{recentEvents}}`;
     });
 
     it('should handle empty values', () => {
-      const emptyData: ContextData = {
+      const emptyData = createMockData({
         projectName: '',
         template: '',
         slice: '',
-        instruction: '',
-        isMonorepo: false,
         recentEvents: '',
         additionalNotes: ''
-      };
+      });
 
       const template = 'Name: {{projectName}}, Events: {{recentEvents}}';
       const result = processor.processTemplate(template, emptyData);
       expect(result).toBe('Name: , Events: ');
+    });
+
+    describe('Enhanced template processing', () => {
+      it('should parse slice into sliceindex and slicename', () => {
+        const data = createMockData({ slice: '025-slice.combo-box' });
+        
+        const template = 'Tasks: {sliceindex}-tasks.{slicename}.md';
+        
+        const result = processor.processTemplate(template, data);
+        
+        expect(result).toBe('Tasks: 025-tasks.combo-box.md');
+      });
+
+      it('should handle template variable substitution', () => {
+        const data = createMockData({ template: 'templates/react' });
+        
+        const template = 'Use project-artifacts/{template}/ for files';
+        
+        const result = processor.processTemplate(template, data);
+        
+        expect(result).toBe('Use project-artifacts/templates/react/ for files');
+      });
+
+      it('should work with complex slice names', () => {
+        const data = createMockData({ slice: '100-slice.multi-word-component' });
+        
+        const template = 'File: {sliceindex}-tasks.{slicename}.md';
+        
+        const result = processor.processTemplate(template, data);
+        
+        expect(result).toBe('File: 100-tasks.multi-word-component.md');
+      });
+
+      it('should handle slice that does not match pattern', () => {
+        const data = createMockData({ slice: 'invalid-slice-format' });
+        
+        const template = 'Tasks: {sliceindex}-{slicename}';
+        
+        const result = processor.processTemplate(template, data);
+        
+        expect(result).toBe('Tasks: sliceindex-slicename'); // Should leave as-is
+      });
+
+      it('should handle real-world context initialization template', () => {
+        const data = createMockData({ 
+          projectName: 'manta-templates',
+          slice: '025-slice.combo-box',
+          template: 'templates/react'
+        });
+        
+        const template = `Current work context:
+- Project: {project}
+- Current slice: {slice}
+- Current slice design: private/slices/{slice}.md
+- Current tasks: private/tasks/{sliceindex}-tasks.{slicename}.md
+- Monorepo Template Development: Use \`project-artifacts/{template}/\` for project-specific files`;
+        
+        const result = processor.processTemplate(template, data);
+        
+        expect(result).toContain('Project: manta-templates');
+        expect(result).toContain('Current slice: 025-slice.combo-box');
+        expect(result).toContain('private/slices/025-slice.combo-box.md');
+        expect(result).toContain('private/tasks/025-tasks.combo-box.md');
+        expect(result).toContain('project-artifacts/templates/react/');
+      });
     });
 
     it('should handle invalid template syntax gracefully', () => {

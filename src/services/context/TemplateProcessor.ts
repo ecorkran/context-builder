@@ -20,10 +20,13 @@ export class TemplateProcessor {
       // First handle boolean conditionals: {{#if isMonorepo}}Yes{{else}}No{{/if}}
       processed = this.processBooleanConditionals(processed, data);
 
+      // Create enhanced data with computed variables
+      const enhancedData = this.createEnhancedData(data);
+
       // Then replace simple variables: {{variableName}} and {variableName}
       // First handle double brace format: {{variableName}}
       processed = processed.replace(/\{\{(\w+)\}\}/g, (match, variableName) => {
-        const value = (data as any)[variableName];
+        const value = (enhancedData as any)[variableName];
         if (value !== undefined && value !== null) {
           return String(value);
         }
@@ -40,7 +43,7 @@ export class TemplateProcessor {
           const parts = expression.split(' | ').map(part => part.trim());
           // Use the first part as the primary variable name
           const primaryVar = parts[0];
-          const value = (data as any)[primaryVar];
+          const value = (enhancedData as any)[primaryVar];
           if (value !== undefined && value !== null) {
             return String(value);
           }
@@ -56,7 +59,7 @@ export class TemplateProcessor {
           variableName = 'projectName';
         }
         
-        const value = (data as any)[variableName];
+        const value = (enhancedData as any)[variableName];
         if (value !== undefined && value !== null) {
           return String(value);
         }
@@ -72,6 +75,26 @@ export class TemplateProcessor {
       // Return original template with error message rather than failing
       return `${template}\n\n[Error processing template: ${error}]`;
     }
+  }
+
+  /**
+   * Creates enhanced data with computed variables from the original data
+   * @param data Original context data
+   * @returns Enhanced data with slice parsing and template computations
+   */
+  private createEnhancedData(data: ContextData): any {
+    const enhanced = { ...data };
+
+    // Parse slice into sliceindex and slicename
+    if (data.slice) {
+      const sliceMatch = data.slice.match(/^(\d+)-slice\.(.+)$/);
+      if (sliceMatch) {
+        enhanced.sliceindex = sliceMatch[1];
+        enhanced.slicename = sliceMatch[2];
+      }
+    }
+
+    return enhanced;
   }
 
   /**
