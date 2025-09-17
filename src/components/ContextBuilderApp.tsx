@@ -2,7 +2,6 @@ import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { SplitPaneLayout } from './layout/SplitPaneLayout';
 import { ProjectConfigForm } from './forms/ProjectConfigForm';
 import { ContextOutput } from './display/ContextOutput';
-import { ProjectSelector } from './project/ProjectSelector';
 import { PersistentProjectStore } from '../services/storage/PersistentProjectStore';
 import { CreateProjectData, ProjectData } from '../services/storage/types/ProjectData';
 import { ProjectManager } from '../services/project/ProjectManager';
@@ -92,19 +91,6 @@ export const ContextBuilderApp: React.FC = () => {
         
         if (allProjects.length === 0) {
           // Create default project for first-time users
-          const defaultProject = {
-            id: `project_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
-            name: 'My Project',
-            template: '',
-            slice: '',
-            instruction: 'implementation' as const,
-            workType: 'continue' as const,
-            isMonorepo: false,
-            customData: {},
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-          };
-          
           const newProject = await projectManager.createNewProject();
           setProjects([newProject]);
           setCurrentProjectId(newProject.id);
@@ -270,7 +256,7 @@ export const ContextBuilderApp: React.FC = () => {
       if (formData.template || formData.slice) {
         setTimeout(async () => {
           try {
-            await projectManager.persistentStore.updateProject(newProject.id, {
+            await persistentStore?.updateProject(newProject.id, {
               template: formData.template,
               slice: formData.slice
             });
@@ -336,44 +322,14 @@ export const ContextBuilderApp: React.FC = () => {
           initialData={formData}
           onChange={handleFormChange}
           onSubmit={handleCreateProject}
-          customProjectNameField={
-            <div className="space-y-3">
-              <div>
-                <label className="block text-sm font-medium text-neutral-11 mb-2">
-                  Project
-                </label>
-                <ProjectSelector
-                  projects={projects}
-                  currentProjectId={currentProjectId}
-                  loading={loading}
-                  error={multiProjectError}
-                  disabled={loading}
-                  onProjectSwitch={handleProjectSwitch}
-                  onProjectCreate={handleNewProjectCreate}
-                  onProjectDelete={handleProjectDelete}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-neutral-11 mb-2">
-                  Project Name
-                </label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => handleFormChange({ ...formData, name: e.target.value })}
-                  onBlur={updateProjectName}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      updateProjectName();
-                    }
-                  }}
-                  className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
-                  placeholder="Enter project name..."
-                  disabled={loading}
-                />
-              </div>
-            </div>
-          }
+          projects={projects}
+          currentProjectId={currentProjectId}
+          loading={loading}
+          multiProjectError={multiProjectError}
+          onProjectSwitch={handleProjectSwitch}
+          onProjectCreate={handleNewProjectCreate}
+          onProjectDelete={handleProjectDelete}
+          onProjectNameUpdate={updateProjectName}
         />
       </div>
     </div>

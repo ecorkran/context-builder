@@ -8,14 +8,23 @@ import {
   SelectValue 
 } from '../../lib/ui-core/components/form/select';
 import { Checkbox } from '../../lib/ui-core/components/form/checkbox';
-import { CreateProjectData } from '../../services/storage/types/ProjectData';
+import { CreateProjectData, ProjectData } from '../../services/storage/types/ProjectData';
+import { ProjectSelector } from '../project/ProjectSelector';
 
 interface ProjectConfigFormProps {
   initialData?: CreateProjectData;
   onSubmit?: (data: CreateProjectData) => void;
   onChange?: (data: CreateProjectData) => void;
   className?: string;
-  customProjectNameField?: React.ReactNode;
+  // Project management props
+  projects: ProjectData[];
+  currentProjectId: string | null;
+  loading?: boolean;
+  multiProjectError?: string | null;
+  onProjectSwitch: (projectId: string) => void;
+  onProjectCreate: () => void;
+  onProjectDelete: (projectId: string) => void;
+  onProjectNameUpdate: () => void;
 }
 
 /**
@@ -26,7 +35,14 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
   onSubmit,
   onChange,
   className,
-  customProjectNameField
+  projects,
+  currentProjectId,
+  loading = false,
+  multiProjectError = null,
+  onProjectSwitch,
+  onProjectCreate,
+  onProjectDelete,
+  onProjectNameUpdate
 }) => {
   const [formData, setFormData] = useState<CreateProjectData>({
     name: initialData?.name || '',
@@ -100,23 +116,42 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
   return (
     <form onSubmit={handleSubmit} className={cn('space-y-6', className)}>
       <div className="space-y-4">
-        {customProjectNameField ? (
-          customProjectNameField
-        ) : (
+        <div className="space-y-3">
           <div>
-            <label htmlFor="project-name" className="block text-sm font-medium text-neutral-11 mb-2">
+            <label className="block text-sm font-medium text-neutral-11 mb-2">
+              Project
+            </label>
+            <ProjectSelector
+              projects={projects}
+              currentProjectId={currentProjectId}
+              loading={loading}
+              error={multiProjectError}
+              disabled={loading}
+              onProjectSwitch={onProjectSwitch}
+              onProjectCreate={onProjectCreate}
+              onProjectDelete={onProjectDelete}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-neutral-11 mb-2">
               Project Name
             </label>
             <input
-              id="project-name"
               type="text"
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
-              className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
-              placeholder="my-project"
+              onBlur={onProjectNameUpdate}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  onProjectNameUpdate();
+                }
+              }}
+              className="w-full px-3 py-2 border border-accent-7 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
+              placeholder="Enter project name..."
+              disabled={loading}
             />
           </div>
-        )}
+        </div>
 
         <div>
           <label htmlFor="slice" className="block text-sm font-medium text-neutral-11 mb-2">
@@ -127,7 +162,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
             type="text"
             value={formData.slice}
             onChange={(e) => handleInputChange('slice', e.target.value)}
-            className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
+            className="w-full px-3 py-2 border border-accent-7 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
             placeholder="foundation, auth, ui-components..."
           />
         </div>
@@ -160,7 +195,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
             value={formData.customData?.availableTools || ''}
             onChange={(e) => handleCustomDataChange('availableTools', e.target.value)}
             placeholder="List available tools (e.g., context7, Radix)"
-            className="w-full px-3 py-2 text-sm border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 placeholder-neutral-9 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-y min-h-[2.5rem]"
+            className="w-full px-3 py-2 text-sm border border-accent-7 rounded-md bg-neutral-1 text-neutral-12 placeholder-neutral-9 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-y min-h-[2.5rem]"
             rows={1}
           />
         </div>
@@ -222,7 +257,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
               value={formData.template}
               onChange={(e) => handleInputChange('template', e.target.value)}
               disabled={!formData.isMonorepo}
-              className={`w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent ${!formData.isMonorepo ? 'opacity-60' : ''}`}
+              className={`w-full px-3 py-2 border border-accent-7 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent ${!formData.isMonorepo ? 'opacity-60' : ''}`}
               placeholder={formData.isMonorepo ? "templates/react" : "Enable monorepo to set template"}
             />
           </div>
@@ -239,7 +274,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
                 monorepoNote: e.target.value
               })}
               disabled={!formData.isMonorepo}
-              className={`w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical transition-colors ${!formData.isMonorepo ? 'opacity-60' : ''}`}
+              className={`w-full px-3 py-2 border border-accent-7 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical transition-colors ${!formData.isMonorepo ? 'opacity-60' : ''}`}
               placeholder={formData.isMonorepo ? "Package structure, workspace organization..." : "Enable monorepo for structure notes"}
               rows={1}
               maxLength={8000}
@@ -263,7 +298,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
               ...formData.customData,
               recentEvents: e.target.value
             })}
-            className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical transition-colors"
+            className="w-full px-3 py-2 border border-accent-7 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical transition-colors"
             placeholder="• Recent changes, bug fixes, features added..."
             rows={6}
             maxLength={8000}
@@ -288,7 +323,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
               ...formData.customData,
               additionalNotes: e.target.value
             })}
-            className="w-full px-3 py-2 border border-neutral-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical transition-colors"
+            className="w-full px-3 py-2 border border-accent-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical transition-colors"
             placeholder="Any additional context or specific focus areas..."
             rows={5}
             maxLength={8000}

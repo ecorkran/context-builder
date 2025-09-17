@@ -22,7 +22,7 @@
   --accent-foreground: var(--color-neutral-12);
   --destructive: oklch(0.577 0.245 27.325);  /* Keep red for errors */
   --border: var(--color-border-accent);
-  --input: var(--color-neutral-3);
+  --input: var(--color-accent-3);
   --ring: var(--color-neutral-7);
   
   /* Chart colors for data visualization - themed */
