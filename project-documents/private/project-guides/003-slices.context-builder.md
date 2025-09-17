@@ -110,6 +110,18 @@ dependsOn: [03-hld.context-builder.md]
    - Application startup time optimization
    - Memory usage optimization for long-running sessions
 
+## Maintenance Work
+
+1. [ ] **Ongoing Maintenance** - Issue resolution and improvements
+   - **User Value:** Developers have systematic approach to handling ongoing issues
+   - **Success Criteria:**
+     - Known issues properly documented with impact assessment
+     - Maintenance workflow established for future issues
+     - Users have guidance for resolving cosmetic warnings
+   - **Dependencies:** None - can be performed at any time
+   - **Current Issues:** TIPropertyValueIsValid macOS console warnings
+   - **Risk Level:** Low (primarily documentation and process work)
+
 ## Implementation Order Rationale
 
 **Phase 1: Foundation (Items 1-4)**
