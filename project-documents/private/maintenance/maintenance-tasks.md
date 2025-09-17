@@ -11,7 +11,7 @@ This file tracks maintenance warnings and issues identified during development p
 
 ## Current Warnings
 
-- [ ] **TIPropertyValueIsValid macOS Console Warning** - Non-critical macOS Text Input Manager warning appearing in Electron console output. Occurs with non-English input methods. No functional impact. Documented in 900-slice.maintenance.md. Recommendation: Document as known limitation with user workaround guidance.
+- [x] **TIPropertyValueIsValid macOS Console Warning** - Non-critical macOS Text Input Manager warning appearing in Electron console output. Occurs with non-English input methods. No functional impact. Documented in 900-slice.maintenance.md. Resolution: Documented as cosmetic issue - no action needed.
 
 ## Resolved Issues
 
