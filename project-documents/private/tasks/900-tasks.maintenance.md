@@ -39,6 +39,38 @@ dateUpdated: 2025-09-16
   - Updated slice plan to include maintenance work
   - **Success:** Maintenance infrastructure established
 
+## Task 3: Update Window Title from Default "Electron Template"
+
+### 3.1 Implement Dynamic Window Title
+
+- [x] **Research current window title implementation**
+  - Located window creation in src/main/main.ts createWindow() function
+  - Identified "Electron Template" set in index.html <title> tag (line 8)
+  - No explicit title property set in BrowserWindow creation
+  - **Success:** Current implementation understood and documented
+
+- [x] **Implement base window title**
+  - Added title: 'Context Builder' to BrowserWindow creation in main.ts
+  - Updated index.html <title> tag from "Electron Template" to "Context Builder"
+  - Build completed successfully with changes
+  - **Success:** Default window title shows "Context Builder"
+
+- [ ] **Add project-specific title updates**
+  - Implement window title format: "Context Builder - {project}"
+  - Add IPC communication for title updates from renderer
+  - Update title when project selection changes
+  - Handle cases when no project is selected (show base title)
+  - **Success:** Window title updates dynamically with project selection
+
+### 3.2 Testing and Verification
+
+- [ ] **Test title behavior**
+  - Verify title on application startup
+  - Test title updates when switching between projects
+  - Test title when creating new projects
+  - Test title when no project is selected
+  - **Success:** All title scenarios work correctly
+
 ## Notes
 
 **Priority:** P2 - Non-critical maintenance work  

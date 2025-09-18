@@ -25,6 +25,7 @@ function createWindow(): void {
     height: 800,
     show: false,
     autoHideMenuBar: true,
+    title: 'Context Builder',
     webPreferences: {
       preload: fileURLToPath(new URL('../preload/preload.mjs', import.meta.url)),
       contextIsolation: true,
