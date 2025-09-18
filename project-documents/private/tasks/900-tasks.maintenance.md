@@ -55,11 +55,14 @@ dateUpdated: 2025-09-16
   - Build completed successfully with changes
   - **Success:** Default window title shows "Context Builder"
 
-- [ ] **Add project-specific title updates**
-  - Implement window title format: "Context Builder - {project}"
-  - Add IPC communication for title updates from renderer
-  - Update title when project selection changes
-  - Handle cases when no project is selected (show base title)
+- [x] **Add project-specific title updates**
+  - Added IPC handler 'update-window-title' in main.ts with mainWindow reference
+  - Added updateWindowTitle to preload.ts electronAPI interface
+  - Updated ContextBuilderApp.tsx to call window title update in:
+    - handleProjectSwitch (project switching)
+    - loadLastSession (app initialization - new and restored projects)
+    - handleNewProjectCreate (new project creation)
+  - Window title format: "Context Builder - {project}" or "Context Builder" when no project
   - **Success:** Window title updates dynamically with project selection
 
 ### 3.2 Testing and Verification

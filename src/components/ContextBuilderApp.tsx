@@ -108,6 +108,11 @@ export const ContextBuilderApp: React.FC = () => {
               availableTools: ''
             },
           });
+          
+          // Update window title for new project
+          if (window.electronAPI?.updateWindowTitle) {
+            window.electronAPI.updateWindowTitle(newProject.name);
+          }
         } else {
           // Restore last active project
           const activeProject = await projectManager.getCurrentProject() || allProjects[0];
@@ -129,6 +134,11 @@ export const ContextBuilderApp: React.FC = () => {
           };
           console.log('ContextBuilderApp: Restoring project data:', restoredFormData);
           setFormData(restoredFormData);
+          
+          // Update window title for restored project
+          if (window.electronAPI?.updateWindowTitle) {
+            window.electronAPI.updateWindowTitle(activeProject.name);
+          }
         }
       } catch (error) {
         console.error('Failed to load project:', error);
@@ -213,6 +223,11 @@ export const ContextBuilderApp: React.FC = () => {
         },
       });
       
+      // Update window title with project name
+      if (window.electronAPI?.updateWindowTitle) {
+        window.electronAPI.updateWindowTitle(switchedProject.name);
+      }
+      
       console.log('ContextBuilderApp: Switched to project:', switchedProject.name, 'Template:', switchedProject.template, 'Monorepo:', switchedProject.isMonorepo);
     } catch (error) {
       console.error('Failed to switch project:', error);
@@ -251,6 +266,11 @@ export const ContextBuilderApp: React.FC = () => {
       };
       
       setFormData(newFormData);
+      
+      // Update window title for new project
+      if (window.electronAPI?.updateWindowTitle) {
+        window.electronAPI.updateWindowTitle(newProject.name);
+      }
       
       // Update the project with inherited values for immediate save
       if (formData.template || formData.slice) {

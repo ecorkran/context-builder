@@ -19,6 +19,8 @@ function isAllowedUrl(target: string): boolean {
   }
 }
 
+let mainWindow: BrowserWindow | null = null;
+
 function createWindow(): void {
   const win = new BrowserWindow({
     width: 1200,
@@ -33,6 +35,8 @@ function createWindow(): void {
       sandbox: !process.env.ELECTRON_RENDERER_URL
     }
   })
+
+  mainWindow = win;
 
   win.on('ready-to-show', () => win.show())
 
@@ -55,6 +59,17 @@ function createWindow(): void {
 
   ipcMain.handle('get-app-version', () => {
     return app.getVersion()
+  })
+
+  // Window title management
+  ipcMain.handle('update-window-title', (_, projectName?: string) => {
+    if (!mainWindow) return
+    
+    const title = projectName 
+      ? `Context Builder - ${projectName}`
+      : 'Context Builder'
+    
+    mainWindow.setTitle(title)
   })
 
   // Storage IPC handlers
