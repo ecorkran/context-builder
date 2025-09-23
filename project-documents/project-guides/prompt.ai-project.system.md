@@ -38,11 +38,11 @@ Refer to the `guide.ai-project.00-process`, and function as a Senior AI.  Implem
 ```markdown
 We're starting work on a new project {project}.  We will use our curated AI Project Creation methods in `guide.ai-project.00-process` (can also be referred to as Project Guide or Process Guide) to assist us in designing and performing the work.  Your role as described in the Project Guide is Technical Fellow.
 
-The actual concept description as well as additional concept will be provided by Project Manager for injection into our process.  The first thing we need to do is to use our Project Guide together with the additional concept information to create documents tailored to our project.  We and our AI team members will use these to design, implement, and verify project tasks.
+The initial concept description will be provided by the project manager, ideally as a starter document in `project-guides/001-concept.{project}.md`.  Our goal is to refine this initial user-provided concept into the Refined Concept, which should be placed as instructed into the existing document.  The placeholder document should provide any needed details needed for this procedure.
 
-To do this, we need to use the Project Guide together with information provided to create our concept document (Phase 1). If any areas in the Concept guide need more information that is not provided, request from the Project Manager before continuing.  Otherwise, create the Project Concept document now.
+We will use the refined concept as a basis for creating the spec, which will later be refined into designs, slices, features, and tasks.  Use the Project Guide together with the user-provided concept to create the refined concept tailored to our project.
 
-Note: when creating these project documents, do not guess.  If information is missing or you cannot access it (Scichart, for example), stop and ask for clarification so we can proceed properly.  Pause here until you receive the project concept description from the Project Manager.
+When creating the refined concept, *ask questions* if any information is missing or unclear.  The guideline of do not assume or guess applies, but is even more important here at this early concept state.  Request any needed clarifications from the Project Manager.  If you do not find or receive the user-provided concept description, obtain from Project Manager before proceeding.
 ```
 
 ##### Spec Creation (Phase 2)
@@ -111,6 +111,7 @@ Avoid:
 - Time estimates in hours/days/etc.  You may use a 1-5 relative effort scale.
 - Extensive benchmarking tasks unless actually relevant to this effort.
 - Extensive or speculative risk items.  Include only if truly relevant.
+- Any substantial code writing.  This is a planning and process task.
 
 YAML Frontmatter Details:
 ```yaml
@@ -181,7 +182,7 @@ After creation of task list, you must review the entire list against the slice d
 
 ##### Slice Task Expansion (Phase 6)
 ```markdown
-We're working in our guide.ai-project.00-process, Phase 6: Task Enhancement and Expansion. Enhance the tasks for slice {slice} in project {project} to improve the chances that our "junior" AI workers can complete assigned tasks on their own.
+We're working in our guide.ai-project.00-process, Phase 6: Task Enhancement and Expansion. Enhance the tasks for slice {slice} in project {project} to improve the chances that our "junior" AI workers can complete assigned tasks on their own.  Only enhance tasks that can truly benefit from it.  Many tasks may already be described with sufficient detail.
 
 Use `guide.ai-project.06-task-expansion` as your detailed guide for this phase. Work on the task file `private/tasks/nn-tasks.{slice}.md`.
 
@@ -571,6 +572,11 @@ Let's analyze the following existing codebase and document our findings.  We wan
   use tailwind.config.ts/.js. 
 ```
 
+##### Custom Instruction
+*Used as a placeholder by context-builder app*
+```markdown
+Custom instructions apply.  See Additional Context for instruction prompt.
+```
 
 ***
 ### Experimental
