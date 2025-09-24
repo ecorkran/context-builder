@@ -139,17 +139,19 @@ dateUpdated: 2025-09-18
 
 ### 5.1 Settings Infrastructure
 
-- [ ] **Create global settings service**
-  - Create application-wide settings service (separate from project data)
-  - Implement localStorage persistence for global settings
-  - Add interface for managing global settings state
+- [x] **Create global settings service**
+  - Created AppSettingsService with localStorage persistence in src/services/settings/
+  - Created AppSettings interface with monorepoModeEnabled (default: false)
+  - Added React hook useAppSettings for component integration
+  - Implemented subscription system for settings changes
   - **Success:** Global settings service available and functional
 
-- [ ] **Add settings UI with gear icon**
-  - Add gear/settings icon to main UI (appropriate location)
-  - Create settings dialog/modal with clean, aesthetic design
-  - Add "Enable Monorepo Mode" toggle (default: false)
-  - Add appropriate help text explaining the feature
+- [x] **Add settings UI with gear icon**
+  - Added Settings gear icon to Project Configuration header (top-right position)
+  - Created Modal component for clean dialog presentation
+  - Created SettingsDialog with "Enable Monorepo Mode" toggle
+  - Added comprehensive help text explaining monorepo mode feature
+  - Integrated SettingsButton component into main ContextBuilderApp
   - **Success:** Settings accessible via intuitive gear icon interface
 
 ### 5.2 UI Conditional Display

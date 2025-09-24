@@ -2,6 +2,7 @@ import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { SplitPaneLayout } from './layout/SplitPaneLayout';
 import { ProjectConfigForm } from './forms/ProjectConfigForm';
 import { ContextOutput } from './display/ContextOutput';
+import { SettingsButton } from './settings/SettingsButton';
 import { PersistentProjectStore } from '../services/storage/PersistentProjectStore';
 import { CreateProjectData, ProjectData } from '../services/storage/types/ProjectData';
 import { ProjectManager } from '../services/project/ProjectManager';
@@ -337,7 +338,10 @@ export const ContextBuilderApp: React.FC = () => {
   const leftPanelContent = (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-neutral-12 mb-4 ml-[calc(var(--radius)*0.25)]">Project Configuration</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-semibold text-neutral-12 ml-[calc(var(--radius)*0.25)]">Project Configuration</h2>
+          <SettingsButton className="mr-[calc(var(--radius)*0.25)]" />
+        </div>
         <ProjectConfigForm
           initialData={formData}
           onChange={handleFormChange}

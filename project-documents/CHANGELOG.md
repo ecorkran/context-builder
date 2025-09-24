@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Custom Instruction prompt option**: Added Custom Instruction to the Development Phase dropdown alongside Ad-Hoc Tasks for flexible prompt handling
 
 ### Changed
 
@@ -16,66 +17,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.7.0] - 2025-08-18
 
 ### Added
-- **Slice-based development methodology**: Complete overhaul of project workflow to use vertical slices
-  - **Phase 3: High-Level Design & Slice Planning** - Break projects into manageable vertical slices
-  - **Phase 4: Slice Design (Low-Level Design)** - Create detailed technical designs for individual slices
-  - **Phase 5: Slice Task Breakdown** - Convert slice designs into granular tasks with context headers
-  - **Phase 6: Task Enhancement and Expansion** - Enhance slice tasks for reliable AI execution
-  - **Phase 7: Slice Execution** - Implement individual slices with proper context management
-  - **Phase 8: Slice Integration & Iteration** - Integrate completed slices and plan next iterations
-- **New comprehensive guides**:
-  - `guide.ai-project.03-slice-planning.md` - Complete guide for breaking projects into slices
-  - `guide.ai-project.04-slice-design.md` - Detailed slice design methodology with templates
-  - `guide.ai-project.06-task-expansion.md` - Updated task expansion for slice-based work
-- **Legacy project migration**: 
-  - `guide.ai-project.91-legacy-task-migration.md` - Systematic migration from legacy to slice-based approach
-  - Comprehensive migration prompt for converting existing projects
-- **Enhanced context management**:
-  - YAML front matter for all slice task files with project state, dependencies, and metadata
-  - Context summary sections to enable AI restart capability
-  - Slice-specific file organization with `nn-slice.{slice-name}.md` naming convention
-- **Improved file organization**:
-  - `private/slices/` directory for slice-specific low-level designs
-  - Sequential indexing for all slice and task files (01, 02, 03, etc.)
-  - Clear separation between foundation work, feature slices, and integration work
+- **Slice-based development methodology**: Complete 8-phase workflow for managing projects as vertical slices (Phases 3-8)
+- **Slice planning and design guides**: New guides for breaking projects into manageable slices and creating detailed technical designs
+- **Legacy project migration**: Migration guide and prompts for converting existing projects to slice-based approach
+- **Enhanced file organization**: Sequential indexing, YAML frontmatter, and `private/slices/` directory structure
 
 ### Changed
-- **Project workflow**: Shifted from monolithic project approach to slice-based development
-  - Projects now treated as "collections of slices" rather than single large entities
-  - Each slice follows its own design → task → implementation → integration cycle
-  - Better context management and reduced AI hallucination through smaller, focused work units
-- **Guide numbering and organization**:
-  - Moved code review guide to `guide.ai-project.90-code-review.md` (supplemental guides 90+)
-  - Updated task expansion guide to Phase 6: `guide.ai-project.06-task-expansion.md`
-  - Established clear distinction between core workflow phases (1-8) and supplemental guides (90+)
-- **Prompt templates**: Complete overhaul of all prompt templates for slice-based workflow
-  - New slice-specific prompts for planning, design, task breakdown, and implementation
-  - Updated context refresh prompts to work with slice-based projects
-  - Legacy prompts moved to deprecated section with migration guidance
-- **Task file structure**:
-  - Enhanced with YAML front matter including slice metadata and project state
-  - Context summary sections for better AI restart capability
-  - Updated naming convention: `nn-tasks.{slice-name}.md`
-- **Documentation structure**:
-  - Updated README.md with complete phase mapping table (1-8)
-  - Added supplemental guides section and development approach guidance
-  - Clarified when to use slice-based vs traditional approaches
+- **Project workflow**: Shifted from monolithic to slice-based development with better context management
+- **Guide numbering**: Renumbered guides with core phases (1-8) and supplemental guides (90+)
+- **Prompt templates**: Updated all prompts for slice-based workflow with legacy prompts moved to deprecated section
+- **Task file structure**: Enhanced with metadata, context summaries, and `nn-tasks.{slice-name}.md` naming
 
 ### Fixed
-- **Context management issues**: Slice-based approach significantly reduces "lost in the middle" problems
-- **Guide references**: Updated all cross-references to use correct guide numbering
+- **Context management**: Slice-based approach reduces AI hallucination and "lost in the middle" problems
 - **File naming consistency**: Established clear patterns for slice designs and task files
-
-### Technical Details
-- **Backward compatibility**: Legacy project support maintained with migration path
-- **Agent integration**: Updated for better compatibility with Claude Code, Cline, and other AI agents
-- **Scalability**: Slice-based approach enables future parallelization of development work
-- **Quality assurance**: Enhanced task granularity reduces AI hallucination and improves success rates
-
-### Migration Notes
-- Existing projects can be migrated using the legacy migration guide
-- Traditional approach still available for simple projects and single features
-- All legacy prompts preserved in deprecated sections
 
 ## [0.6.0] - 2025-08-15
 
