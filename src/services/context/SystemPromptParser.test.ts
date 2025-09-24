@@ -415,9 +415,10 @@ Just some regular content.`;
 
   describe('instruction mapping', () => {
     it('should have correct instruction mappings', () => {
-      expect(INSTRUCTION_MAPPING.planning).toBe('Slice Planning (Phase 3)');
-      expect(INSTRUCTION_MAPPING.implementation).toBe('Slice | Feature Implementation (Phase 7)');
-      expect(INSTRUCTION_MAPPING.debugging).toBe('Analysis Task Implementation');
+      expect(INSTRUCTION_MAPPING['slice-planning']).toBe('Slice Planning (Phase 3)');
+      expect(INSTRUCTION_MAPPING['implementation']).toBe('Slice | Feature Implementation (Phase 7)');
+      expect(INSTRUCTION_MAPPING['analyze-implementation']).toBe('Analysis Task Implementation');
+      expect(INSTRUCTION_MAPPING['custom-instruction']).toBe('Custom Instruction');
     });
   });
 });

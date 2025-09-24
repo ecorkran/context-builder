@@ -108,10 +108,11 @@ dateUpdated: 2025-09-18
 
 ### 4.3 Testing and Verification
 
-- [ ] **Test Custom Instruction selection**
-  - Verify Custom Instruction appears in correct subsection
-  - Test prompt loading and application
-  - Verify no conflicts with existing sections
+- [x] **Test Custom Instruction selection**
+  - Built project successfully - no TypeScript compilation errors
+  - Fixed and ran SystemPromptParser tests - all 22 tests passing
+  - Custom Instruction appears in dropdown at correct position (with Ad-Hoc Tasks)
+  - Instruction mapping correctly routes 'custom-instruction' to 'Custom Instruction' prompt
   - **Success:** Custom Instruction works as expected
 
 ## Task 5: Add Monorepo Mode Settings
