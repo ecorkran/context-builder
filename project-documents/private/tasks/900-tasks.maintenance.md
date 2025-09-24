@@ -156,11 +156,12 @@ dateUpdated: 2025-09-18
 
 ### 5.2 UI Conditional Display
 
-- [ ] **Organize monorepo controls into conditional section**
-  - Group existing monorepo UI elements into clearly defined section in ProjectConfigForm
-  - Add conditional rendering based on global monorepo mode setting
-  - Ensure monorepo controls only display when global setting is enabled
-  - Maintain exact current functionality when controls are visible
+- [x] **Organize monorepo controls into conditional section**
+  - Added useAppSettings hook import to ProjectConfigForm
+  - Wrapped entire "Repository structure" section (lines 244-295) in conditional rendering
+  - Applied isMonorepoModeEnabled condition to hide/show monorepo controls
+  - Maintained exact current functionality when controls are visible
+  - Added clear comment explaining conditional logic
   - **Success:** Monorepo controls hidden by default, visible when global setting enabled
 
 ### 5.3 Prompt System Integration

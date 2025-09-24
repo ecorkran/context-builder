@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { cn } from '../../lib/ui-core/utils/cn';
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue 
+  SelectValue
 } from '../../lib/ui-core/components/form/select';
 import { Checkbox } from '../../lib/ui-core/components/form/checkbox';
 import { CreateProjectData, ProjectData } from '../../services/storage/types/ProjectData';
 import { ProjectSelector } from '../project/ProjectSelector';
+import { useAppSettings } from '../../hooks/useAppSettings';
 
 interface ProjectConfigFormProps {
   initialData?: CreateProjectData;
@@ -58,6 +59,9 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
       availableTools: initialData?.customData?.availableTools || ''
     }
   });
+
+  // Get global settings to control monorepo UI visibility
+  const { isMonorepoModeEnabled } = useAppSettings();
 
   useEffect(() => {
     if (initialData) {
@@ -237,56 +241,58 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
           </Select>
         </div>
 
-        {/* 5. Repository structure */}
-        <div className="space-y-3 pt-2" >
-          <Checkbox
-            id="is-monorepo"
-            checked={formData.isMonorepo}
-            onCheckedChange={(checked) => handleInputChange('isMonorepo', checked)}
-            label="Monorepo project"
-            uiVariant="accent"
-            className='ml-[calc(var(--radius)*0.25)]'
-          />
-          
-          <div className='pt-2'>
-            <label htmlFor="template" className={`block text-sm font-medium mb-2 ${formData.isMonorepo ? 'text-neutral-11' : 'text-neutral-8'}`}>
-              Template
-            </label>
-            <input
-              id="template"
-              type="text"
-              value={formData.template}
-              onChange={(e) => handleInputChange('template', e.target.value)}
-              disabled={!formData.isMonorepo}
-              className={`w-full px-3 py-2 border border-accent-7 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent ${!formData.isMonorepo ? 'opacity-60' : ''}`}
-              placeholder={formData.isMonorepo ? "templates/react" : "Enable monorepo to set template"}
+        {/* 5. Repository structure - Only show when monorepo mode is enabled globally */}
+        {isMonorepoModeEnabled && (
+          <div className="space-y-3 pt-2" >
+            <Checkbox
+              id="is-monorepo"
+              checked={formData.isMonorepo}
+              onCheckedChange={(checked) => handleInputChange('isMonorepo', checked)}
+              label="Monorepo project"
+              uiVariant="accent"
+              className='ml-[calc(var(--radius)*0.25)]'
             />
-          </div>
-          
-          <div>
-            <label htmlFor="monorepo-note" className={`block text-sm font-medium mb-2 ${formData.isMonorepo ? 'text-neutral-11' : 'text-neutral-8'}`}>
-              Monorepo Structure (optional)
-            </label>
-            <textarea
-              id="monorepo-note"
-              value={formData.customData?.monorepoNote || ''}
-              onChange={(e) => handleInputChange('customData', {
-                ...formData.customData,
-                monorepoNote: e.target.value
-              })}
-              disabled={!formData.isMonorepo}
-              className={`w-full px-3 py-2 border border-accent-7 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical transition-colors ${!formData.isMonorepo ? 'opacity-60' : ''}`}
-              placeholder={formData.isMonorepo ? "Package structure, workspace organization..." : "Enable monorepo for structure notes"}
-              rows={1}
-              maxLength={8000}
-            />
-            <div className="flex justify-end mt-1">
-              <span className="text-xs text-neutral-9">
-                {(formData.customData?.monorepoNote || '').length}/8000 characters
-              </span>
+
+            <div className='pt-2'>
+              <label htmlFor="template" className={`block text-sm font-medium mb-2 ${formData.isMonorepo ? 'text-neutral-11' : 'text-neutral-8'}`}>
+                Template
+              </label>
+              <input
+                id="template"
+                type="text"
+                value={formData.template}
+                onChange={(e) => handleInputChange('template', e.target.value)}
+                disabled={!formData.isMonorepo}
+                className={`w-full px-3 py-2 border border-accent-7 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent ${!formData.isMonorepo ? 'opacity-60' : ''}`}
+                placeholder={formData.isMonorepo ? "templates/react" : "Enable monorepo to set template"}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="monorepo-note" className={`block text-sm font-medium mb-2 ${formData.isMonorepo ? 'text-neutral-11' : 'text-neutral-8'}`}>
+                Monorepo Structure (optional)
+              </label>
+              <textarea
+                id="monorepo-note"
+                value={formData.customData?.monorepoNote || ''}
+                onChange={(e) => handleInputChange('customData', {
+                  ...formData.customData,
+                  monorepoNote: e.target.value
+                })}
+                disabled={!formData.isMonorepo}
+                className={`w-full px-3 py-2 border border-accent-7 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical transition-colors ${!formData.isMonorepo ? 'opacity-60' : ''}`}
+                placeholder={formData.isMonorepo ? "Package structure, workspace organization..." : "Enable monorepo for structure notes"}
+                rows={1}
+                maxLength={8000}
+              />
+              <div className="flex justify-end mt-1">
+                <span className="text-xs text-neutral-9">
+                  {(formData.customData?.monorepoNote || '').length}/8000 characters
+                </span>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         <div>
           <label htmlFor="recent-events" className="block text-sm font-medium text-neutral-11 mb-2">
