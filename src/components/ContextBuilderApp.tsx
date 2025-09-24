@@ -337,16 +337,21 @@ export const ContextBuilderApp: React.FC = () => {
 
   // Callback to clear project monorepo setting when global monorepo mode is disabled
   const handleClearProjectMonorepoSetting = useCallback(() => {
-    setFormData(prev => ({
-      ...prev,
+    const updatedFormData = {
+      ...formData,
       isMonorepo: false,
       template: '', // Clear template as well since it's only relevant for monorepo
       customData: {
-        ...prev.customData,
+        ...formData.customData,
         monorepoNote: '' // Clear monorepo note as well
       }
-    }));
-  }, []);
+    };
+
+    setFormData(updatedFormData);
+
+    // Trigger form change handler to update output preview
+    handleFormChange(updatedFormData);
+  }, [formData, handleFormChange]);
 
   const leftPanelContent = (
     <div className="space-y-6">
