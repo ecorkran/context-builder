@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal } from '../../lib/ui-core/components/overlays/Modal';
 import { Checkbox } from '../../lib/ui-core/components/form/checkbox';
 import { useAppSettings } from '../../hooks/useAppSettings';
@@ -6,6 +6,7 @@ import { useAppSettings } from '../../hooks/useAppSettings';
 interface SettingsDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  onClearProjectMonorepoSetting?: () => void;
 }
 
 /**
@@ -13,18 +14,35 @@ interface SettingsDialogProps {
  */
 export const SettingsDialog: React.FC<SettingsDialogProps> = ({
   isOpen,
-  onClose
+  onClose,
+  onClearProjectMonorepoSetting
 }) => {
   const { settings, setSetting } = useAppSettings();
+  const [initialMonorepoMode, setInitialMonorepoMode] = useState(false);
+
+  // Track initial monorepo mode state when dialog opens
+  useEffect(() => {
+    if (isOpen) {
+      setInitialMonorepoMode(settings.monorepoModeEnabled);
+    }
+  }, [isOpen, settings.monorepoModeEnabled]);
 
   const handleMonorepoModeChange = (checked: boolean) => {
     setSetting('monorepoModeEnabled', checked);
   };
 
+  const handleClose = () => {
+    // If monorepo mode was enabled initially but is now disabled, clear project setting
+    if (initialMonorepoMode && !settings.monorepoModeEnabled && onClearProjectMonorepoSetting) {
+      onClearProjectMonorepoSetting();
+    }
+    onClose();
+  };
+
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title="Settings"
       className="max-w-lg"
     >
@@ -62,7 +80,7 @@ export const SettingsDialog: React.FC<SettingsDialogProps> = ({
         {/* Footer */}
         <div className="flex justify-end pt-4 border-t border-neutral-6">
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="px-4 py-2 text-sm font-medium text-neutral-11 hover:text-neutral-12 hover:bg-neutral-3 rounded-md transition-colors"
           >
             Done

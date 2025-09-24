@@ -4,12 +4,16 @@ import { SettingsDialog } from './SettingsDialog';
 
 interface SettingsButtonProps {
   className?: string;
+  onClearProjectMonorepoSetting?: () => void;
 }
 
 /**
  * Settings button with gear icon that opens the settings dialog
  */
-export const SettingsButton: React.FC<SettingsButtonProps> = ({ className }) => {
+export const SettingsButton: React.FC<SettingsButtonProps> = ({
+  className,
+  onClearProjectMonorepoSetting
+}) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleOpenDialog = () => {
@@ -38,6 +42,7 @@ export const SettingsButton: React.FC<SettingsButtonProps> = ({ className }) => 
       <SettingsDialog
         isOpen={isDialogOpen}
         onClose={handleCloseDialog}
+        onClearProjectMonorepoSetting={onClearProjectMonorepoSetting}
       />
     </>
   );

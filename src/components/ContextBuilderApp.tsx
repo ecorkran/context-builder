@@ -335,12 +335,28 @@ export const ContextBuilderApp: React.FC = () => {
     }
   }, [projectManager, projects.length, currentProjectId]);
 
+  // Callback to clear project monorepo setting when global monorepo mode is disabled
+  const handleClearProjectMonorepoSetting = useCallback(() => {
+    setFormData(prev => ({
+      ...prev,
+      isMonorepo: false,
+      template: '', // Clear template as well since it's only relevant for monorepo
+      customData: {
+        ...prev.customData,
+        monorepoNote: '' // Clear monorepo note as well
+      }
+    }));
+  }, []);
+
   const leftPanelContent = (
     <div className="space-y-6">
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold text-neutral-12 ml-[calc(var(--radius)*0.25)]">Project Configuration</h2>
-          <SettingsButton className="mr-[calc(var(--radius)*0.25)]" />
+          <SettingsButton
+            className="mr-[calc(var(--radius)*0.25)]"
+            onClearProjectMonorepoSetting={handleClearProjectMonorepoSetting}
+          />
         </div>
         <ProjectConfigForm
           initialData={formData}
