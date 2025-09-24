@@ -117,50 +117,81 @@ dateUpdated: 2025-09-18
 
 ## Task 5: Add Monorepo Mode Settings
 
+### Design Overview
+
+**User Experience Goals:**
+- Most users should not see monorepo controls (they add complexity for typical use)
+- When monorepo mode is enabled, controls stay exactly where they are now (integrated workflow)
+- Settings should be intuitive and fit app aesthetics
+- App is designed to simplify for basic users, enable detailed context building for advanced users
+
+**Implementation Approach:**
+1. **Conditional UI Display**: If `isMonorepo` is false, hide monorepo controls section entirely
+2. **Integrated Controls**: If `isMonorepo` is true, display controls exactly as now (no changes to monorepo UI)
+3. **Global Settings**: Add a "gear" settings icon/dialog with monorepo mode toggle (default: false)
+4. **Prompt System**: Don't add monorepo-specific prompt segments when `isMonorepo` is false
+
+**Technical Notes:**
+- Monorepo controls should be organized into a clearly defined section for easy conditional rendering
+- Global settings separate from project-specific settings
+- Settings should persist across sessions
+- UI should remain clean and uncluttered for typical users
+
 ### 5.1 Settings Infrastructure
 
-- [ ] **Create settings/advanced section**
-  - Add advanced settings UI section if not exists
-  - Design appropriate layout for advanced options
-  - Ensure proper navigation to advanced settings
-  - **Success:** Advanced settings section accessible
+- [ ] **Create global settings service**
+  - Create application-wide settings service (separate from project data)
+  - Implement localStorage persistence for global settings
+  - Add interface for managing global settings state
+  - **Success:** Global settings service available and functional
 
-- [ ] **Add monorepo mode toggle**
-  - Add "Enable Monorepo Mode" checkbox option (default: false)
-  - Implement setting persistence (localStorage/config file)
-  - Add appropriate help text/tooltip explaining the feature
-  - **Success:** Monorepo mode setting available and persistent
+- [ ] **Add settings UI with gear icon**
+  - Add gear/settings icon to main UI (appropriate location)
+  - Create settings dialog/modal with clean, aesthetic design
+  - Add "Enable Monorepo Mode" toggle (default: false)
+  - Add appropriate help text explaining the feature
+  - **Success:** Settings accessible via intuitive gear icon interface
 
 ### 5.2 UI Conditional Display
 
-- [ ] **Hide monorepo controls when disabled**
-  - Identify all monorepo-specific UI elements
-  - Add conditional rendering based on monorepo mode setting
-  - Ensure clean UI when monorepo mode disabled
-  - **Success:** Monorepo UI elements only show when enabled
+- [ ] **Organize monorepo controls into conditional section**
+  - Group existing monorepo UI elements into clearly defined section in ProjectConfigForm
+  - Add conditional rendering based on global monorepo mode setting
+  - Ensure monorepo controls only display when global setting is enabled
+  - Maintain exact current functionality when controls are visible
+  - **Success:** Monorepo controls hidden by default, visible when global setting enabled
 
 ### 5.3 Prompt System Integration
 
 - [ ] **Audit monorepo-specific prompt segments**
-  - Identify all prompts that contain monorepo-specific content
-  - Map which segments should be conditional
-  - Document current monorepo prompt dependencies
-  - **Success:** All monorepo prompt segments identified
+  - Review system prompts file for monorepo-specific content
+  - Identify Context Initialization and other prompts with monorepo segments
+  - Map which segments should be conditional based on global monorepo setting
+  - Document current monorepo dependencies in prompt generation
+  - **Success:** All monorepo prompt segments identified and documented
 
 - [ ] **Implement conditional prompt segments**
-  - Modify prompt generation to check monorepo mode setting
-  - Remove/include monorepo segments based on setting
-  - Ensure prompts remain coherent in both modes
-  - **Success:** Prompts adapt correctly to monorepo mode setting
+  - Modify ContextTemplateEngine/SystemPromptParser to check global monorepo setting
+  - Remove monorepo-specific segments when global setting is false
+  - Ensure prompts remain coherent in both enabled/disabled modes
+  - Test prompt generation with monorepo mode on/off
+  - **Success:** Prompts exclude monorepo content when global setting disabled
 
 ### 5.4 Testing and Verification
 
-- [ ] **Test monorepo mode toggle**
-  - Test enabling/disabling monorepo mode
-  - Verify UI elements show/hide correctly
-  - Test prompt generation in both modes
-  - Verify setting persistence across sessions
-  - **Success:** Monorepo mode functions correctly in all scenarios
+- [ ] **Test global monorepo mode toggle**
+  - Test enabling/disabling global monorepo setting via gear icon
+  - Verify monorepo UI section shows/hides correctly in ProjectConfigForm
+  - Test setting persistence across application restarts
+  - Verify existing projects still work correctly in both modes
+  - **Success:** Global setting controls UI visibility and persists correctly
+
+- [ ] **Test prompt generation in both modes**
+  - Generate prompts with global monorepo setting enabled and disabled
+  - Verify monorepo-specific content is excluded when setting disabled
+  - Test various prompt types (Context Initialization, etc.) in both modes
+  - Ensure prompts remain coherent when monorepo content excluded
+  - **Success:** Prompt generation adapts correctly to global monorepo setting
 
 ## Notes
 
