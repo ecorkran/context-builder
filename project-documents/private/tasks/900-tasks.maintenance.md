@@ -166,18 +166,19 @@ dateUpdated: 2025-09-18
 
 ### 5.3 Prompt System Integration
 
-- [ ] **Audit monorepo-specific prompt segments**
-  - Review system prompts file for monorepo-specific content
-  - Identify Context Initialization and other prompts with monorepo segments
-  - Map which segments should be conditional based on global monorepo setting
-  - Document current monorepo dependencies in prompt generation
+- [x] **Audit monorepo-specific prompt segments**
+  - Identified monorepo content in Context Initialization prompt (lines 26, 253-258)
+  - Found "monorepo," parameter in parameter lists (line 26)
+  - Located "Directory Structure by Development Type" section with monorepo paths
+  - Mapped existing Monorepo section in ContextTemplateEngine (lines 127-137)
   - **Success:** All monorepo prompt segments identified and documented
 
-- [ ] **Implement conditional prompt segments**
-  - Modify ContextTemplateEngine/SystemPromptParser to check global monorepo setting
-  - Remove monorepo-specific segments when global setting is false
-  - Ensure prompts remain coherent in both enabled/disabled modes
-  - Test prompt generation with monorepo mode on/off
+- [x] **Implement conditional prompt segments**
+  - Added appSettingsService import to ContextTemplateEngine
+  - Created filterMonorepoContent() method to remove monorepo content when disabled
+  - Modified Context Initialization prompt processing to apply filtering
+  - Updated Monorepo section condition to check both project setting AND global setting
+  - Regex removes parameter list and directory structure sections when disabled
   - **Success:** Prompts exclude monorepo content when global setting disabled
 
 ### 5.4 Testing and Verification

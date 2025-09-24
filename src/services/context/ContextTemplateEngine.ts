@@ -5,6 +5,7 @@ import { StatementManager } from './StatementManager';
 import { SectionBuilder } from './SectionBuilder';
 import { TemplateProcessor } from './TemplateProcessor';
 import { createSystemPromptParser, createStatementManager } from './ServiceFactory';
+import { appSettingsService } from '../settings/AppSettingsService';
 
 // Fallback template for error scenarios
 const DEFAULT_TEMPLATE = `# Project: {{projectName}}
@@ -101,12 +102,15 @@ export class ContextTemplateEngine {
       order: 1.5
     });
 
-    // 2. Context initialization prompt (always included)
+    // 2. Context initialization prompt (always included, but filter monorepo content if disabled)
     const contextInitPrompt = await this.promptParser.getContextInitializationPrompt();
+    const filteredPromptContent = this.filterMonorepoContent(
+      contextInitPrompt?.content || 'Project context and environment details follow.'
+    );
     sections.push({
       key: 'context-init',
       title: '',
-      content: contextInitPrompt?.content || 'Project context and environment details follow.',
+      content: filteredPromptContent,
       conditional: false,
       order: 2
     });
@@ -120,14 +124,14 @@ export class ContextTemplateEngine {
       order: 3
     });
 
-    // 4. Monorepo section (conditional)
-    if (data.isMonorepo) {
+    // 4. Monorepo section (conditional on both project setting and global monorepo mode)
+    if (data.isMonorepo && appSettingsService.isMonorepoModeEnabled()) {
       sections.push({
         key: 'monorepo-section',
         title: '### Monorepo Note',
         content: await this.sectionBuilder.buildMonorepoSection(data),
         conditional: true,
-        condition: () => data.isMonorepo,
+        condition: () => data.isMonorepo && appSettingsService.isMonorepoModeEnabled(),
         order: 4
       });
     }
@@ -277,5 +281,29 @@ export class ContextTemplateEngine {
    */
   setEnabled(enabled: boolean): void {
     this.enableNewEngine = enabled;
+  }
+
+  /**
+   * Filter monorepo-specific content from prompt text when global monorepo mode is disabled
+   */
+  private filterMonorepoContent(content: string): string {
+    if (appSettingsService.isMonorepoModeEnabled()) {
+      return content; // Return unchanged if monorepo mode is enabled
+    }
+
+    // Remove monorepo-specific sections from the content
+    let filteredContent = content;
+
+    // Remove the "monorepo," parameter from parameter lists
+    filteredContent = filteredContent.replace(/\s*monorepo,\s*/g, '');
+
+    // Remove the entire monorepo directory structure section
+    const monorepoSectionRegex = /Directory Structure by Development Type:\s*\n- Regular Development:.*?\n- Monorepo Template Development:.*?(?=\n\nIf you were|$)/s;
+    filteredContent = filteredContent.replace(monorepoSectionRegex, '');
+
+    // Clean up any extra whitespace that might be left
+    filteredContent = filteredContent.replace(/\n\s*\n\s*\n/g, '\n\n');
+
+    return filteredContent;
   }
 }
