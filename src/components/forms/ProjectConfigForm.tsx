@@ -225,6 +225,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
 
               <SelectItem value="feature-design">Feature Design</SelectItem>
               <SelectItem value="ad-hoc-tasks">Ad-Hoc Tasks</SelectItem>
+              <SelectItem value="custom-instruction">Custom Instruction</SelectItem>
               <div className="border-t border-neutral-6 my-1 mx-2" />
 
               <SelectItem value="analyze-codebase">Analyze Codebase</SelectItem>

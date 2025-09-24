@@ -20,6 +20,7 @@ This slice addresses ongoing maintenance tasks, bug fixes, and improvements for 
 ### 1. TIPropertyValueIsValid macOS Error
 
 **Priority:** P2 (Non-critical system warning)
+**Status:** Postponed Indefinitely
 
 **Description:** 
 Application shows macOS-specific warnings in the console:

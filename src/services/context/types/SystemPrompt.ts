@@ -45,6 +45,7 @@ export const INSTRUCTION_MAPPING: InstructionMapping = {
   
   'feature-design': 'Feature Design',
   'ad-hoc-tasks': 'Ad-Hoc Tasks',
+  'custom-instruction': 'Custom Instruction',
   'analyze-codebase': 'Analyze Codebase',
   'analyze-processing': 'Analyze Processing',
   'analyze-lld': 'Analysis to LLD',

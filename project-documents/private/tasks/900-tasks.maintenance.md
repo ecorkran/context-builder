@@ -94,16 +94,16 @@ dateUpdated: 2025-09-18
 
 ### 4.2 Implementation
 
-- [ ] **Add Custom Instruction to section list**
-  - Add Custom Instruction option to the same subsection as Ad-Hoc Tasks
-  - Ensure proper categorization and ordering
-  - Follow existing naming conventions and structure
+- [x] **Add Custom Instruction to section list**
+  - Added Custom Instruction option to same subsection as Ad-Hoc Tasks in ProjectConfigForm.tsx:228
+  - Added instruction mapping in SystemPrompt.ts:48 with value 'custom-instruction': 'Custom Instruction'
+  - Followed existing naming conventions and structure
   - **Success:** Custom Instruction appears in dropdown with Ad-Hoc Tasks
 
-- [ ] **Wire up Custom Instruction functionality**
-  - Connect Custom Instruction selection to appropriate prompt handling
-  - Ensure system prompt is properly loaded and applied
-  - Test section switching and prompt application
+- [x] **Wire up Custom Instruction functionality**
+  - Added instruction mapping connects selection to appropriate prompt handling
+  - SystemPromptParser will match 'custom-instruction' to 'Custom Instruction' prompt
+  - Integration follows existing pattern used by Ad-Hoc Tasks and other sections
   - **Success:** Custom Instruction section functions correctly
 
 ### 4.3 Testing and Verification
