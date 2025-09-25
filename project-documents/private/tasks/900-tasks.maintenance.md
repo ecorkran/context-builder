@@ -204,15 +204,15 @@ Add a simple Task File input control positioned under the Current Slice field. T
 
 ### 6.1 Add TaskFile Field to Data Types
 
-- [ ] **Add taskFile field to ProjectData interface**
+- [x] **Add taskFile field to ProjectData interface**
   - Add required `taskFile: string` field to ProjectData interface
   - **Success:** TypeScript compilation passes with taskFile in main interface
 
-- [ ] **Update CreateProjectData type**
+- [x] **Update CreateProjectData type**
   - Add optional `taskFile?: string` to CreateProjectData type
   - **Success:** Form creation works with optional taskFile parameter
 
-- [ ] **Update UpdateProjectData type**
+- [x] **Update UpdateProjectData type**
   - Include taskFile in UpdateProjectData partial type
   - **Success:** Project updates can include taskFile field
 

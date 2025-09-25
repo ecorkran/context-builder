@@ -45,10 +45,26 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
   onProjectDelete,
   onProjectNameUpdate
 }) => {
+  // Helper function to generate task file name from slice
+  const generateTaskFileName = (slice: string): string => {
+    if (!slice) return '';
+
+    // Extract slice number and name from format like "031-slice.hero-section"
+    const sliceMatch = slice.match(/^(\d+)-slice\.(.+)$/);
+    if (sliceMatch) {
+      const [, sliceNumber, sliceName] = sliceMatch;
+      return `${sliceNumber}-tasks.${sliceName}`;
+    }
+
+    // Fallback for other slice formats
+    return slice.replace('slice', 'tasks');
+  };
+
   const [formData, setFormData] = useState<CreateProjectData>({
     name: initialData?.name || '',
     template: initialData?.template || '',
     slice: initialData?.slice || '',
+    taskFile: initialData?.taskFile || generateTaskFileName(initialData?.slice || ''),
     instruction: initialData?.instruction || 'implementation',
     workType: initialData?.workType || 'continue',
     isMonorepo: initialData?.isMonorepo || false,
@@ -67,13 +83,15 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
     if (initialData) {
       setFormData(prev => {
         // Only update if the data actually changed
-        if (prev.name !== initialData.name || 
+        if (prev.name !== initialData.name ||
             prev.isMonorepo !== initialData.isMonorepo ||
-            prev.template !== initialData.template) {
+            prev.template !== initialData.template ||
+            prev.slice !== initialData.slice) {
           return {
             name: initialData.name || '',
             template: initialData.template || '',
             slice: initialData.slice || '',
+            taskFile: initialData.taskFile || generateTaskFileName(initialData.slice || ''),
             instruction: initialData.instruction || 'implementation',
             workType: initialData.workType || 'continue',
             isMonorepo: initialData.isMonorepo || false,
@@ -115,6 +133,19 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
         [field]: value
       }
     }));
+  };
+
+  // Simple handler for slice changes - only auto-update taskFile when it's empty
+  const handleSliceChange = (newSlice: string) => {
+    setFormData(prev => {
+      const newTaskFile = generateTaskFileName(newSlice);
+      return {
+        ...prev,
+        slice: newSlice,
+        // Only auto-update taskFile if it's currently empty
+        taskFile: prev.taskFile ? prev.taskFile : newTaskFile
+      };
+    });
   };
 
   return (
@@ -165,9 +196,23 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
             id="slice"
             type="text"
             value={formData.slice}
-            onChange={(e) => handleInputChange('slice', e.target.value)}
+            onChange={(e) => handleSliceChange(e.target.value)}
             className="w-full px-3 py-2 border border-accent-7 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
             placeholder="foundation, auth, ui-components..."
+          />
+        </div>
+
+        <div>
+          <label htmlFor="task-file" className="block text-sm font-medium text-neutral-11 mb-2">
+            Task File
+          </label>
+          <input
+            id="task-file"
+            type="text"
+            value={formData.taskFile || ''}
+            onChange={(e) => handleInputChange('taskFile', e.target.value)}
+            className="w-full px-3 py-2 border border-accent-7 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
+            placeholder="031-tasks.hero-section"
           />
         </div>
 
