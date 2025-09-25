@@ -197,6 +197,75 @@ dateUpdated: 2025-09-18
   - Build verification confirms integration works without errors
   - **Success:** Prompt generation adapts correctly to global monorepo setting
 
+## Task 6: Add Task File Control Under Current Slice
+
+### Overview
+Add a simple Task File input control positioned under the Current Slice field. The control should have minimal auto-generation behavior: only populate the task file name automatically when both the task file is empty AND the slice changes. Use format `{nnn}-tasks.{slicename}` for auto-generation. Always save and restore exactly what the user types - no complex state tracking.
+
+### 6.1 Add TaskFile Field to Data Types
+
+- [ ] **Add taskFile field to ProjectData interface**
+  - Add required `taskFile: string` field to ProjectData interface
+  - **Success:** TypeScript compilation passes with taskFile in main interface
+
+- [ ] **Update CreateProjectData type**
+  - Add optional `taskFile?: string` to CreateProjectData type
+  - **Success:** Form creation works with optional taskFile parameter
+
+- [ ] **Update UpdateProjectData type**
+  - Include taskFile in UpdateProjectData partial type
+  - **Success:** Project updates can include taskFile field
+
+### 6.2 Implement Task File Control UI
+
+- [ ] **Add Task File input control to form**
+  - Position input field directly under Current Slice field
+  - Use same label/input styling as existing fields
+  - Label as "Task File" with placeholder text
+  - **Success:** Task File input appears under Current Slice with consistent styling
+
+- [ ] **Implement auto-generation helper function**
+  - Create `generateTaskFileName(slice: string)` helper function
+  - Handle format conversion: `031-slice.hero-section` → `031-tasks.hero-section`
+  - Include fallback logic for non-standard slice formats
+  - **Success:** Helper function generates expected task file names from slice names
+
+- [ ] **Add simple auto-update logic**
+  - Auto-generate task file ONLY when field is empty AND slice changes
+  - Always preserve existing task file content when present
+  - Use basic form state management without complex tracking
+  - **Success:** Task file auto-populates from slice when empty, preserves user input when present
+
+### 6.3 Update Data Persistence
+
+- [ ] **Update default project creation**
+  - Add empty taskFile field to createDefaultProject method
+  - **Success:** New projects include taskFile field in stored data
+
+- [ ] **Update form data initialization**
+  - Include taskFile in all setFormData calls across components
+  - Use fallback to auto-generate when taskFile is missing from stored data
+  - **Success:** Task file loads correctly from saved projects and handles missing data
+
+- [ ] **Update project operations**
+  - Include taskFile in project switching, creation, and deletion handlers
+  - Ensure taskFile persists across all project management operations
+  - **Success:** Task file values preserved during all project operations
+
+### 6.4 Testing and Verification
+
+- [ ] **Build and test basic functionality**
+  - Verify project builds without TypeScript errors
+  - Test task file auto-generation from slice changes
+  - Test manual task file input preservation
+  - **Success:** All basic task file functionality works as expected
+
+- [ ] **Test persistence across sessions**
+  - Test task file values persist when switching projects
+  - Test task file values restore correctly on app restart
+  - Test both auto-generated and user-entered values
+  - **Success:** Task file persistence works reliably across all scenarios
+
 ## Notes
 
 **Priority:** P2 - Non-critical maintenance work

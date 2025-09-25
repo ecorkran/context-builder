@@ -6,6 +6,7 @@ export interface ProjectData {
   name: string;
   template: string;
   slice: string;
+  taskFile: string;
   instruction: string;
   workType?: 'start' | 'continue'; // For selecting appropriate opening statement
   isMonorepo: boolean;
@@ -23,9 +24,10 @@ export interface ProjectData {
  * Type for creating a new project (without auto-generated fields)
  * instruction, workType and customData are optional during creation and will get defaults
  */
-export type CreateProjectData = Omit<ProjectData, 'id' | 'createdAt' | 'updatedAt' | 'instruction' | 'workType' | 'customData'> & {
+export type CreateProjectData = Omit<ProjectData, 'id' | 'createdAt' | 'updatedAt' | 'instruction' | 'workType' | 'taskFile' | 'customData'> & {
   instruction?: string;
   workType?: 'start' | 'continue';
+  taskFile?: string;
   customData?: {
     recentEvents?: string;
     additionalNotes?: string;
@@ -37,4 +39,4 @@ export type CreateProjectData = Omit<ProjectData, 'id' | 'createdAt' | 'updatedA
 /**
  * Type for updating an existing project (partial updates allowed)
  */
-export type UpdateProjectData = Partial<Pick<ProjectData, 'name' | 'template' | 'slice' | 'instruction' | 'workType' | 'isMonorepo' | 'customData'>>;
+export type UpdateProjectData = Partial<Pick<ProjectData, 'name' | 'template' | 'slice' | 'taskFile' | 'instruction' | 'workType' | 'isMonorepo' | 'customData'>>;
