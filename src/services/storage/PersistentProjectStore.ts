@@ -35,6 +35,7 @@ export class PersistentProjectStore {
       name: 'My Project',
       template: '',
       slice: '',
+      taskFile: '',
       instruction: 'implementation',
       workType: 'continue',
       isMonorepo: false,

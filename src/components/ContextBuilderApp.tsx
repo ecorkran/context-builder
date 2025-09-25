@@ -17,6 +17,7 @@ export const ContextBuilderApp: React.FC = () => {
     name: '',
     template: '',
     slice: '',
+    taskFile: '',
     instruction: 'implementation',
     workType: 'continue',
     isMonorepo: false,
@@ -99,6 +100,7 @@ export const ContextBuilderApp: React.FC = () => {
             name: newProject.name,
             template: newProject.template,
             slice: newProject.slice,
+            taskFile: newProject.taskFile || '',
             instruction: newProject.instruction,
             workType: newProject.workType,
             isMonorepo: newProject.isMonorepo,
@@ -123,6 +125,7 @@ export const ContextBuilderApp: React.FC = () => {
             name: activeProject.name,
             template: activeProject.template,
             slice: activeProject.slice,
+            taskFile: activeProject.taskFile || '',
             instruction: activeProject.instruction,
             workType: activeProject.workType,
             isMonorepo: activeProject.isMonorepo,
@@ -213,6 +216,7 @@ export const ContextBuilderApp: React.FC = () => {
         name: switchedProject.name,
         template: switchedProject.template,
         slice: switchedProject.slice,
+        taskFile: switchedProject.taskFile || '',
         instruction: switchedProject.instruction,
         workType: switchedProject.workType,
         isMonorepo: switchedProject.isMonorepo,
@@ -255,6 +259,7 @@ export const ContextBuilderApp: React.FC = () => {
         name: newProject.name,
         template: formData.template || '',  // Inherit from current project
         slice: formData.slice || '',        // Inherit from current project
+        taskFile: formData.taskFile || '',  // Inherit from current project
         instruction: newProject.instruction,
         workType: newProject.workType,
         isMonorepo: newProject.isMonorepo,
@@ -316,6 +321,7 @@ export const ContextBuilderApp: React.FC = () => {
           name: newActiveProject.name,
           template: newActiveProject.template,
           slice: newActiveProject.slice,
+          taskFile: newActiveProject.taskFile || '',
           instruction: newActiveProject.instruction,
           workType: newActiveProject.workType,
           isMonorepo: newActiveProject.isMonorepo,

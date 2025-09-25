@@ -218,19 +218,19 @@ Add a simple Task File input control positioned under the Current Slice field. T
 
 ### 6.2 Implement Task File Control UI
 
-- [ ] **Add Task File input control to form**
+- [x] **Add Task File input control to form**
   - Position input field directly under Current Slice field
   - Use same label/input styling as existing fields
   - Label as "Task File" with placeholder text
   - **Success:** Task File input appears under Current Slice with consistent styling
 
-- [ ] **Implement auto-generation helper function**
+- [x] **Implement auto-generation helper function**
   - Create `generateTaskFileName(slice: string)` helper function
   - Handle format conversion: `031-slice.hero-section` → `031-tasks.hero-section`
   - Include fallback logic for non-standard slice formats
   - **Success:** Helper function generates expected task file names from slice names
 
-- [ ] **Add simple auto-update logic**
+- [x] **Add simple auto-update logic**
   - Auto-generate task file ONLY when field is empty AND slice changes
   - Always preserve existing task file content when present
   - Use basic form state management without complex tracking
