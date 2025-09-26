@@ -31,7 +31,7 @@ status: in-progress
   - Remove `isMonorepoModeEnabled` destructuring from useAppSettings hook
   - **Success:** Monorepo controls appear only when current project has `isMonorepo: true`
 
-- [ ] **Verify UI behavior**
+- [x] **Verify UI behavior**
   - Build project successfully with no TypeScript errors
   - Test that monorepo controls show/hide based on project `isMonorepo` checkbox
   - Test project switching shows correct monorepo UI state per project
@@ -40,19 +40,19 @@ status: in-progress
 ## Task 2: Update Prompt Generation in ContextTemplateEngine
 
 ### 2.1 Remove Global Setting Dependency from Monorepo Sections
-- [ ] **Update monorepo section conditional logic**
+- [x] **Update monorepo section conditional logic**
   - Change `data.isMonorepo && appSettingsService.isMonorepoModeEnabled()` to `data.isMonorepo`
   - Update both section creation and condition function
   - Remove appSettingsService import from ContextTemplateEngine.ts
   - **Success:** Monorepo sections generate based only on project `isMonorepo` field
 
-- [ ] **Update filterMonorepoContent method**
+- [x] **Update filterMonorepoContent method**
   - Change filterMonorepoContent condition to check only project setting
   - Remove appSettingsService dependency from filtering logic
   - Update method to operate on project data only
   - **Success:** Prompt filtering uses only project setting
 
-- [ ] **Verify prompt generation**
+- [x] **Verify prompt generation**
   - Build project successfully with no TypeScript errors
   - Test that prompts include monorepo content when project `isMonorepo: true`
   - Test that prompts exclude monorepo content when project `isMonorepo: false`

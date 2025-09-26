@@ -5,7 +5,6 @@ import { StatementManager } from './StatementManager';
 import { SectionBuilder } from './SectionBuilder';
 import { TemplateProcessor } from './TemplateProcessor';
 import { createSystemPromptParser, createStatementManager } from './ServiceFactory';
-import { appSettingsService } from '../settings/AppSettingsService';
 
 // Fallback template for error scenarios
 const DEFAULT_TEMPLATE = `# Project: {{projectName}}
@@ -102,10 +101,11 @@ export class ContextTemplateEngine {
       order: 1.5
     });
 
-    // 2. Context initialization prompt (always included, but filter monorepo content if disabled)
+    // 2. Context initialization prompt (always included, but filter monorepo content if project is not monorepo)
     const contextInitPrompt = await this.promptParser.getContextInitializationPrompt();
     const filteredPromptContent = this.filterMonorepoContent(
-      contextInitPrompt?.content || 'Project context and environment details follow.'
+      contextInitPrompt?.content || 'Project context and environment details follow.',
+      data.isMonorepo
     );
     sections.push({
       key: 'context-init',
@@ -124,14 +124,14 @@ export class ContextTemplateEngine {
       order: 3
     });
 
-    // 4. Monorepo section (conditional on both project setting and global monorepo mode)
-    if (data.isMonorepo && appSettingsService.isMonorepoModeEnabled()) {
+    // 4. Monorepo section (conditional on project setting only)
+    if (data.isMonorepo) {
       sections.push({
         key: 'monorepo-section',
         title: '### Monorepo Note',
         content: await this.sectionBuilder.buildMonorepoSection(data),
         conditional: true,
-        condition: () => data.isMonorepo && appSettingsService.isMonorepoModeEnabled(),
+        condition: () => data.isMonorepo,
         order: 4
       });
     }
@@ -284,11 +284,11 @@ export class ContextTemplateEngine {
   }
 
   /**
-   * Filter monorepo-specific content from prompt text when global monorepo mode is disabled
+   * Filter monorepo-specific content from prompt text when project is not a monorepo
    */
-  private filterMonorepoContent(content: string): string {
-    if (appSettingsService.isMonorepoModeEnabled()) {
-      return content; // Return unchanged if monorepo mode is enabled
+  private filterMonorepoContent(content: string, isMonorepo: boolean): string {
+    if (isMonorepo) {
+      return content; // Return unchanged if project is monorepo
     }
 
     // Remove monorepo-specific sections from the content
