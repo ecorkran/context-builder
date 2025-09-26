@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 ### Fixed
+- **Per-project monorepo support**: Converted monorepo settings from global+per-project to per-project only, eliminating workflow friction when switching between projects (#5)
 
 ## [0.7.0] - 2025-08-18
 
