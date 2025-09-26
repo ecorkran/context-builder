@@ -10,7 +10,6 @@ import {
 import { Checkbox } from '../../lib/ui-core/components/form/checkbox';
 import { CreateProjectData, ProjectData } from '../../services/storage/types/ProjectData';
 import { ProjectSelector } from '../project/ProjectSelector';
-import { useAppSettings } from '../../hooks/useAppSettings';
 
 interface ProjectConfigFormProps {
   initialData?: CreateProjectData;
@@ -77,7 +76,6 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
   });
 
   // Get global settings to control monorepo UI visibility
-  const { isMonorepoModeEnabled } = useAppSettings();
 
   useEffect(() => {
     if (initialData) {
@@ -286,8 +284,8 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
           </Select>
         </div>
 
-        {/* 5. Repository structure - Only show when monorepo mode is enabled globally */}
-        {isMonorepoModeEnabled && (
+        {/* 5. Repository structure - Only show when project is monorepo */}
+        {formData.isMonorepo && (
           <div className="space-y-3 pt-2" >
             <Checkbox
               id="is-monorepo"
