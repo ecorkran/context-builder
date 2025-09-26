@@ -5,7 +5,7 @@ lld: private/features/800-feature.project-monorepo.md
 dependencies: []
 projectState: Monorepo support currently uses dual global+per-project settings causing workflow friction
 lastUpdated: 2025-09-25
-status: in-progress
+status: complete
 ---
 
 ## Context Summary
@@ -92,25 +92,25 @@ status: in-progress
 ## Task 4: Clean Up Global Settings Infrastructure
 
 ### 4.1 Remove Global Settings Service Components
-- [ ] **Remove AppSettingsService and types**
+- [x] **Remove AppSettingsService and types**
   - Delete `src/services/settings/AppSettingsService.ts`
   - Delete `src/services/settings/types/AppSettings.ts`
   - Remove services/settings directory if empty
   - **Success:** Global settings service files removed
 
-- [ ] **Remove useAppSettings hook**
+- [x] **Remove useAppSettings hook**
   - Delete `src/hooks/useAppSettings.ts`
   - Remove any remaining imports of useAppSettings from other files
   - **Success:** Global settings hook removed
 
-- [ ] **Remove remaining global settings references**
+- [x] **Remove remaining global settings references**
   - Search codebase for any remaining `isMonorepoModeEnabled` references
   - Remove any remaining `appSettingsService` imports
   - Clean up any unused imports or dependencies
   - **Success:** No global settings references remain in codebase
 
 ### 4.2 Final Build and Integration Test
-- [ ] **Verify complete functionality**
+- [x] **Verify complete functionality**
   - Build project successfully with no TypeScript errors or warnings
   - Test project creation with monorepo setting
   - Test project switching between monorepo and non-monorepo projects
