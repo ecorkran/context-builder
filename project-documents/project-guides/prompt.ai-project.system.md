@@ -241,6 +241,7 @@ The following provides context on our current work in slice-based project {proje
 We are using the slice-based methodology from `guide.ai-project.00-process`. Current work context:
 - Project: {project}
 - Current slice: {slice}
+- Tasks File: {taskFile}
 - Phase: [specify current phase if applicable]
 - if [slice] is provided it can be decomposed into [sliceindex]-slice.[slicename].md
 
