@@ -162,7 +162,7 @@ export class SystemPromptParser {
   /**
    * Get context initialization prompt (Model Change or Context Refresh)
    */
-  async getContextInitializationPrompt(): SystemPrompt | null {
+  async getContextInitializationPrompt(): Promise<SystemPrompt | null> {
     const parsed = await this.parsePromptFile();
     
     return parsed.prompts.find(prompt => 
@@ -175,7 +175,7 @@ export class SystemPromptParser {
   /**
    * Get tool use prompt (Use 3rd Party Tool)
    */
-  async getToolUsePrompt(): SystemPrompt | null {
+  async getToolUsePrompt(): Promise<SystemPrompt | null> {
     const parsed = await this.parsePromptFile();
     
     return parsed.prompts.find(prompt =>
@@ -188,7 +188,7 @@ export class SystemPromptParser {
   /**
    * Get prompt for specific instruction type
    */
-  async getPromptForInstruction(instruction: string): SystemPrompt | null {
+  async getPromptForInstruction(instruction: string): Promise<SystemPrompt | null> {
     const parsed = await this.parsePromptFile();
     
     // First, try exact mapping
@@ -212,7 +212,7 @@ export class SystemPromptParser {
   /**
    * Get all available prompts
    */
-  async getAllPrompts(): SystemPrompt[] {
+  async getAllPrompts(): Promise<SystemPrompt[]> {
     const parsed = await this.parsePromptFile();
     return parsed.prompts;
   }
