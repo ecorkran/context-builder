@@ -8,7 +8,14 @@ interface ContextOutputProps {
 }
 
 /**
- * Component for displaying generated context with copy functionality
+ * OUTPUT PREVIEW COMPONENT - Main display area for generated context
+ *
+ * This is the primary output preview that users see in the right panel.
+ * Displays the complete generated context string including project info,
+ * Current Slice, Tasks File, and all other sections assembled by the
+ * context generation system.
+ *
+ * Also provides copy functionality for the generated content.
  */
 export const ContextOutput: React.FC<ContextOutputProps> = ({
   context,

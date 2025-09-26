@@ -57,6 +57,7 @@ export class ElectronProjectStore {
         name: project.name,
         template: project.template,
         slice: project.slice,
+        taskFile: project.taskFile || '', // Default to empty string
         instruction: project.instruction || 'implementation', // Default to implementation
         isMonorepo: project.isMonorepo || false,
         customData: project.customData || {}, // Default to empty object

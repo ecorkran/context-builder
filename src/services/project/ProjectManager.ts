@@ -172,6 +172,7 @@ export class ProjectManager {
         name: projectName,
         template: '',
         slice: '',
+        taskFile: '',
         instruction: 'implementation',
         workType: 'continue',
         isMonorepo: false,

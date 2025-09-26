@@ -19,6 +19,7 @@ describe('ProjectManager', () => {
         name: 'Test Project 1',
         template: 'react',
         slice: 'foundation',
+        taskFile: '',
         instruction: 'implementation',
         workType: 'continue',
         isMonorepo: false,
@@ -27,10 +28,11 @@ describe('ProjectManager', () => {
         updatedAt: '2024-01-01T10:00:00Z' // older
       },
       {
-        id: 'project-2', 
+        id: 'project-2',
         name: 'Test Project 2',
         template: 'nextjs',
         slice: 'feature',
+        taskFile: 'tasks.feature.md',
         instruction: 'implementation',
         workType: 'continue',
         isMonorepo: true,

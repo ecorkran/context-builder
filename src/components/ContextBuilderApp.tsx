@@ -68,6 +68,7 @@ export const ContextBuilderApp: React.FC = () => {
       id: 'temp',
       ...formData,
       template: formData.template || 'default', // Provide default template for non-monorepo
+      taskFile: formData.taskFile || '', // Ensure taskFile is always a string
       instruction: formData.instruction || 'implementation',
       workType: formData.workType || 'continue',
       customData: formData.customData || {},
