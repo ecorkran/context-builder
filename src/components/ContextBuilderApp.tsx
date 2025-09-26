@@ -357,9 +357,16 @@ export const ContextBuilderApp: React.FC = () => {
 
     setFormData(updatedFormData);
 
+    // Update the projects array to reflect the changes immediately
+    setProjects(prev => prev.map(project =>
+      project.id === currentProjectId
+        ? { ...project, ...updates }
+        : project
+    ));
+
     // Trigger form change handler to update output preview and persist changes
     handleFormChange(updatedFormData);
-  }, [currentProject, formData, handleFormChange]);
+  }, [currentProject, formData, handleFormChange, currentProjectId]);
 
   const leftPanelContent = (
     <div className="space-y-6">
