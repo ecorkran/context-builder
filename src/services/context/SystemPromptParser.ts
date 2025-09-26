@@ -289,10 +289,11 @@ export class SystemPromptParser {
 We are using the slice-based methodology from guide.ai-project.00-process. Current work context:
 - Project: {project}
 - Current slice: {slice} (if applicable)
+- Tasks File: {taskFile}
 - Phase: [specify current phase]
 
 If you were previously assigned a role, continue in that role. If not, assume role of Senior AI as defined in the Process Guide.`,
-        parameters: ['project', 'slice']
+        parameters: ['project', 'slice', 'taskFile']
       },
       {
         name: 'Use 3rd Party Tool',

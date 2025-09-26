@@ -6,6 +6,7 @@ export interface ContextData {
   projectName: string;
   template: string;
   slice: string;
+  taskFile: string;
   instruction: string;
   workType?: 'start' | 'continue';
   isMonorepo: boolean;
