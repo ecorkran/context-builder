@@ -446,7 +446,7 @@ describe('SectionBuilder', () => {
       
       const result = await sectionBuilder.buildProjectInfoSection(data);
       
-      expect(result).toBe(`{\n  project: test-project,\n  template: react-vite,\n  slice: test-slice,\n  monorepo: true\n}`);
+      expect(result).toBe(`{\n  project: test-project,\n  template: react-vite,\n  slice: test-slice,\n  taskFile: null,\n  monorepo: true\n}`);
     });
 
     it('should exclude template when default or empty', async () => {
@@ -456,7 +456,7 @@ describe('SectionBuilder', () => {
       
       const result = await sectionBuilder.buildProjectInfoSection(data);
       
-      expect(result).toBe(`{\n  project: test-project,\n  slice: test-slice,\n  monorepo: false\n}`);
+      expect(result).toBe(`{\n  project: test-project,\n  slice: test-slice,\n  taskFile: null,\n  monorepo: false\n}`);
     });
 
     it('should exclude template when isMonorepo is false even if template has value', async () => {
@@ -466,7 +466,7 @@ describe('SectionBuilder', () => {
       
       const result = await sectionBuilder.buildProjectInfoSection(data);
       
-      expect(result).toBe(`{\n  project: test-project,\n  slice: test-slice,\n  monorepo: false\n}`);
+      expect(result).toBe(`{\n  project: test-project,\n  slice: test-slice,\n  taskFile: null,\n  monorepo: false\n}`);
     });
 
     it('should show slice as null when empty', async () => {
@@ -476,7 +476,7 @@ describe('SectionBuilder', () => {
       
       const result = await sectionBuilder.buildProjectInfoSection(data);
       
-      expect(result).toBe(`{\n  project: test-project,\n  slice: null,\n  monorepo: false\n}`);
+      expect(result).toBe(`{\n  project: test-project,\n  slice: null,\n  taskFile: null,\n  monorepo: false\n}`);
     });
 
     it('should handle errors with fallback', async () => {
@@ -485,7 +485,7 @@ describe('SectionBuilder', () => {
       
       const result = await sectionBuilder.buildProjectInfoSection(data);
       
-      expect(result).toBe(`{\n  project: undefined,\n  slice: test-slice,\n  monorepo: false\n}`);
+      expect(result).toBe(`{\n  project: undefined,\n  slice: test-slice,\n  taskFile: null,\n  monorepo: false\n}`);
     });
   });
 });

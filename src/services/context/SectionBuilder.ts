@@ -172,7 +172,14 @@ export class SectionBuilder {
       } else {
         infoLines.push(`  slice: null`);
       }
-      
+
+      // Include task file if present
+      if (data.taskFile && data.taskFile.trim()) {
+        infoLines.push(`  taskFile: ${data.taskFile}`);
+      } else {
+        infoLines.push(`  taskFile: null`);
+      }
+
       // Always include monorepo status
       infoLines.push(`  monorepo: ${data.isMonorepo}`);
       
