@@ -61,14 +61,14 @@ status: in-progress
 ## Task 3: Convert Settings Dialog to Per-Project
 
 ### 3.1 Update SettingsDialog Component
-- [ ] **Replace global toggle with project toggle**
+- [x] **Replace global toggle with project toggle**
   - Change SettingsDialog to receive current project data as props
   - Replace `monorepoModeEnabled` toggle with `isMonorepo` toggle
   - Update toggle to modify project setting instead of global setting
   - Update dialog title and help text to reflect per-project behavior
   - **Success:** Settings dialog controls project `isMonorepo` setting
 
-- [ ] **Remove global settings dependencies**
+- [x] **Remove global settings dependencies**
   - Remove `useAppSettings` import from SettingsDialog
   - Remove global settings state management
   - Remove global settings clearing logic
@@ -76,14 +76,14 @@ status: in-progress
   - **Success:** SettingsDialog operates independently of global settings
 
 ### 3.2 Update SettingsButton Integration
-- [ ] **Update SettingsButton to pass project data**
+- [x] **Update SettingsButton to pass project data**
   - Modify SettingsButton to receive current project data
   - Add project update handler to SettingsButton props
   - Pass project data and update handler to SettingsDialog
   - Remove global settings integration from SettingsButton
   - **Success:** Settings button operates on current project data
 
-- [ ] **Update parent component integration**
+- [x] **Update parent component integration**
   - Update ContextBuilderApp to pass project data to SettingsButton
   - Add project update handler that updates current project
   - Ensure project updates trigger form refresh and output preview update

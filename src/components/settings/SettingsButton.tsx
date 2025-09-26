@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Settings } from 'lucide-react';
 import { SettingsDialog } from './SettingsDialog';
+import { ProjectData } from '../../services/storage/types/ProjectData';
 
 interface SettingsButtonProps {
   className?: string;
-  onClearProjectMonorepoSetting?: () => void;
+  currentProject: ProjectData | null;
+  onProjectUpdate: (updates: Partial<ProjectData>) => void;
 }
 
 /**
@@ -12,7 +14,8 @@ interface SettingsButtonProps {
  */
 export const SettingsButton: React.FC<SettingsButtonProps> = ({
   className,
-  onClearProjectMonorepoSetting
+  currentProject,
+  onProjectUpdate
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -42,7 +45,8 @@ export const SettingsButton: React.FC<SettingsButtonProps> = ({
       <SettingsDialog
         isOpen={isDialogOpen}
         onClose={handleCloseDialog}
-        onClearProjectMonorepoSetting={onClearProjectMonorepoSetting}
+        currentProject={currentProject}
+        onProjectUpdate={onProjectUpdate}
       />
     </>
   );

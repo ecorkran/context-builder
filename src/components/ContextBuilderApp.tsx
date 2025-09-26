@@ -341,23 +341,25 @@ export const ContextBuilderApp: React.FC = () => {
     }
   }, [projectManager, projects.length, currentProjectId]);
 
-  // Callback to clear project monorepo setting when global monorepo mode is disabled
-  const handleClearProjectMonorepoSetting = useCallback(() => {
+  // Get current project object
+  const currentProject = useMemo(() => {
+    return currentProjectId ? projects.find(p => p.id === currentProjectId) : null;
+  }, [currentProjectId, projects]);
+
+  // Callback to update project settings
+  const handleProjectUpdate = useCallback(async (updates: Partial<ProjectData>) => {
+    if (!currentProject) return;
+
     const updatedFormData = {
       ...formData,
-      isMonorepo: false,
-      template: '', // Clear template as well since it's only relevant for monorepo
-      customData: {
-        ...formData.customData,
-        monorepoNote: '' // Clear monorepo note as well
-      }
+      ...updates
     };
 
     setFormData(updatedFormData);
 
-    // Trigger form change handler to update output preview
+    // Trigger form change handler to update output preview and persist changes
     handleFormChange(updatedFormData);
-  }, [formData, handleFormChange]);
+  }, [currentProject, formData, handleFormChange]);
 
   const leftPanelContent = (
     <div className="space-y-6">
@@ -366,7 +368,8 @@ export const ContextBuilderApp: React.FC = () => {
           <h2 className="text-xl font-semibold text-neutral-12 ml-[calc(var(--radius)*0.25)]">Project Configuration</h2>
           <SettingsButton
             className="mr-[calc(var(--radius)*0.25)]"
-            onClearProjectMonorepoSetting={handleClearProjectMonorepoSetting}
+            currentProject={currentProject}
+            onProjectUpdate={handleProjectUpdate}
           />
         </div>
         <ProjectConfigForm
