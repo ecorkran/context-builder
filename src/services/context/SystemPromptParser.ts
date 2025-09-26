@@ -261,7 +261,9 @@ export class SystemPromptParser {
       // Prevent cache from growing too large
       if (this.promptsCache.size > 10) {
         const oldestKey = this.promptsCache.keys().next().value;
-        this.promptsCache.delete(oldestKey);
+        if (oldestKey) {
+          this.promptsCache.delete(oldestKey);
+        }
       }
     } catch (error) {
       // Don't fail on cache errors

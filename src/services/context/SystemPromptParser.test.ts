@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import * as fs from 'fs';
 import { SystemPromptParser } from './SystemPromptParser';
-import { SystemPrompt, INSTRUCTION_MAPPING } from './types/SystemPrompt';
+import { INSTRUCTION_MAPPING } from './types/SystemPrompt';
 
 // Mock fs module
 vi.mock('fs');
