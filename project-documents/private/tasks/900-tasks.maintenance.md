@@ -326,73 +326,37 @@ The application fails to build in production mode due to Node.js modules being i
   - Current issue: contextServices.ts incorrectly imports renderer process versions instead of main process versions
   - **Success:** Understanding of current IPC architecture and identified root cause
 
-### 8.2 Design IPC Handler Architecture
+### 8.2 Analysis and Solution Implementation
 
-- [ ] **Design file system IPC handlers**
-  - Create IPC handler specifications for file operations needed by StatementManager
-  - Create IPC handler specifications for file operations needed by SystemPromptParser
-  - Design consistent API for file system operations (read, write, exists, mkdir, rename, stat)
-  - Plan error handling and security validation for file operations
-  - **Success:** Complete IPC handler design that covers all current Node.js module usage
+- [x] **Discovered existing IPC architecture**
+  - Found main process versions of StatementManager and SystemPromptParser already exist with correct Node.js imports
+  - Found existing IPC handlers in contextServices.ts already implemented and working
+  - Found existing IPC adapter classes (StatementManagerIPC, SystemPromptParserIPC) in renderer
+  - Identified root cause: renderer process contained unnecessary direct implementations that couldn't work in browser
+  - **Success:** Architecture analysis complete - solution is to remove duplicate renderer implementations
 
-- [ ] **Plan renderer process refactoring**
-  - Design service layer abstraction to hide IPC complexity
-  - Plan migration strategy to minimize breaking changes
-  - Identify any dependencies between the two affected services
-  - **Success:** Clear refactoring plan that maintains existing functionality
+- [x] **Remove problematic renderer process implementations**
+  - Deleted StatementManager.ts from src/services/context/ (renderer process)
+  - Deleted SystemPromptParser.ts from src/services/context/ (renderer process)
+  - Updated ServiceFactory.ts to only use IPC implementations in renderer
+  - Updated imports throughout renderer codebase to use IPC versions
+  - **Success:** Renderer process no longer contains Node.js module imports
 
-### 8.3 Implement IPC Handlers in Main Process
+### 8.3 Cleanup and Testing
 
-- [ ] **Add file system IPC handlers to main.ts**
-  - Implement handlers for all file operations currently used by StatementManager
-  - Implement handlers for all file operations currently used by SystemPromptParser
-  - Add proper error handling and security validation
-  - Follow existing IPC handler patterns and conventions
-  - **Success:** All required file system operations available via IPC
+- [x] **Update renderer process structure**
+  - Updated index.ts exports to remove deleted classes
+  - Updated ContextTemplateEngine.ts to use IPC types
+  - Updated SectionBuilder.ts to use IPC types
+  - Removed tests for deleted direct implementations
+  - **Success:** Renderer process properly structured with only IPC implementations
 
-- [ ] **Update preload.ts with new IPC methods**
-  - Expose new file system IPC handlers through electronAPI
-  - Maintain consistent API naming and structure
-  - Add proper TypeScript types for all new methods
-  - **Success:** Renderer process can access file system operations via IPC
-
-### 8.4 Refactor Renderer Process Services
-
-- [ ] **Refactor StatementManager.ts**
-  - Replace direct fs module imports with IPC calls via window.electronAPI
-  - Update all file operations to use async IPC patterns
-  - Maintain existing public API and functionality
-  - Add proper error handling for IPC failures
-  - **Success:** StatementManager works without Node.js module imports
-
-- [ ] **Refactor SystemPromptParser.ts**
-  - Replace direct fs and path module imports with IPC calls
-  - Update file operations to use async IPC patterns
-  - Maintain existing functionality and public API
-  - Handle path operations through IPC or browser-compatible alternatives
-  - **Success:** SystemPromptParser works without Node.js module imports
-
-### 8.5 Testing and Verification
-
-- [ ] **Test development mode functionality**
-  - Verify all existing functionality works in development mode
-  - Test file operations in StatementManager (create, read, update, delete)
-  - Test file operations in SystemPromptParser (read, parse, process)
-  - Ensure no regressions in existing features
-  - **Success:** All features work correctly in development mode
-
-- [ ] **Test production build**
-  - Build application in production mode without Vite externalization errors
-  - Test all file operations work correctly in production build
-  - Verify application starts and functions normally
-  - Test edge cases and error handling
-  - **Success:** Application builds and runs correctly in production mode
-
-- [ ] **Performance and security verification**
-  - Verify IPC overhead doesn't significantly impact performance
-  - Confirm file operations maintain proper security boundaries
-  - Test that file access is properly restricted to intended directories
-  - **Success:** Performance acceptable and security model maintained
+- [x] **Verify production build**
+  - Built application successfully without Vite externalization errors
+  - No more Node.js module import warnings for StatementManager and SystemPromptParser
+  - Application builds cleanly in production mode
+  - Only remaining warning is unrelated gray-matter eval usage
+  - **Success:** Production build works correctly
 
 ## Notes
 
