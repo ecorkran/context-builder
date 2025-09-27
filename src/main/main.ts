@@ -244,7 +244,7 @@ function createWindow(): void {
   if (process.env.ELECTRON_RENDERER_URL) {
     win.loadURL(process.env.ELECTRON_RENDERER_URL)
   } else {
-    win.loadFile(fileURLToPath(new URL('../../index.html', import.meta.url)))
+    win.loadFile(fileURLToPath(new URL('../renderer/index.html', import.meta.url)))
   }
 }
 
