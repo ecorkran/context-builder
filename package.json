@@ -1,8 +1,8 @@
 {
-  "name": "electron-template",
+  "name": "context-builder",
   "private": true,
   "version": "0.0.0",
-  "description": "Electron template with React, TypeScript, and Tailwind CSS",
+  "description": "Context Builder - AI project context generation tool",
   "main": "./out/main/main.js",
   "type": "module",
   "scripts": {
@@ -105,7 +105,7 @@
     "zod": "^4.1.5"
   },
   "build": {
-    "appId": "com.electron-template.app",
+    "appId": "com.context-builder.app",
     "files": [
       "out/**",
       "resources/**"
