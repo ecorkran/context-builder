@@ -266,6 +266,134 @@ Add a simple Task File input control positioned under the Current Slice field. T
   - Test both auto-generated and user-entered values
   - **Success:** Created comprehensive tests for TaskFile data structure compatibility, JSON serialization/deserialization, and persistence patterns. All tests pass successfully. Task file persistence works reliably across all scenarios
 
+## Task 7: Replace Default Menu with Application Menu
+
+### 7.1 Implement MacOS-compatible Application Menu
+
+- [x] **Replace default Electron menu with simplified application menu**
+  - Implement custom menu using Menu.buildFromTemplate() with minimal macOS structure
+  - Add proper macOS application menu with role: 'appMenu' for About, Services, Hide, Quit
+  - Use appropriate keyboard accelerators (Cmd on macOS, Ctrl on other platforms)
+  - **Success:** Application shows custom menu instead of default Electron menu
+
+- [x] **Add minimal menu structure**
+  - Edit menu: Cut, Copy, Paste, Select All (basic text editing)
+  - Help menu: About or Learn More item
+  - Keep menu structure minimal and unobtrusive
+  - **Success:** Essential menu items function correctly with proper keyboard shortcuts
+
+- [x] **Integrate menu creation with application lifecycle**
+  - Call buildAppMenu() in app.whenReady() before creating main window
+  - Ensure menu is set using Menu.setApplicationMenu()
+  - Maintain existing window creation and app lifecycle behavior
+  - **Success:** Menu initializes properly on application startup
+
+### 7.2 Testing and Verification
+
+- [x] **Test menu functionality on macOS**
+  - Verified application menu appears with proper macOS structure and app name
+  - Confirmed Edit menu items (cut, copy, paste, select all) work with standard keyboard shortcuts
+  - Help menu "About Context Builder" opens external link correctly
+  - **Success:** Menu works correctly on macOS Electron application
+
+- [x] **Build and verify integration**
+  - Build project completed successfully with no TypeScript compilation errors
+  - Tested application startup with new menu system in both dev and build modes
+  - Verified no conflicts with existing Electron main process code
+  - **Success:** Application builds and runs with custom menu implementation
+
+## Task 8: Fix Electron Architecture Issue - Node.js Modules in Renderer Process
+
+### Overview
+The application fails to build in production mode due to Node.js modules being imported directly in the renderer process. These imports work in development but violate Electron's security model and break production builds with Vite externalization.
+
+**Root Cause:** StatementManager.ts and SystemPromptParser.ts are importing Node.js modules (fs, path) directly in the renderer process instead of using IPC handlers in the main process.
+
+**Error:** "[module] is not exported by "__vite-browser-external""
+
+### 8.1 Audit Current Node.js Module Usage
+
+- [x] **Identify all Node.js imports in renderer process files**
+  - Analyzed StatementManager.ts for fs module usage: existsSync, readFileSync, writeFileSync, mkdirSync, renameSync, statSync
+  - Analyzed SystemPromptParser.ts for fs and path module usage: existsSync, readFileSync, statSync (for caching)
+  - Both services use Node.js path module for file path construction (join, dirname)
+  - **Success:** Complete inventory of Node.js module dependencies in renderer code
+
+- [x] **Review existing IPC infrastructure**
+  - Examined existing IPC handlers in main.ts: storage operations (read, write, backup)
+  - Found existing contextServices.ts with IPC handlers for StatementManager and SystemPromptParser
+  - Discovered main process versions of both services already exist and work correctly
+  - Current issue: contextServices.ts incorrectly imports renderer process versions instead of main process versions
+  - **Success:** Understanding of current IPC architecture and identified root cause
+
+### 8.2 Design IPC Handler Architecture
+
+- [ ] **Design file system IPC handlers**
+  - Create IPC handler specifications for file operations needed by StatementManager
+  - Create IPC handler specifications for file operations needed by SystemPromptParser
+  - Design consistent API for file system operations (read, write, exists, mkdir, rename, stat)
+  - Plan error handling and security validation for file operations
+  - **Success:** Complete IPC handler design that covers all current Node.js module usage
+
+- [ ] **Plan renderer process refactoring**
+  - Design service layer abstraction to hide IPC complexity
+  - Plan migration strategy to minimize breaking changes
+  - Identify any dependencies between the two affected services
+  - **Success:** Clear refactoring plan that maintains existing functionality
+
+### 8.3 Implement IPC Handlers in Main Process
+
+- [ ] **Add file system IPC handlers to main.ts**
+  - Implement handlers for all file operations currently used by StatementManager
+  - Implement handlers for all file operations currently used by SystemPromptParser
+  - Add proper error handling and security validation
+  - Follow existing IPC handler patterns and conventions
+  - **Success:** All required file system operations available via IPC
+
+- [ ] **Update preload.ts with new IPC methods**
+  - Expose new file system IPC handlers through electronAPI
+  - Maintain consistent API naming and structure
+  - Add proper TypeScript types for all new methods
+  - **Success:** Renderer process can access file system operations via IPC
+
+### 8.4 Refactor Renderer Process Services
+
+- [ ] **Refactor StatementManager.ts**
+  - Replace direct fs module imports with IPC calls via window.electronAPI
+  - Update all file operations to use async IPC patterns
+  - Maintain existing public API and functionality
+  - Add proper error handling for IPC failures
+  - **Success:** StatementManager works without Node.js module imports
+
+- [ ] **Refactor SystemPromptParser.ts**
+  - Replace direct fs and path module imports with IPC calls
+  - Update file operations to use async IPC patterns
+  - Maintain existing functionality and public API
+  - Handle path operations through IPC or browser-compatible alternatives
+  - **Success:** SystemPromptParser works without Node.js module imports
+
+### 8.5 Testing and Verification
+
+- [ ] **Test development mode functionality**
+  - Verify all existing functionality works in development mode
+  - Test file operations in StatementManager (create, read, update, delete)
+  - Test file operations in SystemPromptParser (read, parse, process)
+  - Ensure no regressions in existing features
+  - **Success:** All features work correctly in development mode
+
+- [ ] **Test production build**
+  - Build application in production mode without Vite externalization errors
+  - Test all file operations work correctly in production build
+  - Verify application starts and functions normally
+  - Test edge cases and error handling
+  - **Success:** Application builds and runs correctly in production mode
+
+- [ ] **Performance and security verification**
+  - Verify IPC overhead doesn't significantly impact performance
+  - Confirm file operations maintain proper security boundaries
+  - Test that file access is properly restricted to intended directories
+  - **Success:** Performance acceptable and security model maintained
+
 ## Notes
 
 **Priority:** P2 - Non-critical maintenance work

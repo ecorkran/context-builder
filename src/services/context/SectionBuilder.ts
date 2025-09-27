@@ -1,6 +1,6 @@
 import { ContextSection, EnhancedContextData, SectionBuilderConfig, SectionKeys } from './types/ContextSection';
-import { StatementManager } from './StatementManager';
-import { SystemPromptParser } from './SystemPromptParser';
+import { StatementManagerIPC } from './StatementManagerIPC';
+import { SystemPromptParserIPC } from './SystemPromptParserIPC';
 import { TemplateProcessor } from './TemplateProcessor';
 
 /**
@@ -8,14 +8,14 @@ import { TemplateProcessor } from './TemplateProcessor';
  * Handles conditional logic, template processing, and section assembly
  */
 export class SectionBuilder {
-  private statementManager: StatementManager;
-  private promptParser: SystemPromptParser;
+  private statementManager: StatementManagerIPC;
+  private promptParser: SystemPromptParserIPC;
   private templateProcessor: TemplateProcessor;
   private config: SectionBuilderConfig;
 
   constructor(
-    statementManager: StatementManager,
-    promptParser: SystemPromptParser,
+    statementManager: StatementManagerIPC,
+    promptParser: SystemPromptParserIPC,
     config?: SectionBuilderConfig
   ) {
     this.statementManager = statementManager;

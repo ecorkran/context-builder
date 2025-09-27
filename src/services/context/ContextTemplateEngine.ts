@@ -1,7 +1,7 @@
 import { EnhancedContextData } from './types/ContextData';
 import { ContextSection, ContextTemplate } from './types/ContextSection';
-import { SystemPromptParser } from './SystemPromptParser';
-import { StatementManager } from './StatementManager';
+import { SystemPromptParserIPC } from './SystemPromptParserIPC';
+import { StatementManagerIPC } from './StatementManagerIPC';
 import { SectionBuilder } from './SectionBuilder';
 import { TemplateProcessor } from './TemplateProcessor';
 import { createSystemPromptParser, createStatementManager } from './ServiceFactory';
@@ -18,15 +18,15 @@ Monorepo: {{isMonorepo}}`;
  * Coordinates between statement manager, prompt parser, and section builder
  */
 export class ContextTemplateEngine {
-  private promptParser: SystemPromptParser | any; // Could be IPC or direct implementation
-  private statementManager: StatementManager | any; // Could be IPC or direct implementation
+  private promptParser: SystemPromptParserIPC; // IPC implementation for renderer
+  private statementManager: StatementManagerIPC; // IPC implementation for renderer
   private sectionBuilder: SectionBuilder;
   private templateProcessor: TemplateProcessor;
   private enableNewEngine: boolean = true;
 
   constructor(
-    promptParser?: SystemPromptParser,
-    statementManager?: StatementManager,
+    promptParser?: SystemPromptParserIPC,
+    statementManager?: StatementManagerIPC,
     sectionBuilder?: SectionBuilder
   ) {
     this.promptParser = promptParser || createSystemPromptParser();

@@ -26,7 +26,6 @@ function createWindow(): void {
     width: 1200,
     height: 800,
     show: false,
-    autoHideMenuBar: true,
     title: 'Context Builder',
     webPreferences: {
       preload: fileURLToPath(new URL('../preload/preload.mjs', import.meta.url)),
@@ -252,43 +251,35 @@ function createWindow(): void {
 app.whenReady().then(() => {
   process.env.ELECTRON_ENABLE_SECURITY_WARNINGS = 'true'
   
-  // Create minimal menu example (hidden by default with autoHideMenuBar: true)
-  // Delete this entire menu section if you don't want a native menu
-  const menu = Menu.buildFromTemplate([
-    {
-      label: 'File',
-      submenu: [
-        { label: 'New', accelerator: 'CmdOrCtrl+N', click: () => console.log('New file') },
-        { label: 'Open', accelerator: 'CmdOrCtrl+O', click: () => console.log('Open file') },
-        { type: 'separator' },
-        { label: 'Quit', accelerator: 'CmdOrCtrl+Q', role: 'quit' }
-      ]
-    },
+  // Create simplified application menu for macOS compatibility
+  const template = [
+    // This special role makes a proper "App" menu on macOS (About, Services, Hide, Quit, etc.)
+    ...(process.platform === 'darwin' ? [{
+      role: 'appMenu' as const // auto-uses your app name when bundled
+    }] : []),
+
     {
       label: 'Edit',
       submenu: [
-        { label: 'Undo', accelerator: 'CmdOrCtrl+Z', role: 'undo' },
-        { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', role: 'redo' },
-        { type: 'separator' },
-        { label: 'Cut', accelerator: 'CmdOrCtrl+X', role: 'cut' },
-        { label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' },
-        { label: 'Paste', accelerator: 'CmdOrCtrl+V', role: 'paste' },
-        { label: 'Select All', accelerator: 'CmdOrCtrl+A', role: 'selectAll' }
+        { role: 'cut' as const },
+        { role: 'copy' as const },
+        { role: 'paste' as const },
+        { role: 'selectAll' as const }
       ]
     },
     {
-      label: 'View',
+      label: 'Help',
       submenu: [
-        { label: 'Toggle Developer Tools', accelerator: 'F12', role: 'toggleDevTools' },
-        { label: 'Reload', accelerator: 'CmdOrCtrl+R', role: 'reload' },
-        { type: 'separator' },
-        { label: 'Toggle Menu Bar', accelerator: 'Alt', click: (_, win) => win?.setMenuBarVisibility(!win.isMenuBarVisible()) }
+        {
+          label: 'About Context Builder',
+          click: () => { shell.openExternal('https://github.com/anthropics/claude-code') }
+        }
       ]
     }
-  ])
-  
+  ]
+
+  const menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
-  // End of menu section - delete everything above this line to remove the menu
   createWindow()
   
   // Basic CSP in production

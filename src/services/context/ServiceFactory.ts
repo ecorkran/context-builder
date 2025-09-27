@@ -1,26 +1,17 @@
-import { StatementManager } from './StatementManager';
-import { SystemPromptParser } from './SystemPromptParser';
 import { StatementManagerIPC } from './StatementManagerIPC';
 import { SystemPromptParserIPC } from './SystemPromptParserIPC';
 
 /**
- * Factory functions for creating context services based on environment
+ * Factory functions for creating context services in renderer process
+ * Always uses IPC implementations since renderer cannot use Node.js modules
  */
 
 export function createStatementManager(filename?: string) {
-  // Use IPC implementation in renderer process
-  if (typeof window !== 'undefined' && window.electronAPI) {
-    return new StatementManagerIPC(filename);
-  }
-  // Use direct implementation in main process or non-Electron environments
-  return new StatementManager(filename);
+  // Renderer process always uses IPC implementation
+  return new StatementManagerIPC(filename);
 }
 
 export function createSystemPromptParser(filename?: string) {
-  // Use IPC implementation in renderer process
-  if (typeof window !== 'undefined' && window.electronAPI) {
-    return new SystemPromptParserIPC(filename);
-  }
-  // Use direct implementation in main process or non-Electron environments
-  return new SystemPromptParser(filename);
+  // Renderer process always uses IPC implementation
+  return new SystemPromptParserIPC(filename);
 }
