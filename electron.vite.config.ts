@@ -25,7 +25,7 @@ export default defineConfig({
     build: {
       outDir: 'out/preload',
       rollupOptions: {
-        output: { format: 'es' }
+        output: { format: 'cjs' }
       }
     },
     resolve: {

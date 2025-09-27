@@ -28,7 +28,7 @@ function createWindow(): void {
     show: false,
     title: 'Context Builder',
     webPreferences: {
-      preload: fileURLToPath(new URL('../preload/preload.mjs', import.meta.url)),
+      preload: fileURLToPath(new URL('../preload/preload.cjs', import.meta.url)),
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: !process.env.ELECTRON_RENDERER_URL
@@ -265,6 +265,29 @@ app.whenReady().then(() => {
         { role: 'copy' as const },
         { role: 'paste' as const },
         { role: 'selectAll' as const }
+      ]
+    },
+    {
+      label: 'Developer',
+      submenu: [
+        {
+          label: 'Toggle Developer Tools',
+          accelerator: process.platform === 'darwin' ? 'Cmd+Option+I' : 'Ctrl+Shift+I',
+          click: () => {
+            if (mainWindow) {
+              mainWindow.webContents.toggleDevTools()
+            }
+          }
+        },
+        {
+          label: 'Reload',
+          accelerator: process.platform === 'darwin' ? 'Cmd+R' : 'Ctrl+R',
+          click: () => {
+            if (mainWindow) {
+              mainWindow.webContents.reload()
+            }
+          }
+        }
       ]
     },
     {
