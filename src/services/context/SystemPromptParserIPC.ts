@@ -1,4 +1,13 @@
-import { SystemPrompt } from './types/SystemPrompt';
+/**
+ * Type definition matching main process SystemPrompt interface
+ * Data is transferred via IPC from main process
+ */
+type SystemPrompt = {
+  name: string;
+  key: string;
+  content: string;
+  parameters: string[];
+};
 
 /**
  * IPC adapter for SystemPromptParser that delegates to main process

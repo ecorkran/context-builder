@@ -62,7 +62,7 @@ const context = await engine.generateContext(enhancedContextData);
 ```markdown
 ---
 version: "1.0.0"
-lastUpdated: "2025-01-27"
+lastUpdated: "2025-09-27"
 ---
 
 ## Project Intro Statement
@@ -130,7 +130,7 @@ const implPrompt = await parser.getPromptForInstruction('implementation');
 
 **Instruction Mapping**:
 - `'planning'` → "Slice Planning (Phase 3)"
-- `'implementation'` → "Slice | Feature Implementation (Phase 7)"
+- `'implementation'` → "Task Implementation (Phase 7)"
 - `'debugging'` → "Analysis Task Implementation"
 
 ### ServiceFactory

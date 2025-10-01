@@ -234,12 +234,12 @@ Notes:
 ##### Context Initialization
 *Use this prompt when you need to switch models or refresh understanding in slice-based projects.*
 ```markdown
-The following provides context on our current work in slice-based project {project}. 
+The following provides context on our current work in project {project}. 
 
 We are using the slice-based methodology from `guide.ai-project.000-process`. Current work context:
 - Project: {project}
 - Current slice: {slice}
-- Phase: [specify current phase if applicable]
+- Phase: {development-phase}
 - if [slice] is provided it can be decomposed into [sliceindex]-slice.[slicename].md
 
 Refer to the Resource Structure in `guide.ai-project.000-process` for locations of resources. Key project documents:
@@ -257,7 +257,7 @@ Directory Structure by Development Type:
 
 If you were previously assigned a role, continue in that role. If not, assume role of Senior AI as defined in the Process Guide.  
 
-If tasks file is already present, it shold be your primary focus.  Slice design may be used to gain overview or as a source for generating tasks.  Once we have the tasks, we primarily work from those.
+If tasks file is already present, it should be your primary focus.  Slice design may be used to gain overview or as a source for generating tasks.  Once we have the tasks, we primarily work from those.
 
 If given an instruction similar to "process and stand by", make sure you understand all instructions, what files or architecture components are involved, and alert Project Manager to any missing, incomplete, or vague information preventing you from accurately carrying out your instructions.  Wait for confirmation from Project Manager before proceeding further.  This includes tools information, which should be provided by the Project Manager if relevant to current work.
 ```

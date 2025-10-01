@@ -358,6 +358,92 @@ The application fails to build in production mode due to Node.js modules being i
   - Only remaining warning is unrelated gray-matter eval usage
   - **Success:** Production build works correctly
 
+## Task 9: Add development-phase Field for Context Output
+
+### Overview
+Add `development-phase` field to capture the human-readable phase name from the Development Phase dropdown for use in context output templates. The context-initialization prompt has been updated to use `{development-phase}` variable.
+
+**Current State:** Development Phase dropdown stores only the key value (e.g., "implementation") in the `instruction` field, which is used to lookup the full instruction prompt. No field captures the display label (e.g., "Phase 7: Implementation").
+
+**Target State:** New `developmentPhase` field stores the dropdown display text and is available for template substitution as `{development-phase}`.
+
+### 9.1 Add developmentPhase to Data Types
+
+- [ ] **Add developmentPhase field to ProjectData interface**
+  - Add optional `developmentPhase?: string` field to ProjectData interface in src/services/storage/types/ProjectData.ts
+  - **Success:** TypeScript compilation passes with developmentPhase in ProjectData
+
+- [ ] **Add developmentPhase field to ContextData interface**
+  - Add optional `developmentPhase?: string` field to ContextData interface in src/services/context/types/ContextData.ts
+  - Add to EnhancedContextData interface as well
+  - **Success:** TypeScript compilation passes with developmentPhase in ContextData
+
+- [ ] **Update CreateProjectData and UpdateProjectData types**
+  - Include developmentPhase in CreateProjectData optional fields
+  - Include developmentPhase in UpdateProjectData partial type
+  - **Success:** Project creation and updates can include developmentPhase field
+
+### 9.2 Update Form to Capture Display Label
+
+- [ ] **Modify Development Phase dropdown onChange handler**
+  - Update ProjectConfigForm.tsx to capture both value and display label
+  - When dropdown value changes, store both instruction key and developmentPhase display text
+  - Map instruction values to their display labels (e.g., "implementation" → "Phase 7: Implementation")
+  - **Success:** Form captures and stores both instruction key and phase display text
+
+- [ ] **Create instruction-to-label mapping**
+  - Create constant mapping object for all phase options
+  - Include all phases: concept, spec-creation, slice-planning, slice-design, task-breakdown, implementation, etc.
+  - Handle custom instructions gracefully
+  - **Success:** All dropdown options have corresponding display labels
+
+### 9.3 Update Context Generation
+
+- [ ] **Pass developmentPhase to context generation**
+  - Update ContextIntegrator to include developmentPhase in context data
+  - Ensure developmentPhase is passed from project data through to template processing
+  - Handle cases where developmentPhase is undefined (use instruction value as fallback)
+  - **Success:** developmentPhase is available in template processing
+
+- [ ] **Add developmentPhase to template variable substitution**
+  - Update TemplateProcessor to recognize {development-phase} variable
+  - Substitute {development-phase} with developmentPhase value from context data
+  - Test with context-initialization prompt that uses {development-phase}
+  - **Success:** {development-phase} substitutes correctly in output preview
+
+### 9.4 Data Migration and Defaults
+
+- [ ] **Handle existing projects without developmentPhase**
+  - Add fallback logic to derive developmentPhase from instruction key if not present
+  - Use instruction-to-label mapping for backwards compatibility
+  - Update project loading to populate developmentPhase if missing
+  - **Success:** Existing projects display correct phase names without manual update
+
+- [ ] **Set default developmentPhase for new projects**
+  - Update createDefaultProject to include developmentPhase: "Phase 7: Implementation"
+  - Ensure new projects always have developmentPhase set
+  - **Success:** New projects include developmentPhase by default
+
+### 9.5 Testing and Verification
+
+- [ ] **Test phase selection and display**
+  - Select different phases from dropdown and verify developmentPhase is stored correctly
+  - Check that context output shows correct phase display text
+  - Verify {development-phase} substitution in context-initialization prompt
+  - **Success:** Phase display text appears correctly in generated context
+
+- [ ] **Test backwards compatibility**
+  - Load existing project data without developmentPhase field
+  - Verify fallback logic correctly derives display text from instruction key
+  - Ensure no errors or undefined values in output
+  - **Success:** Existing projects work seamlessly with new field
+
+- [ ] **Build and verify**
+  - Run pnpm build and ensure no TypeScript errors
+  - Test in development and production builds
+  - Verify all phase options work correctly
+  - **Success:** Application builds and functions correctly with new field
+
 ## Notes
 
 **Priority:** P2 - Non-critical maintenance work

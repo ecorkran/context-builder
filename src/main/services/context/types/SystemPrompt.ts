@@ -24,26 +24,6 @@ export interface SystemPrompt {
 }
 
 /**
- * Mapping of instruction types to system prompt names
- */
-export interface InstructionMapping {
-  [instruction: string]: string;
-}
-
-/**
- * Configuration for instruction type mappings
- */
-export const INSTRUCTION_MAPPING: InstructionMapping = {
-  'planning': 'Slice Planning (Phase 3)',
-  'implementation': 'Slice | Feature Implementation (Phase 7)',
-  'debugging': 'Analysis Task Implementation',
-  'spec-creation': 'Spec Creation (Phase 2)',
-  'slice-design': 'Slice Design (Phase 4)',
-  'task-breakdown': 'Task Breakdown (Phase 5)',
-  'task-expansion': 'Slice Task Expansion (Phase 6)'
-};
-
-/**
  * Result of parsing the system prompt file
  */
 export interface ParsedPromptFile {

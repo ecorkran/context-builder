@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { SystemPrompt, ParsedPromptFile, PromptCacheEntry, INSTRUCTION_MAPPING, SpecialPromptKeys } from './types/SystemPrompt';
+import { SystemPrompt, ParsedPromptFile, PromptCacheEntry, SpecialPromptKeys } from './types/SystemPrompt';
 
 /**
  * Service for parsing system prompts from the prompt.ai-project.system.md file
@@ -190,26 +190,19 @@ export class SystemPromptParser {
    */
   async getPromptForInstruction(instruction: string): Promise<SystemPrompt | null> {
     const parsed = await this.parsePromptFile();
-    
-    // First, try exact mapping
-    const mappedName = INSTRUCTION_MAPPING[instruction.toLowerCase()];
-    if (mappedName) {
-      const exactMatch = parsed.prompts.find(prompt => 
-        prompt.name === mappedName
-      );
-      if (exactMatch) return exactMatch;
-    }
-    
-    // Try simple matching for standardized names
-    const simpleMatch = parsed.prompts.find(prompt => {
+
+    // Find prompt by fuzzy matching instruction key against section headers
+    // The instruction value (e.g., "implementation", "task-breakdown") is matched
+    // against prompt section names (e.g., "Task Implementation (Phase 7)")
+    const match = parsed.prompts.find(prompt => {
       const nameLower = prompt.name.toLowerCase();
       const instructionLower = instruction.toLowerCase();
-      
+
       return nameLower.includes(instructionLower) ||
              prompt.key.includes(instructionLower);
     });
-    
-    return simpleMatch || null;
+
+    return match || null;
   }
 
   /**

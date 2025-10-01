@@ -247,13 +247,27 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
           />
         </div>
 
-        {/* 4. Development Phase */}
+        {/* 4. Development Phase
+         *
+         * IMPORTANT: The value="" attribute is used for fuzzy matching against section headers
+         * in prompt.ai-project.system.md. The system searches for prompts where the section
+         * header contains the value string (case-insensitive).
+         *
+         * Examples:
+         * - value="implementation" matches "##### Task Implementation (Phase 7)"
+         * - value="task-breakdown" matches "##### Task Breakdown (Phase 5)"
+         * - value="concept" matches "##### Concept Creation (Phase 1)"
+         *
+         * The display text (e.g., "Phase 7: Implementation") is purely for UI and not used
+         * in matching. Ensure value strings appear in the corresponding prompt file section
+         * headers for reliable matching.
+         */}
         <div>
           <label htmlFor="instruction" className="block text-sm font-medium text-neutral-11 mb-2">
             Development Phase
           </label>
-          <Select 
-            value={formData.instruction || 'implementation'} 
+          <Select
+            value={formData.instruction || 'implementation'}
             onValueChange={(value) => handleInputChange('instruction', value)}
           >
             <SelectTrigger className="w-full">
@@ -265,7 +279,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
               <SelectItem value="slice-planning">Phase 3: Slice Planning</SelectItem>
               <SelectItem value="slice-design">Phase 4: Slice Design</SelectItem>
               <SelectItem value="task-breakdown">Phase 5: Task Breakdown</SelectItem>
-              <SelectItem value="task-breakdown-x">Phase 5: Task Breakdown - Explicit Follow</SelectItem>
+              <SelectItem value="task-breakdown-explicit">Phase 5: Task Breakdown - Explicit Follow</SelectItem>
               <SelectItem value="task-expansion">Phase 6: Task Expansion</SelectItem>
               <SelectItem value="implementation">Phase 7: Implementation</SelectItem>
               <div className="border-t border-neutral-6 my-1 mx-2" />
