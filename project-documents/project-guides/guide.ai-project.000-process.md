@@ -13,7 +13,7 @@ This document describes our AI project planning methodology and structure. Proje
 
 #### Roles
 - Project Manager & Tech Lead: Typically a human. Oversees overall project direction, coordinates tasks, and makes key decisions.
-- Technical Fellow (AI) : A "senior" AI model (e.g., GPT o3, GPT-4.5) providing high-level
+- Technical Fellow (AI) : A "senior" AI model (e.g., GPT-5, Sonnet 4.5) providing high-level
   strategy, architecture ideas, brainstorming support.
 - Researcher (AI): A thinking or deep research AI (o3, o1 pro, Sonnet 4 Thinking, Grok3).
 - Senior AI (Agents): Specialized AI agents or tools (e.g., Claude Code,
@@ -60,12 +60,13 @@ For an app example:
    - Outcome: _A living doc with architectural overview and component integration strategy._
 
 3. **Phase 3: High-Level Design & Slice Planning**
-   - Convert the spec into logical vertical slices of functionality (start with 3-5 slices)
+   - Convert the spec into logical vertical slices of functionality.  Use enough slices to completely define the product.
    - Categorize work into three types:
      - **Foundation work** (must be done first, hard to slice - e.g., project setup, core architecture)
      - **Independent features** (can be sliced vertically - e.g., user auth, dashboard, reporting)
      - **Integration work** (happens after features are built - e.g., performance optimization, deployment)
    - Each slice should be as independent as possible and deliver meaningful user value
+   - Strive for early testability.  Build core features then expand.
    - Identify dependencies between slices and create implementation order
    - For complex projects, create lightweight "slice sketches" to identify potential conflicts
    - Technical Fellow AI should assist in identifying meaningful slice boundaries
@@ -78,21 +79,21 @@ For an app example:
    - Include specific technical decisions, data flows, and component interactions
    - Identify any cross-slice dependencies or conflicts
    - Create mockups or detailed specifications for UI components
-   - Save as `private/slices/nn-slice.{slice-name}.md` where nn is sequential (01, 02, etc.)
-   - Outcome: _Detailed design document for implementing this slice._
+   - Save as `private/slices/nnn-slice.{slice-name}.md.
+   - Outcome: _Detailed design document for implementing this slice.
 
 5. **Phase 5: Slice Task Breakdown**
    - Convert slice design into granular, actionable tasks
    - For each {tool} in use described in the design, ensure that you consult knowledge in `tool-guides/{tool}/`.  If not present search web if possible and alert Project Manager.
    - Only include tasks that can reasonably be completed by an AI. Do not include open-ended human-centric tasks such as SEO optimization.
    - If insufficient information is available to fully convert an item into tasks, _stop_ and request clarifying information before continuing.
-   - Save as `private/tasks/nn-tasks.{slice-name}.md` using existing task file naming conventions
+   - Save as `private/tasks/nnn-tasks.{slice-name}.md` using existing task file naming conventions
    - Include YAML front matter and context header:
      ```yaml
      ---
      slice: {slice-name}
      project: {project-name}
-     lld: private/slices/nn-slice.{slice-name}.md
+     lld: private/slices/nnn-slice.{slice-name}.md
      dependencies: [list-of-prerequisite-slices]
      projectState: brief description of current state
      lastUpdated: YYYY-MM-DD
@@ -116,7 +117,7 @@ For an app example:
 6. **Phase 6: Task Enhancement and Expansion**
    - For the slice task breakdown, examine tasks to see if we can enhance or expand/subdivide them to improve the chances that our "junior" AI workers can complete assigned tasks on their own.
    - If a task would not benefit from expansion, output it verbatim.
-   - Use `guide.ai-project.06-task-expansion` for detailed guidance on this phase.
+   - Use `guide.ai-project.006-task-expansion` for detailed guidance on this phase.
    - Success: All tasks have been processed and either output as is, or enhanced and divided into further subtasks.
    - Outcome: _Ready-to-execute task list with sufficient detail for reliable completion._
 
@@ -174,13 +175,13 @@ The following structure should be present in every project.  Assume files are in
 ###### private subfolders
 ```markdown
 * private/: information customized to our current project.
-* private/slices/: slice-specific low-level designs (nn-slice.{slice-name}.md)
+* private/slices/: slice-specific low-level designs (nnn-slice.{slice-name}.md)
 * private/code-reviews: code review findings, task lists, and 
   resolutions.
 * private/maintenance:  maintenance item issue and resolution 
   tracking.
 * private/project-guides: project-specific guide customizations.
-* private/tasks: all task breakdown files (nn-tasks.{slice-name}.md or legacy files).
+* private/tasks: all task breakdown files (nnn-tasks.{slice-name}.md or legacy files).
 * private/ui: UI specific designs, tasks, and guidance for our 
   project.
 * private/ui/screenshots: supporting images for UI information.
@@ -193,21 +194,21 @@ The following structure should be present in every project.  Assume files are in
 ```markdown
 These files, shared by all of our projects, are contained in {project-root}/project-documents/project-guides/.  Synonyms (syn, aka (for also known as)) are provided as some older documentation may still reference by these names.
 
-* guide.ai-project.00-process (aka: AI Project Guide): this document.  Describes 
+* guide.ai-project.000-process (aka: AI Project Guide): this document.  Describes 
   roles and project phases.  Always start here.
-* guide.ai-project.01-concept (aka: AI Project Concept Guide): details on creating 
+* guide.ai-project.001-concept (aka: AI Project Concept Guide): details on creating 
   Project Concept documents.
-* guide.ai-project.02-spec (aka: AI Spec Guide): details on creating Project 
+* guide.ai-project.002-spec (aka: AI Spec Guide): details on creating Project 
   Specification (Spec) documents.
-* guide.ai-project.03-slice-planning: guidance on creating high-level design
+* guide.ai-project.003-slice-planning: guidance on creating high-level design
   and breaking projects into vertical slices.
-* guide.ai-project.04-slice-design: detailed guidance on creating low-level designs
+* guide.ai-project.004-slice-design: detailed guidance on creating low-level designs
   for individual slices.
-* guide.ai-project.06-task-expansion (aka: AI Task Expansion Guide): specific 
+* guide.ai-project.006-task-expansion (aka: AI Task Expansion Guide): specific
   guidance on task expansion for slice-based development.
-* guide.ai-project.90-code-review (aka: AI Code Review Guide): specific guidance for 
+* guide.ai-project.090-code-review (aka: AI Code Review Guide): specific guidance for 
   performing and responding to code reviews.
-* guide.ai-project.91-legacy-task-migration: guidance for migrating legacy projects
+* guide.ai-project.091-legacy-task-migration: guidance for migrating legacy projects
   to the slice-based methodology.
 * guide.ui-development.ai (aka: AI Development Guide - UI): specific guidance 
   pertaining to UI/UX tasks.

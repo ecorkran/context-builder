@@ -6,17 +6,17 @@ guideRole: primary
 audience: [human, ai]
 description: Phase 6 playbook for turning slice task breakdowns into atomic subtasks.
 dependsOn:
-  - guide.ai-project.00-process.md
-  - guide.ai-project.02-spec.md
-  - guide.ai-project.03-slice-planning.md
+  - guide.ai-project.000-process.md
+  - guide.ai-project.002-spec.md
+  - guide.ai-project.003-slice-planning.md
 ---
 #### Summary
 This guide provides instructions and methodology for expanding and enhancing slice task breakdowns in order to create manageable lists to give to an (AI) working as a developer. This assignment is Phase 6 in `guide.ai-projects.00-process`, and will not be received (and cannot be started) until confirmation that the Slice Task Breakdown (Phase 5 Output) is available and approved by the Project Manager.
 
 #### Inputs and Outputs
 The inputs to this task are as follows:
-* guide.ai-project.00-process
-* guide.ai-project.06-task-expansion (this document)
+* guide.ai-project.000-process
+* guide.ai-project.006-task-expansion (this document)
 * {project} - spec (phase 2 output)
 * {project} - high-level design (phase 3 output)
 * {slice} - slice design (phase 4 output)
@@ -46,11 +46,11 @@ Our job is to examine the slice task breakdown and expand or enhance the tasks w
 
 For any additional context, how and where we fit into the project or the overall plan, consult the additional documentation provided with the input. While we are mostly not writing code, the rules/ directory will provide guidelines for writing any minimal required code as well as potential usefulness in structuring the tasks.
 
-Phases 1-5 are completed and approved. We are going to work on Phase 6, Task enhancement and expansion for the current slice. We will work with the slice task file created in Phase 5: `private/tasks/nn-tasks.{slice-name}.md`.
+Phases 1-5 are completed and approved. We are going to work on Phase 6, Task enhancement and expansion for the current slice. We will work with the slice task file created in Phase 5: `private/tasks/nnn-tasks.{slice-name}.md`.
 
 ###### Procedure
 * Identify and review all required inputs and confirm any questions, omissions, or inconsistencies.
-* Work with the existing slice task file `private/tasks/nn-tasks.{slice-name}.md`.
+* Work with the existing slice task file `private/tasks/nnn-tasks.{slice-name}.md`.
 * For each task in the slice, examine it. Can a relatively junior developer complete it as described? If we could improve the odds of that by making the task more granular, adding detail, potentially splitting into subtasks, let's do it.
 * Preserve the YAML front matter and context summary - these are crucial for context management.
 * Make sure we cover all the tasks.

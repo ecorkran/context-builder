@@ -6,8 +6,8 @@ guideRole: primary
 audience: [human, ai]
 description: Phase 3 playbook for breaking projects into manageable vertical slices.
 dependsOn:
-  - guide.ai-project.00-process.md
-  - guide.ai-project.02-spec.md
+  - guide.ai-project.000-process.md
+  - guide.ai-project.002-spec.md
 ---
 
 #### Summary
@@ -15,15 +15,15 @@ This guide provides instructions for Phase 3: High-Level Design & Slice Planning
 
 #### Inputs and Outputs
 **Inputs:**
-* `guide.ai-project.00-process` (this process guide)
-* `guide.ai-project.03-slice-planning` (this document)
+* `guide.ai-project.000-process` (this process guide)
+* `guide.ai-project.003-slice-planning` (this document)
 * Project concept document (Phase 1 output)
 * Project specification (Phase 2 output)
 * Any existing architecture documentation
 
 **Output:**
-* High-level design document: `private/project-guides/03-hld.{project}.md`
-* Slice planning document: `private/project-guides/03-slices.{project}.md`
+* High-level design document: `private/project-guides/050-hld.{project}.md`
+* Slice planning document: `private/project-guides/003-slices.{project}.md`
 
 #### Core Principles
 
@@ -57,7 +57,7 @@ All project work falls into these categories:
 #### Slice Planning Process
 
 ##### Step 1: Create High-Level Design
-Document the overall system architecture in `private/project-guides/03-hld.{project}.md`:
+Document the overall system architecture in `private/project-guides/050-hld.{project}.md`:
 
 ```markdown
 # High-Level Design: {Project}
@@ -116,9 +116,10 @@ Use as many slices as needed to fully capture the project's functionality and sc
 ##### Step 4: Plan Implementation Order
 Order slices by:
 1. **Dependencies:** Foundation work first, then slices in dependency order
-2. **Risk:** High-risk slices earlier to surface problems
-3. **User Value:** Most valuable features first within each risk tier
-4. **Technical Learning:** Slices that teach you about the domain/tech stack
+2. **Testability:** Strive for early vertical slice testability.  Core first then expand.
+3. **Risk:** High-risk slices earlier to surface problems
+4. **User Value:** Most valuable features first within each risk tier
+5. **Technical Learning:** Slices that teach you about the domain/tech stack
 
 ##### Step 5: Create Slice Sketches (Optional)
 For complex projects, create brief design sketches for each slice to identify potential conflicts:
@@ -186,12 +187,12 @@ This helps catch "Slice A needs X but Slice B needs Y" conflicts early.
 
 Create two documents:
 
-**High-Level Design** (`03-hld.{project}.md`):
+**High-Level Design** (`050-hld.{project}.md`):
 - System architecture overview
 - Technology decisions
 - Component interactions
 
-**Slice Plan** (`03-slices.{project}.md`):
+**Slice Plan** (`003-slices.{project}.md`):
 ```markdown
 # Slice Plan: {Project}
 
