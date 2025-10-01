@@ -156,11 +156,11 @@ export class ContextTemplateEngine {
       order: 6
     });
 
-    // 7. Additional notes section (conditional)
+    // 7. Additional instructions section (conditional)
     if (data.additionalNotes && data.additionalNotes.trim()) {
       sections.push({
         key: 'additional-notes',
-        title: '### Additional Notes',
+        title: '## Additional Instructions',
         content: data.additionalNotes,
         conditional: false,
         order: 7

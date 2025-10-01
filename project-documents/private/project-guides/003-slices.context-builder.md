@@ -60,7 +60,7 @@ dependsOn: [03-hld.context-builder.md]
    - **Interfaces:** Provides ProjectService for project switching slice
    - **Risk Level:** Low (standard form handling)
 
-3. [ ] **Multi-Project Support** - Project switching and management
+3. [x] **Multi-Project Support** - Project switching and management
    - **User Value:** User can manage multiple projects and switch between them
    - **Success Criteria:**
      - Project dropdown with selection functionality
@@ -71,7 +71,7 @@ dependsOn: [03-hld.context-builder.md]
    - **Interfaces:** Consumes ProjectService, integrates with all other slices
    - **Risk Level:** Medium (state management complexity)
 
-4. [ ] **Template Selection System** - System prompt template integration
+4. [x] **Template Selection System** - System prompt template integration
    - **User Value:** User can select from predefined instruction templates
    - **Success Criteria:**
      - Template dropdown with available system prompts
@@ -112,7 +112,7 @@ dependsOn: [03-hld.context-builder.md]
 
 ## Maintenance Work
 
-1. [ ] **Ongoing Maintenance** - Issue resolution and improvements
+1. [x] **Ongoing Maintenance** - Issue resolution and improvements
    - **User Value:** Developers have systematic approach to handling ongoing issues
    - **Success Criteria:**
      - Known issues properly documented with impact assessment

@@ -364,7 +364,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
         {/* 6. Additional notes */}
         <div>
           <label htmlFor="additional-notes" className="block text-sm font-medium text-neutral-11 mb-2">
-            Additional Context (optional)
+            Additional Instructions (optional)
           </label>
           <textarea
             id="additional-notes"
@@ -374,7 +374,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
               additionalNotes: e.target.value
             })}
             className="w-full px-3 py-2 border border-accent-3 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent resize-vertical transition-colors"
-            placeholder="Any additional context or specific focus areas..."
+            placeholder="Any additional instructions or specific focus areas..."
             rows={5}
             maxLength={8000}
             aria-describedby="additional-notes-help"
