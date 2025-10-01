@@ -9,7 +9,7 @@ description: Task breakdown for cross-platform application packaging and distrib
 status: not-started
 dateUpdated: 2025-01-16
 dependencies: [all-core-features]
-lldReference: 100-slice.application-packaging.md
+lldReference: 125-slice.application-packaging.md
 projectState: MVP complete, ready for distribution
 ---
 

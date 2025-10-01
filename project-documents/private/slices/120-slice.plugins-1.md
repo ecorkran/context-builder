@@ -9,7 +9,7 @@ status: postponed
 lastUpdated: 2025-09-16
 ---
 
-# 060-slice.plugins-1.md
+# 120-slice.plugins-1.md
 
 ## HLD: Plugin System Architecture - Phase 1
 

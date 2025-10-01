@@ -2,7 +2,7 @@
 item: multi-project
 project: context-builder
 type: slice-tasks
-lldReference: private/slices/055-slice.multi-project.md
+lldReference: private/slices/115-slice.multi-project.md
 dependencies: [basic-context-generation, project-configuration-management, persistence]
 projectState: complete
 lastUpdated: 2025-09-16
