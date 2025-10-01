@@ -94,6 +94,11 @@ export class TemplateProcessor {
       }
     }
 
+    // Add kebab-case alias for developmentPhase
+    if (data.developmentPhase) {
+      enhanced['development-phase'] = data.developmentPhase;
+    }
+
     return enhanced;
   }
 

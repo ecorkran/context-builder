@@ -8,6 +8,7 @@ export interface ProjectData {
   slice: string;
   taskFile: string;
   instruction: string;
+  developmentPhase?: string; // Human-readable phase label (e.g., "Phase 7: Implementation")
   workType?: 'start' | 'continue'; // For selecting appropriate opening statement
   isMonorepo: boolean;
   customData?: {
@@ -24,8 +25,9 @@ export interface ProjectData {
  * Type for creating a new project (without auto-generated fields)
  * instruction, workType and customData are optional during creation and will get defaults
  */
-export type CreateProjectData = Omit<ProjectData, 'id' | 'createdAt' | 'updatedAt' | 'instruction' | 'workType' | 'taskFile' | 'customData'> & {
+export type CreateProjectData = Omit<ProjectData, 'id' | 'createdAt' | 'updatedAt' | 'instruction' | 'developmentPhase' | 'workType' | 'taskFile' | 'customData'> & {
   instruction?: string;
+  developmentPhase?: string;
   workType?: 'start' | 'continue';
   taskFile?: string;
   customData?: {
@@ -39,4 +41,4 @@ export type CreateProjectData = Omit<ProjectData, 'id' | 'createdAt' | 'updatedA
 /**
  * Type for updating an existing project (partial updates allowed)
  */
-export type UpdateProjectData = Partial<Pick<ProjectData, 'name' | 'template' | 'slice' | 'taskFile' | 'instruction' | 'workType' | 'isMonorepo' | 'customData'>>;
+export type UpdateProjectData = Partial<Pick<ProjectData, 'name' | 'template' | 'slice' | 'taskFile' | 'instruction' | 'developmentPhase' | 'workType' | 'isMonorepo' | 'customData'>>;

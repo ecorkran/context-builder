@@ -102,6 +102,7 @@ export class ContextIntegrator {
       slice: project.slice || 'Unknown Slice',
       taskFile: project.taskFile || '',
       instruction: project.instruction || 'implementation',
+      developmentPhase: project.developmentPhase || 'WARNING: MISSING DEVELOPMENT PHASE',
       workType: project.workType || 'continue',
       isMonorepo: project.isMonorepo || false,
       recentEvents: project.customData?.recentEvents || '',
@@ -126,6 +127,7 @@ export class ContextIntegrator {
       slice: project.slice || 'Unknown Slice',
       taskFile: project.taskFile || '',
       instruction: project.instruction || 'implementation',
+      developmentPhase: project.developmentPhase || 'WARNING: MISSING DEVELOPMENT PHASE',
       isMonorepo: project.isMonorepo || false,
       recentEvents: project.customData?.recentEvents || '',
       additionalNotes: project.customData?.additionalNotes || ''

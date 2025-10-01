@@ -8,6 +8,7 @@ export interface ContextData {
   slice: string;
   taskFile: string;
   instruction: string;
+  developmentPhase?: string; // Human-readable phase label for output display
   workType?: 'start' | 'continue';
   isMonorepo: boolean;
   recentEvents: string;

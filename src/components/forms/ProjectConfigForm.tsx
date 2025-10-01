@@ -11,6 +11,43 @@ import { Checkbox } from '../../lib/ui-core/components/form/checkbox';
 import { CreateProjectData, ProjectData } from '../../services/storage/types/ProjectData';
 import { ProjectSelector } from '../project/ProjectSelector';
 
+/**
+ * Development phase options with ordering and grouping
+ * Single source of truth for both dropdown rendering and developmentPhase field
+ */
+type PhaseOption =
+  | { type: 'option'; value: string; label: string }
+  | { type: 'divider' };
+
+const PHASE_OPTIONS: PhaseOption[] = [
+  { type: 'option', value: 'concept', label: 'Phase 1: Concept' },
+  { type: 'option', value: 'spec-creation', label: 'Phase 2: Spec Creation' },
+  { type: 'option', value: 'slice-planning', label: 'Phase 3: Slice Planning' },
+  { type: 'option', value: 'slice-design', label: 'Phase 4: Slice Design' },
+  { type: 'option', value: 'task-breakdown', label: 'Phase 5: Task Breakdown' },
+  { type: 'option', value: 'task-breakdown-explicit', label: 'Phase 5: Task Breakdown - Explicit Follow' },
+  { type: 'option', value: 'task-expansion', label: 'Phase 6: Task Expansion' },
+  { type: 'option', value: 'implementation', label: 'Phase 7: Implementation' },
+  { type: 'divider' },
+  { type: 'option', value: 'feature-design', label: 'Feature Design' },
+  { type: 'option', value: 'ad-hoc-tasks', label: 'Ad-Hoc Tasks' },
+  { type: 'option', value: 'custom-instruction', label: 'Custom Instruction' },
+  { type: 'divider' },
+  { type: 'option', value: 'analyze-codebase', label: 'Analyze Codebase' },
+  { type: 'option', value: 'analyze-processing', label: 'Analyze Processing' },
+  { type: 'option', value: 'analyze-lld', label: 'Analyze LLD' },
+  { type: 'option', value: 'analyze-tasks', label: 'Analyze Tasks' },
+  { type: 'option', value: 'analyze-implementation', label: 'Analyze Implementation' }
+];
+
+/**
+ * Helper function to get phase label by value
+ */
+const getPhaseLabelByValue = (value: string): string | undefined => {
+  const option = PHASE_OPTIONS.find(opt => opt.type === 'option' && opt.value === value);
+  return option && option.type === 'option' ? option.label : undefined;
+};
+
 interface ProjectConfigFormProps {
   initialData?: CreateProjectData;
   onSubmit?: (data: CreateProjectData) => void;
@@ -268,32 +305,29 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
           </label>
           <Select
             value={formData.instruction || 'implementation'}
-            onValueChange={(value) => handleInputChange('instruction', value)}
+            onValueChange={(value) => {
+              // Update both instruction key and human-readable developmentPhase label
+              handleInputChange('instruction', value);
+              const phaseLabel = getPhaseLabelByValue(value);
+              if (phaseLabel) {
+                handleInputChange('developmentPhase', phaseLabel);
+              }
+            }}
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select development phase..." />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="concept">Phase 1: Concept</SelectItem>
-              <SelectItem value="spec-creation">Phase 2: Spec Creation</SelectItem>
-              <SelectItem value="slice-planning">Phase 3: Slice Planning</SelectItem>
-              <SelectItem value="slice-design">Phase 4: Slice Design</SelectItem>
-              <SelectItem value="task-breakdown">Phase 5: Task Breakdown</SelectItem>
-              <SelectItem value="task-breakdown-explicit">Phase 5: Task Breakdown - Explicit Follow</SelectItem>
-              <SelectItem value="task-expansion">Phase 6: Task Expansion</SelectItem>
-              <SelectItem value="implementation">Phase 7: Implementation</SelectItem>
-              <div className="border-t border-neutral-6 my-1 mx-2" />
-
-              <SelectItem value="feature-design">Feature Design</SelectItem>
-              <SelectItem value="ad-hoc-tasks">Ad-Hoc Tasks</SelectItem>
-              <SelectItem value="custom-instruction">Custom Instruction</SelectItem>
-              <div className="border-t border-neutral-6 my-1 mx-2" />
-
-              <SelectItem value="analyze-codebase">Analyze Codebase</SelectItem>
-              <SelectItem value="analyze-processing">Analyze Processing</SelectItem>
-              <SelectItem value="analyze-lld">Analyze LLD</SelectItem>
-              <SelectItem value="analyze-tasks">Analyze Tasks</SelectItem>
-              <SelectItem value="analyze-implementation">Analyze Implementation</SelectItem>
+              {PHASE_OPTIONS.map((option, index) => {
+                if (option.type === 'divider') {
+                  return <div key={`divider-${index}`} className="border-t border-neutral-6 my-1 mx-2" />;
+                }
+                return (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                );
+              })}
             </SelectContent>
           </Select>
         </div>
