@@ -13,7 +13,23 @@ import { ProjectSelector } from '../project/ProjectSelector';
 
 /**
  * Development phase options with ordering and grouping
- * Single source of truth for both dropdown rendering and developmentPhase field
+ *
+ * SINGLE SOURCE OF TRUTH for both dropdown rendering and developmentPhase field
+ *
+ * IMPORTANT: The 'value' field is used for fuzzy matching against section headers
+ * in prompt.ai-project.system.md. The system searches for prompts where the section
+ * header contains the value string (case-insensitive).
+ *
+ * Examples:
+ * - value="implementation" matches "##### Task Implementation (Phase 7)"
+ * - value="task-breakdown" matches "##### Task Breakdown (Phase 5)"
+ * - value="concept" matches "##### Concept Creation (Phase 1)"
+ *
+ * The 'label' field is the human-readable text shown in the dropdown AND used
+ * as the {development-phase} variable in context output templates.
+ *
+ * Ensure value strings appear in the corresponding prompt file section headers
+ * for reliable matching.
  */
 type PhaseOption =
   | { type: 'option'; value: string; label: string }
@@ -284,21 +300,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
           />
         </div>
 
-        {/* 4. Development Phase
-         *
-         * IMPORTANT: The value="" attribute is used for fuzzy matching against section headers
-         * in prompt.ai-project.system.md. The system searches for prompts where the section
-         * header contains the value string (case-insensitive).
-         *
-         * Examples:
-         * - value="implementation" matches "##### Task Implementation (Phase 7)"
-         * - value="task-breakdown" matches "##### Task Breakdown (Phase 5)"
-         * - value="concept" matches "##### Concept Creation (Phase 1)"
-         *
-         * The display text (e.g., "Phase 7: Implementation") is purely for UI and not used
-         * in matching. Ensure value strings appear in the corresponding prompt file section
-         * headers for reliable matching.
-         */}
+        {/* 4. Development Phase (see PHASE_OPTIONS at top of file for configuration) */}
         <div>
           <label htmlFor="instruction" className="block text-sm font-medium text-neutral-11 mb-2">
             Development Phase
