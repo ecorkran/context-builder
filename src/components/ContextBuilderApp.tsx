@@ -222,6 +222,7 @@ export const ContextBuilderApp: React.FC = () => {
         slice: switchedProject.slice,
         taskFile: switchedProject.taskFile || '',
         instruction: switchedProject.instruction,
+        developmentPhase: switchedProject.developmentPhase,
         workType: switchedProject.workType,
         projectDate: switchedProject.projectDate,
         isMonorepo: switchedProject.isMonorepo,
@@ -266,6 +267,7 @@ export const ContextBuilderApp: React.FC = () => {
         slice: formData.slice || '',        // Inherit from current project
         taskFile: formData.taskFile || '',  // Inherit from current project
         instruction: newProject.instruction,
+        developmentPhase: newProject.developmentPhase,
         workType: newProject.workType,
         projectDate: newProject.projectDate,
         isMonorepo: newProject.isMonorepo,
