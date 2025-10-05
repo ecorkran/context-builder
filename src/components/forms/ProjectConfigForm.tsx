@@ -242,20 +242,6 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
         </div>
 
         <div>
-          <label htmlFor="slice" className="block text-sm font-medium text-neutral-11 mb-2">
-            Current Slice
-          </label>
-          <input
-            id="slice"
-            type="text"
-            value={formData.slice}
-            onChange={(e) => handleSliceChange(e.target.value)}
-            className="w-full px-3 py-2 border border-accent-7 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
-            placeholder="foundation, auth, ui-components..."
-          />
-        </div>
-
-        <div>
           <label htmlFor="projectDate" className="block text-sm font-medium text-neutral-11 mb-2">
             Project Date
           </label>
@@ -266,6 +252,20 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
             value={formData.projectDate || new Date().toISOString().split('T')[0]}
             onChange={(e) => handleInputChange('projectDate', e.target.value)}
             className="w-full px-3 py-2 border border-accent-7 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="slice" className="block text-sm font-medium text-neutral-11 mb-2">
+            Current Slice
+          </label>
+          <input
+            id="slice"
+            type="text"
+            value={formData.slice}
+            onChange={(e) => handleSliceChange(e.target.value)}
+            className="w-full px-3 py-2 border border-accent-7 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
+            placeholder="foundation, auth, ui-components..."
           />
         </div>
 
