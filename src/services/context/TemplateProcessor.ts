@@ -99,6 +99,13 @@ export class TemplateProcessor {
       enhanced['development-phase'] = data.developmentPhase;
     }
 
+    // Add date aliases for template variable substitution
+    if (data.projectDate) {
+      enhanced['project-date'] = data.projectDate;
+      enhanced['projectDate'] = data.projectDate;
+      enhanced['projectdate'] = data.projectDate;
+    }
+
     return enhanced;
   }
 
