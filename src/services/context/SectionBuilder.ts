@@ -166,16 +166,16 @@ export class SectionBuilder {
         infoLines.push(`  template: ${data.template}`);
       }
 
+      // Include project date if present
+      if (data.projectDate) {
+        infoLines.push(`  date: ${data.projectDate}`);
+      }
+
       // Include slice if present, or null if empty
       if (data.slice && data.slice.trim()) {
         infoLines.push(`  slice: ${data.slice}`);
       } else {
         infoLines.push(`  slice: null`);
-      }
-
-      // Include project date if present
-      if (data.projectDate) {
-        infoLines.push(`  date: ${data.projectDate}`);
       }
 
       // Include task file if present
