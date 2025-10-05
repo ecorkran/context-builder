@@ -163,8 +163,11 @@ export const ContextBuilderApp: React.FC = () => {
           name: formData.name,
           template: formData.template,
           slice: formData.slice,
+          taskFile: formData.taskFile,
           instruction: formData.instruction,
+          developmentPhase: formData.developmentPhase,
           workType: formData.workType,
+          projectDate: formData.projectDate,
           isMonorepo: formData.isMonorepo,
           customData: formData.customData,
         });
