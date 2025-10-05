@@ -119,6 +119,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
     taskFile: initialData?.taskFile || generateTaskFileName(initialData?.slice || ''),
     instruction: initialData?.instruction || 'implementation',
     workType: initialData?.workType || 'continue',
+    projectDate: initialData?.projectDate || new Date().toISOString().split('T')[0],
     isMonorepo: initialData?.isMonorepo || false,
     customData: {
       recentEvents: initialData?.customData?.recentEvents || '',
@@ -145,6 +146,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
             taskFile: initialData.taskFile || generateTaskFileName(initialData.slice || ''),
             instruction: initialData.instruction || 'implementation',
             workType: initialData.workType || 'continue',
+            projectDate: initialData.projectDate || new Date().toISOString().split('T')[0],
             isMonorepo: initialData.isMonorepo || false,
             customData: {
               recentEvents: initialData.customData?.recentEvents || '',
@@ -250,6 +252,20 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
             onChange={(e) => handleSliceChange(e.target.value)}
             className="w-full px-3 py-2 border border-accent-7 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
             placeholder="foundation, auth, ui-components..."
+          />
+        </div>
+
+        <div>
+          <label htmlFor="projectDate" className="block text-sm font-medium text-neutral-11 mb-2">
+            Project Date
+          </label>
+          <input
+            id="projectDate"
+            name="projectDate"
+            type="date"
+            value={formData.projectDate || new Date().toISOString().split('T')[0]}
+            onChange={(e) => handleInputChange('projectDate', e.target.value)}
+            className="w-full px-3 py-2 border border-accent-7 rounded-md bg-neutral-1 text-neutral-12 focus:outline-none focus:ring-2 focus:ring-accent-8 focus:border-transparent"
           />
         </div>
 
