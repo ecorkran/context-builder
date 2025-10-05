@@ -10,6 +10,7 @@ export interface ContextData {
   instruction: string;
   developmentPhase?: string; // Human-readable phase label for output display
   workType?: 'start' | 'continue';
+  projectDate?: string; // ISO 8601 date for template display
   isMonorepo: boolean;
   recentEvents: string;
   additionalNotes: string;
