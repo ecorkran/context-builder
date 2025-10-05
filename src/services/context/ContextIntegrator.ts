@@ -104,6 +104,7 @@ export class ContextIntegrator {
       instruction: project.instruction || 'implementation',
       developmentPhase: project.developmentPhase || 'WARNING: MISSING DEVELOPMENT PHASE',
       workType: project.workType || 'continue',
+      projectDate: project.projectDate || new Date().toISOString().split('T')[0],
       isMonorepo: project.isMonorepo || false,
       recentEvents: project.customData?.recentEvents || '',
       additionalNotes: project.customData?.additionalNotes || '',
@@ -128,6 +129,8 @@ export class ContextIntegrator {
       taskFile: project.taskFile || '',
       instruction: project.instruction || 'implementation',
       developmentPhase: project.developmentPhase || 'WARNING: MISSING DEVELOPMENT PHASE',
+      workType: project.workType || 'continue',
+      projectDate: project.projectDate || new Date().toISOString().split('T')[0],
       isMonorepo: project.isMonorepo || false,
       recentEvents: project.customData?.recentEvents || '',
       additionalNotes: project.customData?.additionalNotes || ''
