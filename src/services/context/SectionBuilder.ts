@@ -157,20 +157,25 @@ export class SectionBuilder {
   async buildProjectInfoSection(data: EnhancedContextData): Promise<string> {
     try {
       const infoLines: string[] = [];
-      
+
       // Always include project name
       infoLines.push(`  project: ${data.projectName}`);
-      
+
       // Include template only for monorepo projects
       if (data.isMonorepo && data.template && data.template !== 'default') {
         infoLines.push(`  template: ${data.template}`);
       }
-      
+
       // Include slice if present, or null if empty
       if (data.slice && data.slice.trim()) {
         infoLines.push(`  slice: ${data.slice}`);
       } else {
         infoLines.push(`  slice: null`);
+      }
+
+      // Include project date if present
+      if (data.projectDate) {
+        infoLines.push(`  date: ${data.projectDate}`);
       }
 
       // Include task file if present
@@ -182,7 +187,7 @@ export class SectionBuilder {
 
       // Always include monorepo status
       infoLines.push(`  monorepo: ${data.isMonorepo}`);
-      
+
       return `{\n${infoLines.join(',\n')}\n}`;
     } catch (error) {
       console.error('Error building project info section:', error);
