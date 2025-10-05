@@ -220,6 +220,7 @@ export const ContextBuilderApp: React.FC = () => {
         taskFile: switchedProject.taskFile || '',
         instruction: switchedProject.instruction,
         workType: switchedProject.workType,
+        projectDate: switchedProject.projectDate,
         isMonorepo: switchedProject.isMonorepo,
         customData: {
           recentEvents: switchedProject.customData?.recentEvents || '',
@@ -263,6 +264,7 @@ export const ContextBuilderApp: React.FC = () => {
         taskFile: formData.taskFile || '',  // Inherit from current project
         instruction: newProject.instruction,
         workType: newProject.workType,
+        projectDate: newProject.projectDate,
         isMonorepo: newProject.isMonorepo,
         customData: {
           recentEvents: '',
