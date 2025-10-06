@@ -59,6 +59,62 @@ Text input context does not respond to _valueForTIProperty:
    - Filter console output during development
    - Add logging configuration to suppress specific warnings
 
+### 2. Monorepo Controls Visibility Bug (GitHub Issue #11)
+
+**Priority:** P1 (User-facing functionality issue)
+**Status:** Ready for implementation (no formal tasks created)
+**Effort Level:** 2/5 (Low-Medium), ~45-60 minutes
+**GitHub Issue:** https://github.com/ecorkran/context-builder/issues/11
+
+**Description:**
+Monorepo form controls visibility is incorrectly tied to the form's "Monorepo project" checkbox (`isMonorepo`) instead of a separate settings flag. This creates a catch-22 where unchecking the form checkbox makes all monorepo controls disappear, including the checkbox itself.
+
+**Problem:**
+- Settings dialog checkbox controls `isMonorepo` (same as form checkbox)
+- Form controls visibility: `{formData.isMonorepo && (`
+- When user unchecks "Monorepo project", all controls vanish
+- User cannot re-enable without reopening settings dialog
+
+**Solution:**
+Add new `isMonorepoEnabled` field to separate feature visibility from project mode:
+- Settings checkbox controls `isMonorepoEnabled` (feature flag)
+- Form controls visible when `isMonorepoEnabled === true`
+- Form checkbox controls `isMonorepo` (actual project mode)
+- All other functionality remains unchanged
+
+**Files to Modify (6 total):**
+
+1. **ProjectData.ts** - Add `isMonorepoEnabled?: boolean` field (5 lines)
+2. **SettingsDialog.tsx** - Change from `isMonorepo` to `isMonorepoEnabled` (2 lines)
+3. **ProjectConfigForm.tsx** - Change visibility condition (1 line)
+4. **ContextBuilderApp.tsx** - Add to auto-save, project switch, new project (3 locations, ~3 lines)
+5. **Initial project creation** - Ensure default value
+6. **Build & test** - Verify changes work
+
+**Quick Task Outline (7 steps):**
+
+1. Add `isMonorepoEnabled` to ProjectData type definitions
+2. Update SettingsDialog to use `isMonorepoEnabled`
+3. Update ProjectConfigForm visibility condition
+4. Add `isMonorepoEnabled` to auto-save in ContextBuilderApp
+5. Add `isMonorepoEnabled` to project switch handler
+6. Add `isMonorepoEnabled` to new project creation
+7. Test visibility and functionality
+
+**Note:** Formal tasks NOT being created due to low complexity and similarity to recently completed work (projectDate, developmentPhase). This documentation preserves implementation details in case of context loss or corruption.
+
+**Success Criteria:**
+
+- [ ] Settings checkbox controls `isMonorepoEnabled` (feature flag)
+- [ ] Form controls visible when `isMonorepoEnabled === true`
+- [ ] Form controls hidden when `isMonorepoEnabled === false`
+- [ ] Form checkbox controls `isMonorepo` (project mode)
+- [ ] Unchecking form checkbox does NOT hide controls
+- [ ] All existing monorepo functionality unchanged
+- [ ] Output preview respects `isMonorepo` flag (not `isMonorepoEnabled`)
+- [ ] Default value: `isMonorepoEnabled: false` for new projects
+- [ ] Backward compatibility: Existing projects default to `false`
+
 ## Success Criteria
 
 - [ ] TIPropertyValueIsValid error analysis documented
