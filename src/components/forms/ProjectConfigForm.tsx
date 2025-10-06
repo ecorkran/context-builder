@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { cn } from '../../lib/ui-core/utils/cn';
 import {
   Select,
@@ -112,10 +112,14 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
     return slice.replace('slice', 'tasks');
   };
 
-  // Capture the monorepo enabled setting ONCE - this controls visibility and should never change
-  // Use ref to store the initial value and prevent re-evaluation when initialData changes
-  const monorepoFeaturesEnabledRef = useRef(initialData?.isMonorepoEnabled ?? false);
-  const monorepoFeaturesEnabled = monorepoFeaturesEnabledRef.current;
+  // Track monorepo features enabled separately from form data
+  // This controls visibility and should only change when settings dialog changes it
+  const [monorepoFeaturesEnabled, setMonorepoFeaturesEnabled] = useState(initialData?.isMonorepoEnabled ?? false);
+
+  // Update visibility when the settings flag changes (but not when form data changes)
+  useEffect(() => {
+    setMonorepoFeaturesEnabled(initialData?.isMonorepoEnabled ?? false);
+  }, [initialData?.isMonorepoEnabled]);
 
   const [formData, setFormData] = useState<CreateProjectData>({
     name: initialData?.name || '',
