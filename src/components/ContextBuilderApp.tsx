@@ -273,6 +273,7 @@ export const ContextBuilderApp: React.FC = () => {
         workType: newProject.workType,
         projectDate: newProject.projectDate,
         isMonorepo: newProject.isMonorepo,
+        isMonorepoEnabled: newProject.isMonorepoEnabled,
         customData: {
           recentEvents: '',
           additionalNotes: '',

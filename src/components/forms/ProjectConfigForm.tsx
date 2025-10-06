@@ -122,6 +122,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
     workType: initialData?.workType || 'continue',
     projectDate: initialData?.projectDate || new Date().toISOString().split('T')[0],
     isMonorepo: initialData?.isMonorepo || false,
+    isMonorepoEnabled: initialData?.isMonorepoEnabled,
     customData: {
       recentEvents: initialData?.customData?.recentEvents || '',
       additionalNotes: initialData?.customData?.additionalNotes || '',
@@ -150,6 +151,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
             workType: initialData.workType || 'continue',
             projectDate: initialData.projectDate || new Date().toISOString().split('T')[0],
             isMonorepo: initialData.isMonorepo || false,
+            isMonorepoEnabled: initialData.isMonorepoEnabled,
             customData: {
               recentEvents: initialData.customData?.recentEvents || '',
               additionalNotes: initialData.customData?.additionalNotes || '',
