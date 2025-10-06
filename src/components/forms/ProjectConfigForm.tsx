@@ -112,6 +112,9 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
     return slice.replace('slice', 'tasks');
   };
 
+  // Capture the monorepo enabled setting - this controls visibility and should not change with form data
+  const monorepoFeaturesEnabled = initialData?.isMonorepoEnabled ?? false;
+
   const [formData, setFormData] = useState<CreateProjectData>({
     name: initialData?.name || '',
     template: initialData?.template || '',
@@ -355,7 +358,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
         </div>
 
         {/* 5. Repository structure - Only show when monorepo features are enabled */}
-        {(initialData?.isMonorepoEnabled ?? false) && (
+        {monorepoFeaturesEnabled && (
           <div className="space-y-3 pt-2" >
             <Checkbox
               id="is-monorepo"
