@@ -352,8 +352,8 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
           </Select>
         </div>
 
-        {/* 5. Repository structure - Only show when project is monorepo */}
-        {formData.isMonorepo && (
+        {/* 5. Repository structure - Only show when monorepo features are enabled */}
+        {(initialData?.isMonorepoEnabled ?? false) && (
           <div className="space-y-3 pt-2" >
             <Checkbox
               id="is-monorepo"
