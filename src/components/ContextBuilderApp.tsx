@@ -169,6 +169,7 @@ export const ContextBuilderApp: React.FC = () => {
           workType: formData.workType,
           projectDate: formData.projectDate,
           isMonorepo: formData.isMonorepo,
+          isMonorepoEnabled: formData.isMonorepoEnabled,
           customData: formData.customData,
         });
         await persistentStore.setLastActiveProject(currentProjectId);
