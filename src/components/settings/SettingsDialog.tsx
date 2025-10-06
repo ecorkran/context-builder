@@ -21,7 +21,7 @@ export const SettingsDialog: React.FC<SettingsDialogProps> = ({
 }) => {
   const handleMonorepoModeChange = (checked: boolean) => {
     if (currentProject) {
-      onProjectUpdate({ isMonorepo: checked });
+      onProjectUpdate({ isMonorepoEnabled: checked });
     }
   };
 
@@ -45,9 +45,9 @@ export const SettingsDialog: React.FC<SettingsDialogProps> = ({
                 <div className="space-y-3">
                   <Checkbox
                     id="project-monorepo"
-                    checked={currentProject.isMonorepo}
+                    checked={currentProject.isMonorepoEnabled ?? false}
                     onCheckedChange={handleMonorepoModeChange}
-                    label="This is a monorepo project"
+                    label="Enable monorepo features for this project"
                     uiVariant="accent"
                   />
 
