@@ -227,6 +227,7 @@ export const ContextBuilderApp: React.FC = () => {
         workType: switchedProject.workType,
         projectDate: switchedProject.projectDate,
         isMonorepo: switchedProject.isMonorepo,
+        isMonorepoEnabled: switchedProject.isMonorepoEnabled,
         customData: {
           recentEvents: switchedProject.customData?.recentEvents || '',
           additionalNotes: switchedProject.customData?.additionalNotes || '',
