@@ -1,10 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { ElectronStorageService } from './ElectronStorageService'
-import { ProjectData } from './types/ProjectData'
-import { mockElectronAPI } from '../../test/setup'
+import { ElectronStorageService } from '../ElectronStorageService'
+import { ProjectData } from '../types/ProjectData'
 
 // Mock storageClient
-vi.mock('./StorageClient', () => ({
+vi.mock('../StorageClient', () => ({
   storageClient: {
     isAvailable: vi.fn().mockReturnValue(true),
     readFile: vi.fn(),
@@ -13,7 +12,7 @@ vi.mock('./StorageClient', () => ({
   }
 }))
 
-import { storageClient } from './StorageClient'
+import { storageClient } from '../StorageClient'
 
 describe('ElectronStorageService', () => {
   let service: ElectronStorageService

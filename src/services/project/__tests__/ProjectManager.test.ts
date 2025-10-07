@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { ProjectManager } from './ProjectManager'
-import { PersistentProjectStore } from '../storage/PersistentProjectStore'
-import { ProjectData } from '../storage/types/ProjectData'
+import { ProjectManager } from '../ProjectManager'
+import { PersistentProjectStore } from '../../storage/PersistentProjectStore'
+import { ProjectData } from '../../storage/types/ProjectData'
 
 // Mock PersistentProjectStore
-vi.mock('../storage/PersistentProjectStore')
+vi.mock('../../storage/PersistentProjectStore')
 
 describe('ProjectManager', () => {
   let projectManager: ProjectManager
