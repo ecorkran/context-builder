@@ -25,7 +25,7 @@ export class TemplateProcessor {
 
       // Then replace simple variables: {{variableName}} and {variableName}
       // First handle double brace format: {{variableName}}
-      processed = processed.replace(/\{\{(\w+)\}\}/g, (match, variableName) => {
+      processed = processed.replace(/\{\{(\w+)\}\}/g, (_match, variableName) => {
         const value = (enhancedData as any)[variableName];
         if (value !== undefined && value !== null) {
           return String(value);
@@ -37,10 +37,10 @@ export class TemplateProcessor {
       });
       
       // Then handle single brace format with more flexible patterns: {variableName}, {slice | feature}, etc.
-      processed = processed.replace(/\{([^}]+)\}/g, (match, expression) => {
+      processed = processed.replace(/\{([^}]+)\}/g, (_match, expression) => {
         // Handle pipe expressions like {slice | feature}
         if (expression.includes(' | ')) {
-          const parts = expression.split(' | ').map(part => part.trim());
+          const parts = expression.split(' | ').map((part: string) => part.trim());
           // Use the first part as the primary variable name
           const primaryVar = parts[0];
           const value = (enhancedData as any)[primaryVar];
@@ -83,7 +83,7 @@ export class TemplateProcessor {
    * @returns Enhanced data with slice parsing and template computations
    */
   private createEnhancedData(data: ContextData): any {
-    const enhanced = { ...data };
+    const enhanced: any = { ...data };
 
     // Parse slice into sliceindex and slicename
     if (data.slice) {
@@ -119,8 +119,8 @@ export class TemplateProcessor {
   private processBooleanConditionals(template: string, data: ContextData): string {
     // Pattern: {{#if variableName}}true content{{else}}false content{{/if}}
     const conditionalPattern = /\{\{#if\s+(\w+)\}\}(.*?)\{\{else\}\}(.*?)\{\{\/if\}\}/gs;
-    
-    return template.replace(conditionalPattern, (match, variableName, trueContent, falseContent) => {
+
+    return template.replace(conditionalPattern, (_match, variableName, trueContent, falseContent) => {
       try {
         const value = (data as any)[variableName];
         
@@ -152,9 +152,6 @@ export class TemplateProcessor {
       }
 
       // Check for proper conditional syntax
-      const conditionalPattern = /\{\{#if\s+\w+\}\}.*?\{\{else\}\}.*?\{\{\/if\}\}/gs;
-      const conditionals = template.match(conditionalPattern) || [];
-      
       // If there are #if statements, they should all be properly closed
       const ifStatements = (template.match(/\{\{#if\s+\w+\}\}/g) || []).length;
       const endIfStatements = (template.match(/\{\{\/if\}\}/g) || []).length;
