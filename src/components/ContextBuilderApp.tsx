@@ -103,7 +103,9 @@ export const ContextBuilderApp: React.FC = () => {
             slice: newProject.slice,
             taskFile: newProject.taskFile || '',
             instruction: newProject.instruction,
+            developmentPhase: newProject.developmentPhase,
             workType: newProject.workType,
+            projectDate: newProject.projectDate,
             isMonorepo: newProject.isMonorepo,
             isMonorepoEnabled: newProject.isMonorepoEnabled,
             customData: {
@@ -129,7 +131,9 @@ export const ContextBuilderApp: React.FC = () => {
             slice: activeProject.slice,
             taskFile: activeProject.taskFile || '',
             instruction: activeProject.instruction,
+            developmentPhase: activeProject.developmentPhase,
             workType: activeProject.workType,
+            projectDate: activeProject.projectDate,
             isMonorepo: activeProject.isMonorepo,
             isMonorepoEnabled: activeProject.isMonorepoEnabled,
             customData: {
@@ -336,7 +340,9 @@ export const ContextBuilderApp: React.FC = () => {
           slice: newActiveProject.slice,
           taskFile: newActiveProject.taskFile || '',
           instruction: newActiveProject.instruction,
+          developmentPhase: newActiveProject.developmentPhase,
           workType: newActiveProject.workType,
+          projectDate: newActiveProject.projectDate,
           isMonorepo: newActiveProject.isMonorepo,
           isMonorepoEnabled: newActiveProject.isMonorepoEnabled,
           customData: {
