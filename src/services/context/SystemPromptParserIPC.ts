@@ -20,19 +20,20 @@ export class SystemPromptParserIPC {
 
   constructor(filename?: string) {
     // Default to the same path as the main process SystemPromptParser
-    this.filename = filename || 'project-documents/project-guides/prompt.ai-project.system.md';
+    this.filename = filename || 'project-documents/ai-project-guide/project-guides/prompt.ai-project.system.md';
   }
 
   /**
    * Get context initialization prompt via IPC
+   * @param isMonorepo - If true, returns monorepo-specific version; otherwise returns regular version
    */
-  async getContextInitializationPrompt(): Promise<SystemPrompt | null> {
+  async getContextInitializationPrompt(isMonorepo: boolean = false): Promise<SystemPrompt | null> {
     try {
       if (!window.electronAPI) {
         throw new Error('Electron API not available');
       }
 
-      const prompt = await window.electronAPI.systemPrompts.getContextInit(this.filename);
+      const prompt = await window.electronAPI.systemPrompts.getContextInit(this.filename, isMonorepo);
       return prompt;
     } catch (error) {
       console.error('Error getting context initialization prompt via IPC:', error);

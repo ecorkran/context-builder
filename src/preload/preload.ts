@@ -17,7 +17,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   },
   systemPrompts: {
     parse: (filename?: string) => ipcRenderer.invoke('systemPrompts:parse', filename),
-    getContextInit: (filename?: string) => ipcRenderer.invoke('systemPrompts:getContextInit', filename),
+    getContextInit: (filename?: string, isMonorepo?: boolean) => ipcRenderer.invoke('systemPrompts:getContextInit', filename, isMonorepo),
     getToolUse: (filename?: string) => ipcRenderer.invoke('systemPrompts:getToolUse', filename),
     getForInstruction: (filename: string, instruction: string) => ipcRenderer.invoke('systemPrompts:getForInstruction', filename, instruction)
   }

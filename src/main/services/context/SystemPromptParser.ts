@@ -16,6 +16,7 @@ export class SystemPromptParser {
     this.filePath = filePath || path.join(
       process.cwd(),
       'project-documents',
+      'ai-project-guide',
       'project-guides',
       'prompt.ai-project.system.md'
     );
@@ -25,43 +26,31 @@ export class SystemPromptParser {
    * Parse the entire prompt file and extract all sections
    */
   async parsePromptFile(): Promise<ParsedPromptFile> {
-    try {
-      // Check if file exists
-      if (!fs.existsSync(this.filePath)) {
-        console.warn(`System prompt file not found at ${this.filePath}`);
-        return {
-          prompts: this.getFallbackPrompts(),
-          errors: [`File not found: ${this.filePath}`]
-        };
-      }
+    // Check if file exists
+    if (!fs.existsSync(this.filePath)) {
+      throw new Error(`System prompt file not found at ${this.filePath}`);
+    }
 
-      // Check cache first
-      const cached = this.getCachedPrompts();
-      if (cached) {
-        return {
-          prompts: cached,
-          errors: []
-        };
-      }
-
-      // Read and parse file
-      const fileContent = fs.readFileSync(this.filePath, 'utf-8');
-      const prompts = this.parseMarkdownSections(fileContent);
-      
-      // Cache results
-      this.cachePrompts(prompts);
-      
+    // Check cache first
+    const cached = this.getCachedPrompts();
+    if (cached) {
       return {
-        prompts,
+        prompts: cached,
         errors: []
       };
-    } catch (error) {
-      console.error('Error parsing system prompt file:', error);
-      return {
-        prompts: this.getFallbackPrompts(),
-        errors: [`Parse error: ${error}`]
-      };
     }
+
+    // Read and parse file
+    const fileContent = fs.readFileSync(this.filePath, 'utf-8');
+    const prompts = this.parseMarkdownSections(fileContent);
+
+    // Cache results
+    this.cachePrompts(prompts);
+
+    return {
+      prompts,
+      errors: []
+    };
   }
 
   /**
@@ -161,16 +150,41 @@ export class SystemPromptParser {
 
   /**
    * Get context initialization prompt (Model Change or Context Refresh)
+   * @param isMonorepo - If true, returns monorepo-specific version; otherwise returns regular version
    */
-  async getContextInitializationPrompt(): Promise<SystemPrompt | null> {
+  async getContextInitializationPrompt(isMonorepo: boolean = false): Promise<SystemPrompt | null> {
     const parsed = await this.parsePromptFile();
-    
-    return parsed.prompts.find(prompt => 
-      prompt.key === SpecialPromptKeys.CONTEXT_INITIALIZATION ||
-      prompt.name.toLowerCase().includes('context initialization') ||
-      prompt.name.toLowerCase().includes('model change') ||
-      prompt.name.toLowerCase().includes('context refresh')
-    ) || null;
+
+    console.log(`[DEBUG] getContextInitializationPrompt called with isMonorepo=${isMonorepo}`);
+    console.log(`[DEBUG] Total prompts parsed: ${parsed.prompts.length}`);
+    console.log(`[DEBUG] Prompt names:`, parsed.prompts.map(p => p.name));
+
+    if (isMonorepo) {
+      // Look for monorepo-specific context initialization prompt
+      const monorepoPrompt = parsed.prompts.find(prompt =>
+        prompt.name.toLowerCase().includes('context initialization') &&
+        prompt.name.toLowerCase().includes('monorepo')
+      );
+
+      console.log(`[DEBUG] Looking for monorepo prompt, found:`, monorepoPrompt?.name || 'NONE');
+
+      if (monorepoPrompt) {
+        return monorepoPrompt;
+      }
+    }
+
+    // Return regular (non-monorepo) context initialization prompt
+    const regularPrompt = parsed.prompts.find(prompt =>
+      (prompt.key === SpecialPromptKeys.CONTEXT_INITIALIZATION ||
+       prompt.name.toLowerCase().includes('context initialization') ||
+       prompt.name.toLowerCase().includes('model change') ||
+       prompt.name.toLowerCase().includes('context refresh')) &&
+      !prompt.name.toLowerCase().includes('monorepo')
+    );
+
+    console.log(`[DEBUG] Looking for regular prompt, found:`, regularPrompt?.name || 'NONE');
+
+    return regularPrompt || null;
   }
 
   /**
@@ -274,39 +288,6 @@ export class SystemPromptParser {
     this.promptsCache.clear();
   }
 
-  /**
-   * Get fallback prompts when file is not available
-   */
-  private getFallbackPrompts(): SystemPrompt[] {
-    return [
-      {
-        name: 'Model Change or Context Refresh',
-        key: SpecialPromptKeys.CONTEXT_INITIALIZATION,
-        content: `The following provides context on our current work in slice-based project {project}. Input may contain: { project, slice, task, issue, tool, note }.
-
-We are using the slice-based methodology from guide.ai-project.00-process. Current work context:
-- Project: {project}
-- Current slice: {slice} (if applicable)
-- Tasks File: {taskFile}
-- Phase: [specify current phase]
-
-If you were previously assigned a role, continue in that role. If not, assume role of Senior AI as defined in the Process Guide.`,
-        parameters: ['project', 'slice', 'taskFile']
-      },
-      {
-        name: 'Use 3rd Party Tool',
-        key: SpecialPromptKeys.TOOL_USE,
-        content: `You will need to consult specific knowledge for {tool}, which should be available to you in the tool-guides/{tool} directory for our curated knowledge. Follow these steps when working with {tool}. Use these tools proactively.
-
-1. Consult Overview: Start with the specific AI Tool Overview [toolname].md in the project-documents/tool-guides/{tool} directory.
-2. Locate Docs: Scan the Overview for references to more detailed documentation.
-3. Search Docs: Search within those specific documentation sources first using grep_search or codebase_search.
-4. Additional documentation: If you have a documentation tool available (ex: context7 MCP) use it for additional information.
-5. Web Search Fallback: If the targeted search doesn't yield results, then search the web.`,
-        parameters: ['tool']
-      }
-    ];
-  }
 
   /**
    * Validate prompt file structure

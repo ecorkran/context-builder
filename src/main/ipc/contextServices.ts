@@ -76,10 +76,10 @@ export function setupContextServiceHandlers() {
     }
   });
 
-  ipcMain.handle('systemPrompts:getContextInit', async (event, filename?: string) => {
+  ipcMain.handle('systemPrompts:getContextInit', async (event, filename?: string, isMonorepo: boolean = false) => {
     try {
       const parser = filename ? new SystemPromptParser(filename) : systemPromptParser;
-      return await parser.getContextInitializationPrompt();
+      return await parser.getContextInitializationPrompt(isMonorepo);
     } catch (error) {
       console.error('Error getting context init prompt:', error);
       throw error;

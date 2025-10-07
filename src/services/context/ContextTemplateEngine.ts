@@ -101,16 +101,12 @@ export class ContextTemplateEngine {
       order: 1.5
     });
 
-    // 2. Context initialization prompt (always included, but filter monorepo content if project is not monorepo)
-    const contextInitPrompt = await this.promptParser.getContextInitializationPrompt();
-    const filteredPromptContent = this.filterMonorepoContent(
-      contextInitPrompt?.content || 'Project context and environment details follow.',
-      data.isMonorepo
-    );
+    // 2. Context initialization prompt (select appropriate version based on monorepo mode)
+    const contextInitPrompt = await this.promptParser.getContextInitializationPrompt(data.isMonorepo);
     sections.push({
       key: 'context-init',
       title: '',
-      content: filteredPromptContent,
+      content: contextInitPrompt?.content || 'Project context and environment details follow.',
       conditional: false,
       order: 2
     });
@@ -283,27 +279,4 @@ export class ContextTemplateEngine {
     this.enableNewEngine = enabled;
   }
 
-  /**
-   * Filter monorepo-specific content from prompt text when project is not a monorepo
-   */
-  private filterMonorepoContent(content: string, isMonorepo: boolean): string {
-    if (isMonorepo) {
-      return content; // Return unchanged if project is monorepo
-    }
-
-    // Remove monorepo-specific sections from the content
-    let filteredContent = content;
-
-    // Remove the "monorepo," parameter from parameter lists
-    filteredContent = filteredContent.replace(/\s*monorepo,\s*/g, '');
-
-    // Remove the entire monorepo directory structure section
-    const monorepoSectionRegex = /Directory Structure by Development Type:\s*\n- Regular Development:.*?\n- Monorepo Template Development:.*?(?=\n\nIf you were|$)/s;
-    filteredContent = filteredContent.replace(monorepoSectionRegex, '');
-
-    // Clean up any extra whitespace that might be left
-    filteredContent = filteredContent.replace(/\n\s*\n\s*\n/g, '\n\n');
-
-    return filteredContent;
-  }
 }
