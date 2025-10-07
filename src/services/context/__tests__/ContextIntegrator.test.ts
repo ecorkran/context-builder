@@ -1,5 +1,5 @@
-import { ContextIntegrator } from './ContextIntegrator';
-import { ProjectData } from '../storage/types/ProjectData';
+import { ContextIntegrator } from '../ContextIntegrator';
+import { ProjectData } from '../../storage/types/ProjectData';
 
 describe('ContextIntegrator', () => {
   let contextIntegrator: ContextIntegrator;
@@ -15,6 +15,7 @@ describe('ContextIntegrator', () => {
         name: 'Test Project',
         template: 'react-nextjs',
         slice: 'foundation',
+        taskFile: 'foundation-tasks.md',
         instruction: 'implementation',
         isMonorepo: false,
         customData: {
@@ -44,6 +45,7 @@ describe('ContextIntegrator', () => {
         name: 'Monorepo Project',
         template: 'nextjs',
         slice: 'ui-components',
+        taskFile: 'ui-tasks.md',
         instruction: 'planning',
         isMonorepo: true,
         customData: {},
@@ -63,6 +65,7 @@ describe('ContextIntegrator', () => {
         name: 'Minimal Project',
         template: 'vue',
         slice: 'auth',
+        taskFile: '',
         instruction: 'debugging',
         isMonorepo: false,
         customData: {
@@ -89,6 +92,7 @@ describe('ContextIntegrator', () => {
         name: 'No Custom Data',
         template: 'python-django',
         slice: 'api',
+        taskFile: 'api-tasks.md',
         instruction: 'testing',
         isMonorepo: true,
         createdAt: '2024-01-01T00:00:00Z',
@@ -111,6 +115,7 @@ describe('ContextIntegrator', () => {
         name: 'Valid Project',
         template: 'react',
         slice: 'foundation',
+        taskFile: 'foundation-tasks.md',
         instruction: 'implementation',
         isMonorepo: false,
         customData: {},
@@ -162,6 +167,7 @@ describe('ContextIntegrator', () => {
         name: 'New Engine Test',
         template: 'react-vite',
         slice: 'test-slice',
+        taskFile: 'test-tasks.md',
         instruction: 'implementation',
         isMonorepo: false,
         customData: {
@@ -186,6 +192,7 @@ describe('ContextIntegrator', () => {
         name: 'Legacy Test',
         template: 'react-vite',
         slice: 'test-slice',
+        taskFile: 'legacy-tasks.md',
         instruction: 'implementation',
         isMonorepo: false,
         customData: {},

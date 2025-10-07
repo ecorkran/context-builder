@@ -1,5 +1,5 @@
-import { TemplateProcessor } from './TemplateProcessor';
-import { ContextData } from './types/ContextData';
+import { TemplateProcessor } from '../TemplateProcessor';
+import { ContextData } from '../types/ContextData';
 
 describe('TemplateProcessor', () => {
   let processor: TemplateProcessor;
@@ -8,6 +8,7 @@ describe('TemplateProcessor', () => {
     projectName: 'Test Project',
     template: 'react-nextjs',
     slice: 'foundation',
+    taskFile: 'foundation-tasks.md',
     instruction: 'implementation',
     isMonorepo: false,
     recentEvents: 'Added user authentication',
