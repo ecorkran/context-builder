@@ -17,6 +17,7 @@ declare global {
     electronAPI: {
       ping: () => Promise<string>;
       getAppVersion: () => Promise<string>;
+      updateWindowTitle: (projectName?: string) => Promise<void>;
       storage: {
         read: (filename: string) => Promise<StorageResponse>;
         write: (filename: string, data: string) => Promise<StorageResponse>;
@@ -30,7 +31,7 @@ declare global {
       };
       systemPrompts: {
         parse: (filename?: string) => Promise<any[]>;
-        getContextInit: (filename?: string) => Promise<any | null>;
+        getContextInit: (filename?: string, isMonorepo?: boolean) => Promise<any | null>;
         getToolUse: (filename?: string) => Promise<any | null>;
         getForInstruction: (filename: string, instruction: string) => Promise<any | null>;
       };

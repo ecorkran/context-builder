@@ -363,7 +363,7 @@ export const ContextBuilderApp: React.FC = () => {
 
   // Get current project object
   const currentProject = useMemo(() => {
-    return currentProjectId ? projects.find(p => p.id === currentProjectId) : null;
+    return currentProjectId ? projects.find(p => p.id === currentProjectId) ?? null : null;
   }, [currentProjectId, projects]);
 
   // Callback to update project settings
