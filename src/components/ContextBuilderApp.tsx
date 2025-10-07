@@ -105,6 +105,7 @@ export const ContextBuilderApp: React.FC = () => {
             instruction: newProject.instruction,
             workType: newProject.workType,
             isMonorepo: newProject.isMonorepo,
+            isMonorepoEnabled: newProject.isMonorepoEnabled,
             customData: {
               recentEvents: '',
               additionalNotes: '',
@@ -130,6 +131,7 @@ export const ContextBuilderApp: React.FC = () => {
             instruction: activeProject.instruction,
             workType: activeProject.workType,
             isMonorepo: activeProject.isMonorepo,
+            isMonorepoEnabled: activeProject.isMonorepoEnabled,
             customData: {
               recentEvents: activeProject.customData?.recentEvents || '',
               additionalNotes: activeProject.customData?.additionalNotes || '',
@@ -336,6 +338,7 @@ export const ContextBuilderApp: React.FC = () => {
           instruction: newActiveProject.instruction,
           workType: newActiveProject.workType,
           isMonorepo: newActiveProject.isMonorepo,
+          isMonorepoEnabled: newActiveProject.isMonorepoEnabled,
           customData: {
             recentEvents: newActiveProject.customData?.recentEvents || '',
             additionalNotes: newActiveProject.customData?.additionalNotes || '',
