@@ -63,21 +63,31 @@ export interface EnhancedContextData extends ContextData {
    * List of available tools detected in the environment
    */
   availableTools?: string[];
-  
+
   /**
    * List of available MCP servers
    */
   mcpServers?: string[];
-  
+
   /**
    * Version of the template being used
    */
   templateVersion?: string;
-  
+
   /**
    * Custom sections that can be added dynamically
    */
   customSections?: Record<string, string>;
+
+  /**
+   * Custom data fields from form
+   */
+  customData?: {
+    recentEvents?: string;
+    additionalNotes?: string;
+    monorepoNote?: string;
+    availableTools?: string;
+  };
 }
 
 /**

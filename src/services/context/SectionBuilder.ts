@@ -166,9 +166,9 @@ export class SectionBuilder {
         infoLines.push(`  template: ${data.template}`);
       }
 
-      // Include project date if present
+      // Include current date if present (helps AI understand today's date)
       if (data.projectDate) {
-        infoLines.push(`  date: ${data.projectDate}`);
+        infoLines.push(`  currentDate: ${data.projectDate}`);
       }
 
       // Include slice if present, or null if empty
@@ -185,13 +185,18 @@ export class SectionBuilder {
         infoLines.push(`  taskFile: null`);
       }
 
+      // Include development phase if present
+      if (data.developmentPhase) {
+        infoLines.push(`  phase: ${data.developmentPhase}`);
+      }
+
       // Always include monorepo status
       infoLines.push(`  monorepo: ${data.isMonorepo}`);
 
-      return `{\n${infoLines.join(',\n')}\n}`;
+      return `### Current Work Context\n[\n${infoLines.join(',\n')}\n]`;
     } catch (error) {
       console.error('Error building project info section:', error);
-      return `{\n  project: ${data.projectName || 'unknown'}\n}`;
+      return `### Current Work Context\n[\n  project: ${data.projectName || 'unknown'}\n]`;
     }
   }
 
@@ -307,12 +312,12 @@ export class SectionBuilder {
   detectAvailableTools(data: EnhancedContextData): string[] {
     // Placeholder implementation - will be enhanced later
     // In future, this could scan environment or configuration
-    const defaultTools = [];
-    
+    const defaultTools: string[] = [];
+
     if (data.availableTools && data.availableTools.length > 0) {
       return data.availableTools;
     }
-    
+
     return defaultTools;
   }
 
@@ -320,7 +325,7 @@ export class SectionBuilder {
    * Check if tools or MCP are available
    */
   hasToolsOrMCP(data: EnhancedContextData): boolean {
-    return (
+    return !!(
       (data.availableTools && data.availableTools.length > 0) ||
       (data.mcpServers && data.mcpServers.length > 0)
     );
