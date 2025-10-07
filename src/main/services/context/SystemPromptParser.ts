@@ -155,10 +155,6 @@ export class SystemPromptParser {
   async getContextInitializationPrompt(isMonorepo: boolean = false): Promise<SystemPrompt | null> {
     const parsed = await this.parsePromptFile();
 
-    console.log(`[DEBUG] getContextInitializationPrompt called with isMonorepo=${isMonorepo}`);
-    console.log(`[DEBUG] Total prompts parsed: ${parsed.prompts.length}`);
-    console.log(`[DEBUG] Prompt names:`, parsed.prompts.map(p => p.name));
-
     if (isMonorepo) {
       // Look for monorepo-specific context initialization prompt
       const monorepoPrompt = parsed.prompts.find(prompt =>
@@ -166,25 +162,19 @@ export class SystemPromptParser {
         prompt.name.toLowerCase().includes('monorepo')
       );
 
-      console.log(`[DEBUG] Looking for monorepo prompt, found:`, monorepoPrompt?.name || 'NONE');
-
       if (monorepoPrompt) {
         return monorepoPrompt;
       }
     }
 
     // Return regular (non-monorepo) context initialization prompt
-    const regularPrompt = parsed.prompts.find(prompt =>
+    return parsed.prompts.find(prompt =>
       (prompt.key === SpecialPromptKeys.CONTEXT_INITIALIZATION ||
        prompt.name.toLowerCase().includes('context initialization') ||
        prompt.name.toLowerCase().includes('model change') ||
        prompt.name.toLowerCase().includes('context refresh')) &&
       !prompt.name.toLowerCase().includes('monorepo')
-    );
-
-    console.log(`[DEBUG] Looking for regular prompt, found:`, regularPrompt?.name || 'NONE');
-
-    return regularPrompt || null;
+    ) || null;
   }
 
   /**
