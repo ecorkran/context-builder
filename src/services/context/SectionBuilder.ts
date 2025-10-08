@@ -375,4 +375,61 @@ export class SectionBuilder {
       ...options
     };
   }
+
+  /**
+   * Strip YAML frontmatter from markdown content
+   * @private
+   */
+  private stripFrontmatter(content: string): string {
+    const frontmatterRegex = /^---\n[\s\S]*?\n---\n/;
+    return content.replace(frontmatterRegex, '').trim();
+  }
+
+  /**
+   * Build file naming conventions section
+   * Returns explicit error message if file not found (no silent fallbacks)
+   */
+  async buildFileNamingSection(): Promise<string> {
+    const path = require('path');
+    const fs = require('fs');
+
+    try {
+      const filePath = path.join(process.cwd(), 'project-documents', 'file-naming-conventions.md');
+
+      if (!fs.existsSync(filePath)) {
+        console.error('ERROR: File naming conventions file not found at:', filePath);
+        return 'ERROR: Failed to load file naming conventions from project-documents/file-naming-conventions.md';
+      }
+
+      const content = fs.readFileSync(filePath, 'utf-8');
+      return this.stripFrontmatter(content);
+    } catch (error) {
+      console.error('ERROR: Failed to read file naming conventions:', error);
+      throw new Error(`Failed to load file naming conventions: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+
+  /**
+   * Build directory structure section
+   * Returns explicit error message if file not found (no silent fallbacks)
+   */
+  async buildDirectoryStructureSection(): Promise<string> {
+    const path = require('path');
+    const fs = require('fs');
+
+    try {
+      const filePath = path.join(process.cwd(), 'project-documents', 'directory-structure.md');
+
+      if (!fs.existsSync(filePath)) {
+        console.error('ERROR: Directory structure file not found at:', filePath);
+        return 'ERROR: Failed to load directory structure from project-documents/directory-structure.md';
+      }
+
+      const content = fs.readFileSync(filePath, 'utf-8');
+      return this.stripFrontmatter(content);
+    } catch (error) {
+      console.error('ERROR: Failed to read directory structure:', error);
+      throw new Error(`Failed to load directory structure: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
 }
