@@ -24,6 +24,8 @@ export interface EnhancedContextData extends ContextData {
   mcpServers?: string[];
   templateVersion?: string;
   customSections?: Record<string, string>;
+  includeFileNaming?: boolean;
+  includeDirectoryNaming?: boolean;
   customData?: {
     recentEvents?: string;
     additionalNotes?: string;
