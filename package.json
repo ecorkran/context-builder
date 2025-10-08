@@ -23,10 +23,7 @@
     "test:coverage": "vitest run --coverage",
     "ai:test": "pnpm run typecheck && pnpm run lint && pnpm run test:run",
     "ai:setup": "pnpm install && pnpm run typecheck",
-    "setup-guides": "bash scripts/setup-guides.sh",
-    "setup-guides:private": "bash scripts/setup-guides.sh && bash scripts/setup-guides-private.sh",
-    "update-guides": "bash scripts/update-guides.sh",
-    "guides": "pnpm setup-guides"
+    "update-guides": "bash project-documents/ai-project-guide/scripts/template-stubs/update-guides.sh",
   },
   "keywords": [
     "electron",
