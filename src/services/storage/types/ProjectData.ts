@@ -13,6 +13,8 @@ export interface ProjectData {
   projectDate?: string; // ISO 8601 date string (YYYY-MM-DD)
   isMonorepo: boolean;
   isMonorepoEnabled?: boolean; // Whether monorepo feature UI is enabled for this project
+  includeFileNaming?: boolean; // Whether to include file naming conventions in context
+  includeDirectoryNaming?: boolean; // Whether to include directory naming conventions in context
   customData?: {
     recentEvents?: string;
     additionalNotes?: string;
@@ -44,4 +46,4 @@ export type CreateProjectData = Omit<ProjectData, 'id' | 'createdAt' | 'updatedA
 /**
  * Type for updating an existing project (partial updates allowed)
  */
-export type UpdateProjectData = Partial<Pick<ProjectData, 'name' | 'template' | 'slice' | 'taskFile' | 'instruction' | 'developmentPhase' | 'workType' | 'projectDate' | 'isMonorepo' | 'isMonorepoEnabled' | 'customData'>>;
+export type UpdateProjectData = Partial<Pick<ProjectData, 'name' | 'template' | 'slice' | 'taskFile' | 'instruction' | 'developmentPhase' | 'workType' | 'projectDate' | 'isMonorepo' | 'isMonorepoEnabled' | 'includeFileNaming' | 'includeDirectoryNaming' | 'customData'>>;
