@@ -108,6 +108,8 @@ export class ContextIntegrator {
       isMonorepo: project.isMonorepo || false,
       recentEvents: project.customData?.recentEvents || '',
       additionalNotes: project.customData?.additionalNotes || '',
+      includeFileNaming: project.includeFileNaming,
+      includeDirectoryNaming: project.includeDirectoryNaming,
       availableTools,
       mcpServers,
       templateVersion: '1.0.0',
