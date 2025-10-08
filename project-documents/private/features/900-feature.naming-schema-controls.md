@@ -5,8 +5,8 @@ type: feature
 github: https://github.com/ecorkran/context-builder/issues/9
 dependencies: []
 projectState: Maintenance phase - all critical bugs fixed, core features working
-status: not started
-lastUpdated: 2025-10-05
+status: in-progress
+lastUpdated: 2025-10-07
 ---
 
 # Feature: Naming Schema Controls
@@ -18,8 +18,8 @@ Add checkbox controls to allow users to include file and directory naming schema
 ### Requirements
 
 #### UI Controls
-- Add checkbox: "Include file naming conventions"
-- Add checkbox: "Include directory naming conventions"
+- Add checkbox: "File naming schema"
+- Add checkbox: "Directory naming schema"
 - Default: Both checked (true)
 - Recommendation: Both enabled (true)
 - These are per-project settings
@@ -150,7 +150,7 @@ Add checkbox controls after the existing form fields, potentially grouped with o
       onChange={(e) => handleFieldChange('includeFileNaming', e.target.checked)}
       className="h-4 w-4"
     />
-    <span className="text-sm">Include file naming conventions</span>
+    <span className="text-sm">File naming schema</span>
   </label>
 
   <label className="flex items-center space-x-2">
@@ -160,7 +160,7 @@ Add checkbox controls after the existing form fields, potentially grouped with o
       onChange={(e) => handleFieldChange('includeDirectoryNaming', e.target.checked)}
       className="h-4 w-4"
     />
-    <span className="text-sm">Include directory naming conventions</span>
+    <span className="text-sm">Directory naming schema</span>
   </label>
 </div>
 ```
