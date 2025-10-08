@@ -23,7 +23,8 @@
     "test:coverage": "vitest run --coverage",
     "ai:test": "pnpm run typecheck && pnpm run lint && pnpm run test:run",
     "ai:setup": "pnpm install && pnpm run typecheck",
-    "update-guides": "bash project-documents/ai-project-guide/scripts/template-stubs/update-guides.sh",
+    "setup-guides": "curl -fsSL https://raw.githubusercontent.com/ecorkran/ai-project-guide/main/scripts/bootstrap.sh | bash",
+    "update-guides": "bash project-documents/ai-project-guide/scripts/template-stubs/update-guides.sh"
   },
   "keywords": [
     "electron",
