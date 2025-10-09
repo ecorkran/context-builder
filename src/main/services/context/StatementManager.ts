@@ -66,11 +66,11 @@ export class StatementManager {
   private isLoaded: boolean = false;
 
   constructor(filePath?: string) {
-    // Default path relative to project root in private directory
+    // Default path relative to project root in user directory
     this.filePath = filePath || path.join(
       process.cwd(),
       'project-documents',
-      'private',
+      'user',
       'content',
       'statements',
       'default-statements.md'
