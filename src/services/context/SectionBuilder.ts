@@ -388,48 +388,46 @@ export class SectionBuilder {
   /**
    * Build file naming conventions section
    * Returns explicit error message if file not found (no silent fallbacks)
+   * Uses fetch API (browser-compatible, no Node.js modules)
    */
   async buildFileNamingSection(): Promise<string> {
-    const path = require('path');
-    const fs = require('fs');
-
     try {
-      const filePath = path.join(process.cwd(), 'project-documents', 'file-naming-conventions.md');
+      // Use fetch to load from project-documents (works in renderer process)
+      const response = await fetch('project-documents/ai-project-guide/file-naming-conventions.md');
 
-      if (!fs.existsSync(filePath)) {
-        console.error('ERROR: File naming conventions file not found at:', filePath);
-        return 'ERROR: Failed to load file naming conventions from project-documents/file-naming-conventions.md';
+      if (!response.ok) {
+        console.error('ERROR: File naming conventions file not found, status:', response.status);
+        return 'ERROR: Failed to load file naming conventions from project-documents/ai-project-guide/file-naming-conventions.md';
       }
 
-      const content = fs.readFileSync(filePath, 'utf-8');
+      const content = await response.text();
       return this.stripFrontmatter(content);
     } catch (error) {
       console.error('ERROR: Failed to read file naming conventions:', error);
-      throw new Error(`Failed to load file naming conventions: ${error instanceof Error ? error.message : String(error)}`);
+      return `ERROR: Failed to load file naming conventions: ${error instanceof Error ? error.message : String(error)}`;
     }
   }
 
   /**
    * Build directory structure section
    * Returns explicit error message if file not found (no silent fallbacks)
+   * Uses fetch API (browser-compatible, no Node.js modules)
    */
   async buildDirectoryStructureSection(): Promise<string> {
-    const path = require('path');
-    const fs = require('fs');
-
     try {
-      const filePath = path.join(process.cwd(), 'project-documents', 'directory-structure.md');
+      // Use fetch to load from project-documents (works in renderer process)
+      const response = await fetch('project-documents/ai-project-guide/directory-structure.md');
 
-      if (!fs.existsSync(filePath)) {
-        console.error('ERROR: Directory structure file not found at:', filePath);
-        return 'ERROR: Failed to load directory structure from project-documents/directory-structure.md';
+      if (!response.ok) {
+        console.error('ERROR: Directory structure file not found, status:', response.status);
+        return 'ERROR: Failed to load directory structure from project-documents/ai-project-guide/directory-structure.md';
       }
 
-      const content = fs.readFileSync(filePath, 'utf-8');
+      const content = await response.text();
       return this.stripFrontmatter(content);
     } catch (error) {
       console.error('ERROR: Failed to read directory structure:', error);
-      throw new Error(`Failed to load directory structure: ${error instanceof Error ? error.message : String(error)}`);
+      return `ERROR: Failed to load directory structure: ${error instanceof Error ? error.message : String(error)}`;
     }
   }
 }
