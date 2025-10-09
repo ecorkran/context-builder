@@ -6,13 +6,6 @@ import { SectionBuilder } from './SectionBuilder';
 import { TemplateProcessor } from './TemplateProcessor';
 import { createSystemPromptParser, createStatementManager } from './ServiceFactory';
 
-// Fallback template for error scenarios
-const DEFAULT_TEMPLATE = `# Project: {{projectName}}
-Template: {{template}}
-Slice: {{slice}}
-Instruction: {{instruction}}
-Monorepo: {{isMonorepo}}`;
-
 /**
  * Main orchestrator for context template generation
  * Coordinates between statement manager, prompt parser, and section builder
@@ -280,19 +273,19 @@ export class ContextTemplateEngine {
   }
 
   /**
-   * Generate fallback context on error
+   * Generate explicit error context (no silent fallbacks)
    */
   private getErrorContext(data: EnhancedContextData): string {
-    let fallback = DEFAULT_TEMPLATE;
-    
-    // Replace template variables
-    fallback = fallback.replace('{{projectName}}', data.projectName || 'Unknown');
-    fallback = fallback.replace('{{template}}', data.template || 'Unknown');
-    fallback = fallback.replace('{{slice}}', data.slice || 'Unknown');
-    fallback = fallback.replace('{{instruction}}', data.instruction || 'Unknown');
-    fallback = fallback.replace('{{isMonorepo}}', data.isMonorepo ? 'Yes' : 'No');
+    return `ERROR: Context generation failed
 
-    return fallback;
+Project: ${data.projectName || 'MISSING_PROJECT_NAME'}
+Template: ${data.template || 'MISSING_TEMPLATE'}
+Slice: ${data.slice || 'MISSING_SLICE'}
+Instruction: ${data.instruction || 'MISSING_INSTRUCTION'}
+Monorepo: ${data.isMonorepo ? 'Yes' : 'No'}
+
+This is an explicit error - context template engine failed to generate proper output.
+Check the console for detailed error information.`;
   }
 
   /**
