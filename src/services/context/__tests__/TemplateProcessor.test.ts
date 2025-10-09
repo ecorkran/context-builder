@@ -129,7 +129,6 @@ Recent: {{recentEvents}}`;
         const template = `Current work context:
 - Project: {project}
 - Current slice: {slice}
-- Current slice design: user/slices/{slice}.md
 - Current tasks: user/tasks/{sliceindex}-tasks.{slicename}.md
 - Monorepo Template Development: Use \`project-artifacts/{template}/\` for project-specific files`;
 
@@ -137,7 +136,6 @@ Recent: {{recentEvents}}`;
 
         expect(result).toContain('Project: manta-templates');
         expect(result).toContain('Current slice: 025-slice.combo-box');
-        expect(result).toContain('user/slices/025-slice.combo-box.md');
         expect(result).toContain('user/tasks/025-tasks.combo-box.md');
         expect(result).toContain('project-artifacts/templates/react/');
       });

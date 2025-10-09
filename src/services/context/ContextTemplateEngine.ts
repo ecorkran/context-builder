@@ -104,36 +104,6 @@ export class ContextTemplateEngine {
       order: 2
     });
 
-    // 2.1. File naming conventions section (conditional)
-    if (data.includeFileNaming !== false) {
-      const fileNamingContent = await this.sectionBuilder.buildFileNamingSection();
-      if (fileNamingContent) {
-        sections.push({
-          key: 'file-naming',
-          title: '### File Naming Conventions',
-          content: fileNamingContent,
-          conditional: true,
-          condition: () => data.includeFileNaming !== false,
-          order: 2.1
-        });
-      }
-    }
-
-    // 2.2. Directory structure section (conditional)
-    if (data.includeDirectoryNaming !== false) {
-      const dirStructureContent = await this.sectionBuilder.buildDirectoryStructureSection();
-      if (dirStructureContent) {
-        sections.push({
-          key: 'directory-structure',
-          title: '### Directory Structure',
-          content: dirStructureContent,
-          conditional: true,
-          condition: () => data.includeDirectoryNaming !== false,
-          order: 2.2
-        });
-      }
-    }
-
     // 3. Tools and MCP section (always included)
     sections.push({
       key: 'tools-section',

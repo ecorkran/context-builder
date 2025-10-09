@@ -127,8 +127,6 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
     projectDate: initialData?.projectDate || new Date().toISOString().split('T')[0],
     isMonorepo: initialData?.isMonorepo || false,
     isMonorepoEnabled: initialData?.isMonorepoEnabled,
-    includeFileNaming: initialData?.includeFileNaming,
-    includeDirectoryNaming: initialData?.includeDirectoryNaming,
     customData: {
       recentEvents: initialData?.customData?.recentEvents || '',
       additionalNotes: initialData?.customData?.additionalNotes || '',
@@ -158,8 +156,6 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
             projectDate: initialData.projectDate || new Date().toISOString().split('T')[0],
             isMonorepo: initialData.isMonorepo || false,
             isMonorepoEnabled: initialData.isMonorepoEnabled,
-            includeFileNaming: initialData.includeFileNaming,
-            includeDirectoryNaming: initialData.includeDirectoryNaming,
             customData: {
               recentEvents: initialData.customData?.recentEvents || '',
               additionalNotes: initialData.customData?.additionalNotes || '',
@@ -462,27 +458,6 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
               {(formData.customData?.additionalNotes || '').length}/8000 characters
             </span>
           </div>
-        </div>
-
-        {/* 7. Naming Schema Controls */}
-        <div className="space-y-3 pt-2">
-          <Checkbox
-            id="include-file-naming"
-            checked={formData.includeFileNaming ?? true}
-            onCheckedChange={(checked) => handleInputChange('includeFileNaming', checked)}
-            label="File naming schema"
-            uiVariant="accent"
-            className='ml-[calc(var(--radius)*0.25)]'
-          />
-
-          <Checkbox
-            id="include-directory-naming"
-            checked={formData.includeDirectoryNaming ?? true}
-            onCheckedChange={(checked) => handleInputChange('includeDirectoryNaming', checked)}
-            label="Directory naming schema"
-            uiVariant="accent"
-            className='ml-[calc(var(--radius)*0.25)]'
-          />
         </div>
       </div>
 

@@ -108,8 +108,6 @@ export const ContextBuilderApp: React.FC = () => {
             projectDate: newProject.projectDate,
             isMonorepo: newProject.isMonorepo,
             isMonorepoEnabled: newProject.isMonorepoEnabled,
-            includeFileNaming: newProject.includeFileNaming,
-            includeDirectoryNaming: newProject.includeDirectoryNaming,
             customData: {
               recentEvents: '',
               additionalNotes: '',
@@ -138,8 +136,6 @@ export const ContextBuilderApp: React.FC = () => {
             projectDate: activeProject.projectDate,
             isMonorepo: activeProject.isMonorepo,
             isMonorepoEnabled: activeProject.isMonorepoEnabled,
-            includeFileNaming: activeProject.includeFileNaming,
-            includeDirectoryNaming: activeProject.includeDirectoryNaming,
             customData: {
               recentEvents: activeProject.customData?.recentEvents || '',
               additionalNotes: activeProject.customData?.additionalNotes || '',
@@ -180,8 +176,6 @@ export const ContextBuilderApp: React.FC = () => {
           projectDate: formData.projectDate,
           isMonorepo: formData.isMonorepo,
           isMonorepoEnabled: formData.isMonorepoEnabled,
-          includeFileNaming: formData.includeFileNaming,
-          includeDirectoryNaming: formData.includeDirectoryNaming,
           customData: formData.customData,
         });
         await persistentStore.setLastActiveProject(currentProjectId);
@@ -240,8 +234,6 @@ export const ContextBuilderApp: React.FC = () => {
         projectDate: switchedProject.projectDate,
         isMonorepo: switchedProject.isMonorepo,
         isMonorepoEnabled: switchedProject.isMonorepoEnabled,
-        includeFileNaming: switchedProject.includeFileNaming,
-        includeDirectoryNaming: switchedProject.includeDirectoryNaming,
         customData: {
           recentEvents: switchedProject.customData?.recentEvents || '',
           additionalNotes: switchedProject.customData?.additionalNotes || '',
@@ -288,8 +280,6 @@ export const ContextBuilderApp: React.FC = () => {
         projectDate: newProject.projectDate,
         isMonorepo: newProject.isMonorepo,
         isMonorepoEnabled: newProject.isMonorepoEnabled,
-        includeFileNaming: true,  // Default to true for new projects
-        includeDirectoryNaming: true,  // Default to true for new projects
         customData: {
           recentEvents: '',
           additionalNotes: '',
@@ -355,8 +345,6 @@ export const ContextBuilderApp: React.FC = () => {
           projectDate: newActiveProject.projectDate,
           isMonorepo: newActiveProject.isMonorepo,
           isMonorepoEnabled: newActiveProject.isMonorepoEnabled,
-          includeFileNaming: newActiveProject.includeFileNaming,
-          includeDirectoryNaming: newActiveProject.includeDirectoryNaming,
           customData: {
             recentEvents: newActiveProject.customData?.recentEvents || '',
             additionalNotes: newActiveProject.customData?.additionalNotes || '',
