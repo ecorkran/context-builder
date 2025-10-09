@@ -129,16 +129,16 @@ Recent: {{recentEvents}}`;
         const template = `Current work context:
 - Project: {project}
 - Current slice: {slice}
-- Current slice design: private/slices/{slice}.md
-- Current tasks: private/tasks/{sliceindex}-tasks.{slicename}.md
+- Current slice design: user/slices/{slice}.md
+- Current tasks: user/tasks/{sliceindex}-tasks.{slicename}.md
 - Monorepo Template Development: Use \`project-artifacts/{template}/\` for project-specific files`;
-        
+
         const result = processor.processTemplate(template, data);
-        
+
         expect(result).toContain('Project: manta-templates');
         expect(result).toContain('Current slice: 025-slice.combo-box');
-        expect(result).toContain('private/slices/025-slice.combo-box.md');
-        expect(result).toContain('private/tasks/025-tasks.combo-box.md');
+        expect(result).toContain('user/slices/025-slice.combo-box.md');
+        expect(result).toContain('user/tasks/025-tasks.combo-box.md');
         expect(result).toContain('project-artifacts/templates/react/');
       });
     });

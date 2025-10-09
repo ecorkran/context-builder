@@ -123,7 +123,7 @@ This feature adds date tracking to projects with a date input control that defau
 **Effort**: 1/5
 
 - [x] **Task 5.1: Add date field to project-intro-statement**
-  - Open `project-documents/private/content/statements/default-statements.md`
+  - Open `project-documents/user/content/statements/default-statements.md`
   - Locate project-intro-statement section (marked with HTML comment)
   - Add `date: {project-date}` line after `slice: {slice}`
   - Maintain consistent formatting and spacing
@@ -319,7 +319,7 @@ Upon completion of all tasks:
 3. `src/components/forms/ProjectConfigForm.tsx` - Add date input UI
 4. `src/services/context/ContextIntegrator.ts` - Add projectDate mapping
 5. `src/services/context/TemplateProcessor.ts` - Add date variable aliases
-6. `project-documents/private/content/statements/default-statements.md` - Add date to template
+6. `project-documents/user/content/statements/default-statements.md` - Add date to template
 
 ### Testing Approach
 - Each task includes specific success criteria for validation

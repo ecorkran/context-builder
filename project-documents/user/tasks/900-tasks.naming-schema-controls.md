@@ -6,8 +6,8 @@ sliceIndex: 900
 featureReference: 900-feature.naming-schema-controls.md
 dependencies: []
 projectState: Maintenance phase - all critical bugs fixed, core features working
-status: not-started
-lastUpdated: 2025-10-07
+status: in-progress
+lastUpdated: 2025-10-08
 ---
 
 # Tasks: Naming Schema Controls
@@ -16,7 +16,7 @@ lastUpdated: 2025-10-07
 
 This task file implements the naming schema controls feature (GitHub Issue #9), adding checkbox controls to allow users to include/exclude file and directory naming conventions in the context initialization prompt.
 
-**Feature Location**: `private/features/900-feature.naming-schema-controls.md`
+**Feature Location**: `user/features/900-feature.naming-schema-controls.md`
 
 **Implementation Pattern**: Follows the established `isMonorepoEnabled` pattern for feature flags controlling content inclusion.
 
@@ -35,20 +35,20 @@ This task file implements the naming schema controls feature (GitHub Issue #9), 
 
 ### Task 1.1: Update ProjectData Type Definition
 
-- [ ] Open `src/services/storage/types/ProjectData.ts`
-- [ ] Add `includeFileNaming?: boolean` to `ProjectData` interface
-- [ ] Add `includeDirectoryNaming?: boolean` to `ProjectData` interface
-- [ ] Update `UpdateProjectData` type to include both new fields in the Pick type
-- [ ] Verify TypeScript compilation with `pnpm typecheck`
-- [ ] **Success**: TypeScript builds without errors, new fields available
+- [x] Open `src/services/storage/types/ProjectData.ts`
+- [x] Add `includeFileNaming?: boolean` to `ProjectData` interface
+- [x] Add `includeDirectoryNaming?: boolean` to `ProjectData` interface
+- [x] Update `UpdateProjectData` type to include both new fields in the Pick type
+- [x] Verify TypeScript compilation with `pnpm typecheck`
+- [x] **Success**: TypeScript builds without errors, new fields available
 
 ### Task 1.2: Update EnhancedContextData Type
 
-- [ ] Open `src/services/context/types/ContextData.ts`
-- [ ] Add `includeFileNaming?: boolean` to `EnhancedContextData` interface
-- [ ] Add `includeDirectoryNaming?: boolean` to `EnhancedContextData` interface
-- [ ] Verify TypeScript compilation with `pnpm typecheck`
-- [ ] **Success**: TypeScript builds without errors, new fields available in context data
+- [x] Open `src/services/context/types/ContextData.ts`
+- [x] Add `includeFileNaming?: boolean` to `EnhancedContextData` interface
+- [x] Add `includeDirectoryNaming?: boolean` to `EnhancedContextData` interface
+- [x] Verify TypeScript compilation with `pnpm typecheck`
+- [x] **Success**: TypeScript builds without errors, new fields available in context data
 
 ## Phase 2: UI Components
 
@@ -56,30 +56,30 @@ This task file implements the naming schema controls feature (GitHub Issue #9), 
 
 ### Task 2.1: Add Checkboxes to ProjectConfigForm
 
-- [ ] Open `src/components/ProjectConfigForm.tsx`
-- [ ] Locate appropriate insertion point (after existing form fields, before submit button)
-- [ ] Add container div with appropriate spacing (`space-y-2`)
-- [ ] Add first checkbox label with:
-  - [ ] Checkbox input with `type="checkbox"`
-  - [ ] Checked state: `formData.includeFileNaming ?? true`
-  - [ ] Change handler: `handleFieldChange('includeFileNaming', e.target.checked)`
-  - [ ] Styling: `className="h-4 w-4"`
-  - [ ] Label text: "File naming schema"
-- [ ] Add second checkbox label with:
-  - [ ] Checkbox input with `type="checkbox"`
-  - [ ] Checked state: `formData.includeDirectoryNaming ?? true`
-  - [ ] Change handler: `handleFieldChange('includeDirectoryNaming', e.target.checked)`
-  - [ ] Styling: `className="h-4 w-4"`
-  - [ ] Label text: "Directory naming schema"
-- [ ] Verify visual appearance in running application
-- [ ] **Success**: Two checkboxes appear in form, both checked by default, clicking toggles state
+- [x] Open `src/components/ProjectConfigForm.tsx`
+- [x] Locate appropriate insertion point (after existing form fields, before submit button)
+- [x] Add container div with appropriate spacing (`space-y-2`)
+- [x] Add first checkbox label with:
+  - [x] Checkbox input with `type="checkbox"`
+  - [x] Checked state: `formData.includeFileNaming ?? true`
+  - [x] Change handler: `handleFieldChange('includeFileNaming', e.target.checked)`
+  - [x] Styling: `className="h-4 w-4"`
+  - [x] Label text: "File naming schema"
+- [x] Add second checkbox label with:
+  - [x] Checkbox input with `type="checkbox"`
+  - [x] Checked state: `formData.includeDirectoryNaming ?? true`
+  - [x] Change handler: `handleFieldChange('includeDirectoryNaming', e.target.checked)`
+  - [x] Styling: `className="h-4 w-4"`
+  - [x] Label text: "Directory naming schema"
+- [x] Verify visual appearance in running application
+- [x] **Success**: Two checkboxes appear in form, both checked by default, clicking toggles state
 
 ### Task 2.2: Verify Form State Handling
 
-- [ ] Confirm `handleFieldChange` properly updates form state for new fields
-- [ ] Test checkbox interactions in UI
-- [ ] Verify form data includes new fields when changed
-- [ ] **Success**: Checkboxes update form state correctly, no console errors
+- [x] Confirm `handleFieldChange` properly updates form state for new fields
+- [x] Test checkbox interactions in UI
+- [x] Verify form data includes new fields when changed
+- [x] **Success**: Checkboxes update form state correctly, no console errors
 
 ## Phase 3: State Persistence
 
@@ -87,28 +87,28 @@ This task file implements the naming schema controls feature (GitHub Issue #9), 
 
 ### Task 3.1: Update Auto-Save Handler
 
-- [ ] Open `src/components/ContextBuilderApp.tsx`
-- [ ] Locate auto-save handler function
-- [ ] Add `includeFileNaming: formData.includeFileNaming` to updated project object
-- [ ] Add `includeDirectoryNaming: formData.includeDirectoryNaming` to updated project object
-- [ ] **Success**: Form changes persist when typing stops
+- [x] Open `src/components/ContextBuilderApp.tsx`
+- [x] Locate auto-save handler function
+- [x] Add `includeFileNaming: formData.includeFileNaming` to updated project object
+- [x] Add `includeDirectoryNaming: formData.includeDirectoryNaming` to updated project object
+- [x] **Success**: Form changes persist when typing stops
 
 ### Task 3.2: Update Project Switching Logic
 
-- [ ] Locate project switching handler in `ContextBuilderApp.tsx`
-- [ ] Ensure `includeFileNaming` is loaded from project data
-- [ ] Ensure `includeDirectoryNaming` is loaded from project data
-- [ ] Verify default values (`?? true`) if fields are undefined
-- [ ] Test switching between projects with different settings
-- [ ] **Success**: Settings persist when switching between projects
+- [x] Locate project switching handler in `ContextBuilderApp.tsx`
+- [x] Ensure `includeFileNaming` is loaded from project data
+- [x] Ensure `includeDirectoryNaming` is loaded from project data
+- [x] Verify default values (`?? true`) if fields are undefined
+- [x] Test switching between projects with different settings
+- [x] **Success**: Settings persist when switching between projects
 
 ### Task 3.3: Update New Project Creation
 
-- [ ] Locate new project creation logic in `ContextBuilderApp.tsx`
-- [ ] Add `includeFileNaming: true` to initial project data
-- [ ] Add `includeDirectoryNaming: true` to initial project data
-- [ ] Create new project and verify defaults
-- [ ] **Success**: New projects have both checkboxes checked by default
+- [x] Locate new project creation logic in `ContextBuilderApp.tsx`
+- [x] Add `includeFileNaming: true` to initial project data
+- [x] Add `includeDirectoryNaming: true` to initial project data
+- [x] Create new project and verify defaults
+- [x] **Success**: New projects have both checkboxes checked by default
 
 ### Task 3.4: Test Persistence Across Sessions
 
@@ -124,50 +124,50 @@ This task file implements the naming schema controls feature (GitHub Issue #9), 
 
 ### Task 4.1: Add Frontmatter Stripping Utility
 
-- [ ] Open `src/services/context/SectionBuilder.ts`
-- [ ] Add private method `stripFrontmatter(content: string): string`
-- [ ] Implement regex to match YAML frontmatter: `/^---\n[\s\S]*?\n---\n/`
-- [ ] Replace frontmatter with empty string and trim
-- [ ] Add unit test for frontmatter stripping
-- [ ] **Success**: Method removes YAML frontmatter from markdown content
+- [x] Open `src/services/context/SectionBuilder.ts`
+- [x] Add private method `stripFrontmatter(content: string): string`
+- [x] Implement regex to match YAML frontmatter: `/^---\n[\s\S]*?\n---\n/`
+- [x] Replace frontmatter with empty string and trim
+- [x] Add unit test for frontmatter stripping
+- [x] **Success**: Method removes YAML frontmatter from markdown content
 
 ### Task 4.2: Add File Naming Section Builder
 
-- [ ] In `SectionBuilder.ts`, add method `buildFileNamingSection(): Promise<string>`
-- [ ] Implement file path construction: `path.join(process.cwd(), 'project-documents', 'file-naming-conventions.md')`
-- [ ] Add file existence check with `fs.existsSync()`
-- [ ] If file exists:
-  - [ ] Read file with `fs.readFileSync(filePath, 'utf-8')`
-  - [ ] Strip frontmatter using `stripFrontmatter()`
-  - [ ] Return cleaned content
-- [ ] If file doesn't exist:
-  - [ ] Log error: `console.error('ERROR: File naming conventions file not found at:', filePath)`
-  - [ ] Return explicit error placeholder: `"ERROR: Failed to load file naming conventions from project-documents/file-naming-conventions.md"`
-- [ ] Add try/catch that re-throws errors with context
-- [ ] **Success**: Method returns file content or explicit error message (no silent fallbacks)
+- [x] In `SectionBuilder.ts`, add method `buildFileNamingSection(): Promise<string>`
+- [x] Implement file path construction: `path.join(process.cwd(), 'project-documents', 'file-naming-conventions.md')`
+- [x] Add file existence check with `fs.existsSync()`
+- [x] If file exists:
+  - [x] Read file with `fs.readFileSync(filePath, 'utf-8')`
+  - [x] Strip frontmatter using `stripFrontmatter()`
+  - [x] Return cleaned content
+- [x] If file doesn't exist:
+  - [x] Log error: `console.error('ERROR: File naming conventions file not found at:', filePath)`
+  - [x] Return explicit error placeholder: `"ERROR: Failed to load file naming conventions from project-documents/file-naming-conventions.md"`
+- [x] Add try/catch that re-throws errors with context
+- [x] **Success**: Method returns file content or explicit error message (no silent fallbacks)
 
 ### Task 4.3: Add Directory Structure Section Builder
 
-- [ ] In `SectionBuilder.ts`, add method `buildDirectoryStructureSection(): Promise<string>`
-- [ ] Implement file path construction: `path.join(process.cwd(), 'project-documents', 'directory-structure.md')`
-- [ ] Add file existence check with `fs.existsSync()`
-- [ ] If file exists:
-  - [ ] Read file with `fs.readFileSync(filePath, 'utf-8')`
-  - [ ] Strip frontmatter using `stripFrontmatter()`
-  - [ ] Return cleaned content
-- [ ] If file doesn't exist:
-  - [ ] Log error: `console.error('ERROR: Directory structure file not found at:', filePath)`
-  - [ ] Return explicit error placeholder: `"ERROR: Failed to load directory structure from project-documents/directory-structure.md"`
-- [ ] Add try/catch that re-throws errors with context
-- [ ] **Success**: Method returns file content or explicit error message (no silent fallbacks)
+- [x] In `SectionBuilder.ts`, add method `buildDirectoryStructureSection(): Promise<string>`
+- [x] Implement file path construction: `path.join(process.cwd(), 'project-documents', 'directory-structure.md')`
+- [x] Add file existence check with `fs.existsSync()`
+- [x] If file exists:
+  - [x] Read file with `fs.readFileSync(filePath, 'utf-8')`
+  - [x] Strip frontmatter using `stripFrontmatter()`
+  - [x] Return cleaned content
+- [x] If file doesn't exist:
+  - [x] Log error: `console.error('ERROR: Directory structure file not found at:', filePath)`
+  - [x] Return explicit error placeholder: `"ERROR: Failed to load directory structure from project-documents/directory-structure.md"`
+- [x] Add try/catch that re-throws errors with context
+- [x] **Success**: Method returns file content or explicit error message (no silent fallbacks)
 
 ### Task 4.4: Remove Silent Fallbacks (Compliance Check)
 
-- [ ] Review `buildFileNamingSection()` - verify it returns explicit error, not silent fallback
-- [ ] Review `buildDirectoryStructureSection()` - verify it returns explicit error, not silent fallback
-- [ ] Ensure error messages are visible in generated context (prefixed with "ERROR:")
-- [ ] Verify console.error() calls are present for debugging
-- [ ] **Success**: No silent fallbacks exist; all failures produce explicit, visible error messages
+- [x] Review `buildFileNamingSection()` - verify it returns explicit error, not silent fallback
+- [x] Review `buildDirectoryStructureSection()` - verify it returns explicit error, not silent fallback
+- [x] Ensure error messages are visible in generated context (prefixed with "ERROR:")
+- [x] Verify console.error() calls are present for debugging
+- [x] **Success**: No silent fallbacks exist; all failures produce explicit, visible error messages
 
 **Note**: This task ensures compliance with the "never use silent fallback values" rule. Missing files must produce obvious error placeholders, not plausible-looking default content.
 
@@ -187,50 +187,50 @@ This task file implements the naming schema controls feature (GitHub Issue #9), 
 
 ### Task 5.1: Update ContextIntegrator
 
-- [ ] Open `src/services/context/ContextIntegrator.ts`
-- [ ] Locate `transformProjectData` method
-- [ ] Add `includeFileNaming: project.includeFileNaming` to `EnhancedContextData` object
-- [ ] Add `includeDirectoryNaming: project.includeDirectoryNaming` to `EnhancedContextData` object
-- [ ] Verify TypeScript compilation
-- [ ] **Success**: New fields flow from ProjectData to EnhancedContextData
+- [x] Open `src/services/context/ContextIntegrator.ts`
+- [x] Locate `transformProjectData` method
+- [x] Add `includeFileNaming: project.includeFileNaming` to `EnhancedContextData` object
+- [x] Add `includeDirectoryNaming: project.includeDirectoryNaming` to `EnhancedContextData` object
+- [x] Verify TypeScript compilation
+- [x] **Success**: New fields flow from ProjectData to EnhancedContextData
 
 ### Task 5.2: Add File Naming Conditional Section
 
-- [ ] Open `src/services/context/ContextTemplateEngine.ts`
-- [ ] Locate `buildTemplate()` method
-- [ ] Find section order 2 (context-init) insertion point
-- [ ] Add conditional check: `if (data.includeFileNaming !== false)`
-- [ ] Call `await this.sectionBuilder.buildFileNamingSection()`
-- [ ] If content exists, push section object:
-  - [ ] `key: 'file-naming'`
-  - [ ] `title: '### File Naming Conventions'`
-  - [ ] `content: fileNamingContent`
-  - [ ] `conditional: true`
-  - [ ] `condition: () => data.includeFileNaming !== false`
-  - [ ] `order: 2.1`
-- [ ] **Success**: File naming section appears when enabled, absent when disabled
+- [x] Open `src/services/context/ContextTemplateEngine.ts`
+- [x] Locate `buildTemplate()` method
+- [x] Find section order 2 (context-init) insertion point
+- [x] Add conditional check: `if (data.includeFileNaming !== false)`
+- [x] Call `await this.sectionBuilder.buildFileNamingSection()`
+- [x] If content exists, push section object:
+  - [x] `key: 'file-naming'`
+  - [x] `title: '### File Naming Conventions'`
+  - [x] `content: fileNamingContent`
+  - [x] `conditional: true`
+  - [x] `condition: () => data.includeFileNaming !== false`
+  - [x] `order: 2.1`
+- [x] **Success**: File naming section appears when enabled, absent when disabled
 
 ### Task 5.3: Add Directory Structure Conditional Section
 
-- [ ] In `buildTemplate()` method after file naming section
-- [ ] Add conditional check: `if (data.includeDirectoryNaming !== false)`
-- [ ] Call `await this.sectionBuilder.buildDirectoryStructureSection()`
-- [ ] If content exists, push section object:
-  - [ ] `key: 'directory-structure'`
-  - [ ] `title: '### Directory Structure'`
-  - [ ] `content: dirStructureContent`
-  - [ ] `conditional: true`
-  - [ ] `condition: () => data.includeDirectoryNaming !== false`
-  - [ ] `order: 2.2`
-- [ ] **Success**: Directory structure section appears when enabled, absent when disabled
+- [x] In `buildTemplate()` method after file naming section
+- [x] Add conditional check: `if (data.includeDirectoryNaming !== false)`
+- [x] Call `await this.sectionBuilder.buildDirectoryStructureSection()`
+- [x] If content exists, push section object:
+  - [x] `key: 'directory-structure'`
+  - [x] `title: '### Directory Structure'`
+  - [x] `content: dirStructureContent`
+  - [x] `conditional: true`
+  - [x] `condition: () => data.includeDirectoryNaming !== false`
+  - [x] `order: 2.2`
+- [x] **Success**: Directory structure section appears when enabled, absent when disabled
 
 ### Task 5.4: Verify Section Ordering
 
-- [ ] Review existing section order values in template engine
-- [ ] Confirm 2.1 and 2.2 don't conflict with existing sections
-- [ ] Adjust if necessary to maintain logical order
-- [ ] Generate context output and verify section placement
-- [ ] **Success**: Sections appear in correct position (after context-init, before tools)
+- [x] Review existing section order values in template engine
+- [x] Confirm 2.1 and 2.2 don't conflict with existing sections
+- [x] Adjust if necessary to maintain logical order
+- [x] Generate context output and verify section placement
+- [x] **Success**: Sections appear in correct position (after context-init, before tools)
 
 ## Phase 6: Testing & Validation
 
@@ -367,7 +367,7 @@ This task file implements the naming schema controls feature (GitHub Issue #9), 
 
 ### Task 8.1: Update Feature Document
 
-- [ ] Open `private/features/900-feature.naming-schema-controls.md`
+- [ ] Open `user/features/900-feature.naming-schema-controls.md`
 - [ ] Update `status` to `completed`
 - [ ] Update `lastUpdated` to completion date
 - [ ] Check all success criteria items
