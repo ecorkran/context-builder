@@ -1,42 +1,40 @@
-# Electron Template
+# Context Forge
 
-A modern Electron application built with React, TypeScript, and Tailwind CSS that showcases the ui-core component library with a flexible content system for desktop applications.
+A desktop application for automating the creation of structured context prompts for Claude Code sessions. Built with Electron, React, and TypeScript.
 
 ## 🚀 Quick Start
 
-### Option 1: Using degit (Recommended)
 ```bash
-npx degit manta-digital/manta-templates/templates/electron my-electron-app
-cd my-electron-app
 pnpm install
 pnpm dev
 ```
 
-### Option 2: Clone and extract
-```bash
-git clone https://github.com/manta-digital/manta-templates.git
-cp -r manta-templates/templates/electron my-electron-app
-cd my-electron-app
-rm -rf .git
-pnpm install
-pnpm dev
-```
+The Electron app will launch with hot reload enabled for rapid development.
 
-### Next Steps
-- The Electron app will launch with hot reload enabled
-- Edit `src/pages/` to modify UI content
-- Customize themes in `src/index.css`
-- Add content in the `content/` directory
-- Build for distribution with `pnpm build && pnpm package`
+## 📖 What is Context Forge?
+
+Context Forge eliminates the manual, time-consuming process of building structured context prompts for AI-assisted development sessions. Instead of spending 3-4 minutes manually assembling context for each Claude Code session, developers can generate consistent, well-formatted prompts in seconds.
+
+### Key Features
+- **Multi-Project Support**: Manage multiple projects with easy dropdown switching
+- **Template-Driven Generation**: Use curated prompts and instruction templates
+- **Project Context Management**: Track current work state, slices, tasks, and phases
+- **Custom Instructions**: Add project-specific guidance and recent events
+- **Copy-Optimized Output**: One-click copy of formatted context prompts
+- **Persistent Storage**: Project configurations saved locally for quick access
+
+### Perfect For
+- Developers using Claude Code for AI-assisted development
+- Teams using structured methodologies (templates, slices, phases)
+- Projects following the ai-project-guide workflow
+- Anyone working on multiple projects requiring consistent context
 
 ## ✨ What's Included
-
 - **Electron 37** with secure architecture (main/preload/renderer)
 - **React 19** with TypeScript for the renderer process
 - **Vite** for fast development and building via electron-vite
 - **Tailwind CSS 4** for styling with custom themes
-- **Content System** - Markdown-based content with hot reload
-- **Theme System** - Light/dark modes + custom color themes
+- **Radix UI** components for accessible interface elements
 - **Component Library** - Pre-built UI components from ui-core
 - **Router** - React Router with HashRouter for Electron compatibility
 - **Build System** - Production packaging with electron-builder
@@ -55,101 +53,34 @@ pnpm lint         # ESLint code linting
 ### Architecture
 ```
 src/
-├── main/         # Electron main process
-├── preload/      # Secure IPC bridge
-├── renderer/     # React app entry point
-├── pages/        # React pages/routes
-├── components/   # Custom React components
-├── lib/          # UI core library and utilities
-└── content/      # Content management
+├── main/              # Electron main process
+│   ├── main.ts        # Application entry point
+│   ├── ipc/           # IPC handlers for context services
+│   └── services/      # Context generation, storage, prompts
+├── preload/           # Secure IPC bridge
+├── components/        # React UI components
+│   ├── forms/         # Project configuration forms
+│   ├── layout/        # Layout components (split pane)
+│   └── project/       # Project selector and management
+├── services/          # Frontend services
+│   ├── context/       # Context generation engine
+│   └── storage/       # Project data persistence
+├── pages/             # React pages/routes
+└── lib/               # UI core library and utilities
 ```
 
-## 📱 Electron Features
-
-### Secure Architecture
-- **Context Isolation**: Enabled for security
-- **Node Integration**: Disabled in renderer
-- **Preload Scripts**: Secure IPC communication bridge
-- **CSP Headers**: Content Security Policy in production
-
-### Native Menu
-The template includes a minimal native menu example:
-
-```typescript
-// Platform-specific behavior:
-// - macOS: Menu appears in system menu bar (always visible)
-// - Windows/Linux: Menu hidden by default, press Alt to toggle
-
-// Keyboard shortcuts work on all platforms:
-// - Cmd/Ctrl+N: New file example
-// - Cmd/Ctrl+O: Open file example  
-// - F12: Toggle Developer Tools
-// - Cmd/Ctrl+R: Reload application
-// - Cmd/Ctrl+Q: Quit application
-```
-
-Extend the menu in `src/main/main.ts` for your app's specific needs, or delete the entire menu section if you prefer no native menu.
-
-### IPC Examples
-The template includes examples of secure communication between main and renderer:
-
-```typescript
-// In renderer (React components)
-const result = await window.electronAPI.ping()
-const version = await window.electronAPI.getAppVersion()
-```
-
-### Window Management
-- Responsive window sizing (1200x800 default)
-- Auto-hide menu bar (Windows/Linux: Alt to toggle, macOS: system menu bar)
-- Platform-specific behaviors
-- Ready-to-show pattern for smooth startup
-
-## 🎨 UI System
-
-### Components
-The component library lives in `src/lib/ui-core/`. These components work seamlessly in Electron:
-
-```typescript
-import { ArticleCard, ProjectCard, QuoteCard } from './lib/ui-core/components/cards'
-import { ThemeToggle, ColorSelector } from './lib/ui-core/components/ui'
-
-<ProjectCard content={projectData} />
-<QuoteCard content={quoteData} />
-<ThemeToggle />
-```
-
-### Themes
-The theme system uses CSS custom properties and works perfectly in Electron:
-
-```css
-/* Custom theme in src/index.css */
-[data-palette="custom"] {
-  --color-accent-9: #your-brand-color;
-  --color-background: #your-bg-color;
-}
-```
-
-Built-in themes:
-- **Light/Dark**: System preference aware
-- **Custom Examples**: Forest, Banana, Sunset themes included
-- **Color Selector**: Runtime theme switching
-
-### Content System
-Add markdown content in the `content/` directory:
-
-```markdown
-<!-- content/projects/my-project.md -->
----
-title: "My Desktop App"
-description: "Built with Electron"
-image: "/images/my-app.png"
----
-
-Content here...
-```
-
-The content system provides hot reload during development.
+## 🎯 Usage
+1. **Create or Select a Project**: Use the project selector dropdown to create new projects or switch between existing ones
+2. **Configure Project Details**:
+   - Set project name, template, and slice
+   - Add task file and custom instructions
+   - Configure monorepo settings if applicable
+3. **Add Context Information**:
+   - Recent events relevant to current work
+   - Additional notes and guidance
+   - Available tools and MCP servers
+4. **Generate Context**: Click "Copy Context" to generate and copy the formatted prompt
+5. **Paste into Claude Code**: Use the generated context to start your AI-assisted development session
 
 ## 📦 Building & Distribution
 
@@ -157,79 +88,79 @@ The content system provides hot reload during development.
 ```bash
 pnpm build
 ```
-Creates optimized bundles in `out/` directory.
+Creates optimized bundles in `out/` directory for local development and testing.
 
-### Package for Distribution
+### Package for Distribution (In Progress)
 ```bash
 pnpm package
 ```
-Creates platform-specific distributables:
+**Note:** Full application packaging is not yet complete. The basic electron-builder configuration is in place, but requires:
+- Application icons (icon.icns for macOS, icon.png for other platforms)
+- Code signing certificates for distribution
+- Platform-specific installer configurations
+
+Once complete, this will create:
 - **macOS**: DMG file
 - **Windows**: NSIS installer
-- **Linux**: AppImage, deb, rpm (configurable)
+- **Linux**: AppImage (configurable)
 
-### Electron Builder Configuration
-The template includes `electron-builder` configuration in `package.json`:
+## 🔒 Security
 
-```json
-{
-  "build": {
-    "appId": "com.electron-template.app",
-    "files": ["out/**", "resources/**"],
-    "mac": { "target": ["dmg"] },
-    "win": { "target": ["nsis"] }
-  }
-}
-```
+- **Context Isolation**: Enabled for security
+- **Node Integration**: Disabled in renderer
+- **Preload Scripts**: Secure IPC communication bridge
+- **CSP Headers**: Content Security Policy in production
 
-## 🔧 Customization
+## 🎨 UI System
 
-### Add Electron Features
-Extend the main process (`src/main/main.ts`) to add:
-- Native menus
-- System tray
-- File system access
-- Native dialogs
-- Auto-updater
+### Components
+Built on the ui-core component library with custom components for:
+- Project configuration forms with validation
+- Split-pane layout for input/preview
+- Project selector with dropdown
+- Theme toggle (light/dark modes)
 
-### Router Configuration
-Uses HashRouter for Electron compatibility:
-```typescript
-import { HashRouter as Router } from 'react-router-dom'
-// Perfect for file:// protocol in Electron
-```
+### Themes
+The theme system uses CSS custom properties:
+- **Light/Dark**: System preference aware with manual toggle
+- **Radix UI**: Accessible, themeable components
+- **Tailwind CSS 4**: Modern utility-first styling
 
-### Security Configuration
-Update CSP and security settings in the main process as needed for your app's requirements.
+## 📚 Project Structure
 
-## 🚀 Deployment
+### Context Generation
+The context engine (`ContextTemplateEngine.ts`) generates structured prompts by:
+1. Loading system prompts and statement templates
+2. Building context sections (project info, work context, instructions)
+3. Applying conditional sections (monorepo, naming conventions)
+4. Formatting output for Claude Code consumption
 
-### Ready for Distribution
-The template creates production-ready Electron apps:
-- Code signing ready (add certificates)
-- Auto-updater ready (configure update server)
-- Multi-platform builds supported
-- Optimized bundle sizes with code splitting
+### Storage
+Project data is persisted locally using Electron's storage APIs:
+- JSON-based project storage
+- Auto-save functionality
+- Backup and recovery support
 
-### Recommended Workflow
-1. Develop with `pnpm dev`
-2. Test builds with `pnpm build && pnpm package`
-3. Configure code signing certificates
-4. Set up CI/CD for multi-platform builds
-5. Deploy with electron-builder and update servers
+### IPC Architecture
+Secure communication between main and renderer processes:
+- Context generation services
+- Storage operations
+- System prompt management
 
-## 📚 Learn More
-
-- [Electron Documentation](https://www.electronjs.org/docs)
-- [electron-vite Documentation](https://electron-vite.org/)
-- [UI Core Components](../react/src/lib/ui-core/)
-- [Tailwind CSS v4](https://tailwindcss.com/docs)
-- [React Router](https://reactrouter.com/)
-
-## 🤝 Contributing
-
-This template is part of the manta-templates monorepo. Issues and contributions welcome!
+## 🚀 Roadmap
+- [x] Core context generation
+- [x] Multi-project support
+- [x] Template-based prompts
+- [x] Monorepo configuration
+- [x] Auto-save functionality
+- [ ] Naming convention controls (in progress)
+- [ ] Application packaging and distribution
+- [ ] Plugin system for extensibility
+- [ ] Context templates library
+- [ ] Export/import project configurations
 
 ## 📄 License
+MIT - Build amazing context prompts! 🚀
 
-MIT - Build amazing desktop apps! 🚀
+## 🤝 Contributing
+Issues and contributions welcome! This project follows the ai-project-guide methodology with slice-based development.

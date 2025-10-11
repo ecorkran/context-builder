@@ -74,7 +74,7 @@ function createWindow(): void {
   // Storage IPC handlers
   const getStoragePath = () => {
     const userDataPath = app.getPath('userData')
-    return join(userDataPath, 'context-builder')
+    return join(userDataPath, 'context-forge')
   }
 
   ipcMain.handle('storage:read', async (_, filename: string) => {

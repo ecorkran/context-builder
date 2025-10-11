@@ -14,7 +14,7 @@ export class StorageService {
   
   constructor() {
     // Use Electron's userData directory for storage
-    this.baseDir = path.join(app.getPath('userData'), 'context-builder');
+    this.baseDir = path.join(app.getPath('userData'), 'context-forge');
     this.mainFile = path.join(this.baseDir, 'projects.json');
     this.backupFile = path.join(this.baseDir, 'projects.backup.json');
   }

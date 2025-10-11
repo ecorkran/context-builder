@@ -67,7 +67,7 @@ export const SplitPaneLayout: React.FC<SplitPaneLayoutProps> = ({
   return (
     <PanelGroup
       direction="horizontal"
-      autoSaveId="context-builder-layout"
+      autoSaveId="context-forge-layout"
       className={cn('h-full w-full', className)}
     >
       <Panel
