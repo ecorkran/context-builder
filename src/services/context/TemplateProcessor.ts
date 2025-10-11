@@ -99,6 +99,11 @@ export class TemplateProcessor {
       enhanced['development-phase'] = data.developmentPhase;
     }
 
+    // Add kebab-case alias for taskFile
+    if (data.taskFile) {
+      enhanced['task-file'] = data.taskFile;
+    }
+
     // Add date aliases for template variable substitution
     if (data.projectDate) {
       enhanced['project-date'] = data.projectDate;
