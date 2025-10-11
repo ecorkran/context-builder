@@ -9,6 +9,14 @@ import { describe, it, expect, beforeEach, vi, beforeAll, afterAll } from 'vites
 
 // Mock the window.electronAPI global
 const mockElectronAPI = {
+  ping: vi.fn().mockResolvedValue('pong'),
+  getAppVersion: vi.fn().mockResolvedValue('1.0.0'),
+  updateWindowTitle: vi.fn().mockResolvedValue(undefined),
+  storage: {
+    read: vi.fn(),
+    write: vi.fn(),
+    backup: vi.fn(),
+  },
   statements: {
     load: vi.fn(),
     save: vi.fn(),
@@ -302,14 +310,15 @@ describe('IPC Integration Tests', () => {
         name: 'Test Project',
         template: 'react-vite',
         slice: 'foundation',
+        taskFile: 'foundation-tasks.md',
         instruction: 'implementation',
         isMonorepo: false,
         customData: {
           recentEvents: 'Recent test events',
           additionalNotes: 'Additional test notes'
         },
-        createdAt: new Date(),
-        updatedAt: new Date()
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
       };
       
       const result = await integrator.generateContextFromProject(mockProject);
@@ -334,14 +343,15 @@ describe('IPC Integration Tests', () => {
         name: 'Test Project',
         template: 'react-vite',
         slice: 'foundation',
+        taskFile: 'foundation-tasks.md',
         instruction: 'implementation',
         isMonorepo: false,
         customData: {
           recentEvents: 'Recent test events',
           additionalNotes: 'Additional test notes'
         },
-        createdAt: new Date(),
-        updatedAt: new Date()
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
       };
       
       const result = await integrator.generateContextFromProject(mockProject);

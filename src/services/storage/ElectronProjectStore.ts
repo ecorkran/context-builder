@@ -90,7 +90,8 @@ export class ElectronProjectStore {
     const newProject: ProjectData = {
       ...projectData,
       id: this.generateId(),
-      instruction: projectData.instruction || 'implementation', // Default to implementation
+      taskFile: projectData.taskFile || '',
+      instruction: projectData.instruction || '',
       customData: projectData.customData || {}, // Default to empty object
       createdAt: now,
       updatedAt: now,
