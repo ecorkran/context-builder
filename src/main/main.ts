@@ -26,7 +26,7 @@ function createWindow(): void {
     width: 1200,
     height: 800,
     show: false,
-    title: 'Context Builder',
+    title: 'Context Forge',
     webPreferences: {
       preload: fileURLToPath(new URL('../preload/preload.cjs', import.meta.url)),
       contextIsolation: true,
@@ -65,8 +65,8 @@ function createWindow(): void {
     if (!mainWindow) return
     
     const title = projectName 
-      ? `Context Builder - ${projectName}`
-      : 'Context Builder'
+      ? `Context Forge - ${projectName}`
+      : 'Context Forge'
     
     mainWindow.setTitle(title)
   })
@@ -294,7 +294,7 @@ app.whenReady().then(() => {
       label: 'Help',
       submenu: [
         {
-          label: 'About Context Builder',
+          label: 'About Context Forge',
           click: () => { shell.openExternal('https://github.com/anthropics/claude-code') }
         }
       ]

@@ -413,7 +413,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
 
         <div>
           <label htmlFor="recent-events" className="block text-sm font-medium text-neutral-11 mb-2">
-            Recent Events (optional)
+            Project State
           </label>
           <textarea
             id="recent-events"
@@ -438,7 +438,7 @@ export const ProjectConfigForm: React.FC<ProjectConfigFormProps> = ({
         {/* 6. Additional notes */}
         <div>
           <label htmlFor="additional-notes" className="block text-sm font-medium text-neutral-11 mb-2">
-            Additional Instructions (optional)
+            Additional Instructions
           </label>
           <textarea
             id="additional-notes"

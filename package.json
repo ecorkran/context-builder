@@ -2,7 +2,7 @@
   "name": "context-builder",
   "private": true,
   "version": "0.0.0",
-  "description": "Context Builder - AI project context generation tool",
+  "description": "Context Forge - AI project context generation tool",
   "main": "./out/main/main.js",
   "type": "module",
   "scripts": {
