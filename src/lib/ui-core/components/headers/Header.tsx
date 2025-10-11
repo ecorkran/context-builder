@@ -1,4 +1,3 @@
-import React from 'react';
 import { HeaderWrapperProps } from '../../types/header';
 import { DefaultHeader } from './DefaultHeader';
 

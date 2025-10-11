@@ -1,4 +1,3 @@
-import React from 'react';
 import { FooterLinkComponentProps } from '../../types/footer';
 
 export function FooterLinkComponent({ 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { HeaderProps } from '../../types/header';
 import { cn } from '../../utils/cn';
 import { BrandMark } from '../ui/BrandMark';

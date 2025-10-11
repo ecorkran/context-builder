@@ -1,4 +1,3 @@
-import React from 'react';
 import { DefaultFooterProps } from '../../types/footer';
 import { FooterLinkComponent } from './FooterLinkComponent';
 import { ThemeToggle } from '../ui/ThemeToggle';

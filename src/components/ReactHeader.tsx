@@ -1,4 +1,3 @@
-import React from 'react';
 import { Header } from '../lib/ui-core';
 import { HeaderProps } from '../lib/ui-core/types/header';
 

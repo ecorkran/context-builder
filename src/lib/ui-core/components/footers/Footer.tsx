@@ -1,4 +1,3 @@
-import React from 'react';
 import { FooterProps } from '../../types/footer';
 import { DefaultFooter } from './DefaultFooter';
 import { CompactFooter } from './CompactFooter';

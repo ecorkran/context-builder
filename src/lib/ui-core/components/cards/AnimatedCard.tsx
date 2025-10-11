@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import { motion, Variants, HTMLMotionProps, useReducedMotion } from 'framer-motion';
 
 type AnimationVariant = 'fade-in' | 'slide-up' | 'scale-in';

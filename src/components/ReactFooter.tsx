@@ -1,4 +1,3 @@
-import React from 'react';
 import { Footer } from '../lib/ui-core';
 import { FooterProps } from '../lib/ui-core/types/footer';
 
