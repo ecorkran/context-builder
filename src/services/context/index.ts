@@ -14,5 +14,4 @@ export { createStatementManager, createSystemPromptParser } from './ServiceFacto
 // Types
 export type { ContextData, ContextGenerator, EnhancedContextData } from './types/ContextData';
 export type { TemplateStatement } from './types/TemplateStatement';
-export type { SystemPrompt } from './types/SystemPrompt';
 export type { ContextSection } from './types/ContextSection';

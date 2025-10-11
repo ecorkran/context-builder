@@ -158,7 +158,8 @@ export class ContextTemplateEngine {
 
     return {
       sections,
-      version: data.templateVersion || '1.0.0'
+      statements: {},
+      prompts: {}
     };
   }
 
@@ -173,7 +174,7 @@ export class ContextTemplateEngine {
 
     for (const section of sortedSections) {
       // Check conditional sections
-      if (section.conditional && section.condition && !section.condition()) {
+      if (section.conditional && section.condition && !section.condition(data)) {
         continue;
       }
 
