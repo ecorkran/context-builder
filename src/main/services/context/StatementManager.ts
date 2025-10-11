@@ -110,7 +110,7 @@ export class StatementManager {
           // Extract content after comment (everything after the comment line)
           const commentIndex = lines.indexOf(commentMatch);
           const contentLines = lines.slice(commentIndex + 1)
-            .filter(line => !line.startsWith('##')) // Stop at next section
+            .filter(line => !line.match(/^##\s/)) // Stop at next section (## followed by space, not ###)
             .join('\n')
             .trim();
           
