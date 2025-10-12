@@ -275,9 +275,9 @@ export const ContextBuilderApp: React.FC = () => {
         slice: formData.slice || '',        // Inherit from current project
         taskFile: formData.taskFile || '',  // Inherit from current project
         instruction: newProject.instruction,
-        developmentPhase: newProject.developmentPhase,
-        workType: newProject.workType,
-        projectDate: newProject.projectDate,
+        developmentPhase: formData.developmentPhase || '',  // Inherit from current project
+        workType: formData.workType || newProject.workType,  // Inherit from current project
+        projectDate: formData.projectDate || newProject.projectDate,  // Inherit from current project
         isMonorepo: newProject.isMonorepo,
         isMonorepoEnabled: newProject.isMonorepoEnabled,
         customData: {
